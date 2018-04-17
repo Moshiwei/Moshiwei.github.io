@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[Django-xadmin]]></title>
+    <url>%2F2018%2F03%2F06%2FDjango-xadmin%2F</url>
+    <content type="text"><![CDATA[安装xadmin初次使用Django的xadmin，直接使用pip安装，虽然能安装上，但是缺少一些东西影响使用，推荐去github上面安装： 1pip install git+git://github.com/sshwsfc/xadmin.git 使用及设置以下是一些近期使用xadmin的配置方法和一些经常会用到的设置。 注册你的model 使用xadmin的时候首先需要向后台注册你的app的models。他需要写一个与models相对应的类，类的名字为models类后加Admin。例如 app/models.py123class UserProfile(models.Model): name = models.CharField(max_length=50) .... 那与之对应的，向xadmin注册的时候 adminx.py（需要在app中创建） 12class UserProfileAdmin(object): pass 可以添加几个参数，丰富后台的内容，或是添加搜索功能 1list_display = [] 该参数可以是一个元组，也可以是一个列表，一般推荐列表models下的字段可以以字符串的形式添加到里面，这样在后台就会显示该models所有的字段 1serach_fields = [] 该参数也是一个列表，添加的参数同上，但是不推荐添加时间类型的字段。添加后在后台会显示一个检索框 1list_filter = [] 同上，赋值方法也相同，在后台会多出一个过滤器，将时间字段添加后就能通过时间段来检索 优化显示内容xadmin更改后台管理名称以及底部信息xadmin在创建完成后，左上角显示的内容为Django-xadmin，底部显示的内容为我的公司，我们希望定制自己需要的内容,xadmin提供了一下的方法。 adminx.py 12345678910class GlobalSettings(object): site_title = &apos;后台名称&apos; site_footer = &apos;底部信息&apos; # 使左侧导航栏缩进 menu_style = &apos;accordion&apos; class BaseSetting(object): # 开启主题 enable_themes = True use_booswatch = True 最初注册进xadmin的model会显示在对应的app下，我们希望平时不用的时候，他是收回对应app的，当我们需要的时候再打开。 补充一个后台显示内容优化的内容在后台内，最初app的显示是英文的，如何更改为中文呢，我们在app对应目录下，有一个apps.py的文件，在其中添加一个verbose_name参数就可更改，同时要在同目录下的init.py文件下，添加一段话 123app/__init__.pydefault_app_config = &apos;users.apps.UsersConfig&apos;]]></content>
+      <categories>
+        <category>python框架</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Flask路由问题]]></title>
+    <url>%2F2017%2F10%2F27%2FFlask%E8%B7%AF%E7%94%B1%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[路由一个优秀的web应用有一套好的URL系统，不仅能帮助浏览者更容易记住你的连接，同时还增加了他们会再次来访问你的网站的几率。123456@app.route(&apos;/projects/&apos;&apos;) def projects():return The project page @app.route(&apos;/about&apos;) def about():return The about page 上面看似相同的例子，不同点在于它们在定义URL时候，是否使用了末尾的斜线。在第一个例子中，url是有下划线的，这意味着它更像一个文件夹的目录结构。不使用下划线去访问会使Flask去重定向到确切的有下划线的URL。 上句话很绕。一开始我也不明白，我回到项目里测试了一下会发现。比如在访问后台页面127.0.0.1：8000/admin的时候，访问的过程是不加斜线的，但页面加载时其实是访到了/admin/这个目录。 在第二个例子中，他的URL定义在末尾没有斜线。像一个UNIX-LIKE系统中一个文件的路径。（注意：第一个例子像一个目录路径）。如果访问该URL时你加入了下划线的话，就会导致404 NOT FOUND的错误。 这种行为可以是这种有关联的URL保持工作，即使你省略了末尾的下划线，与Apache的工作方式一致。同时，还能保持独一无二的URLs结构，避免搜索引擎检索一个页面两次。（这段翻译完还不是很理解，也许翻译有误。日后问题解决再来更新） 如果可以匹配到URLs，那么Flask能生成它们么？当然可以，具体可以使用url_for()方法去创建一个URL，该方法接受方法名作为第一个参数，还接受一些关键字参数，匹配你制定的URL规则。未知的变量部分将会作为查询参数添加到URL中。 12345678910111213141516171819&gt;&gt;&gt; from flask import Flask, url_for &gt;&gt;&gt; app = Flask(__name__)&gt;&gt;&gt; @app.route(&apos;/&apos;)... def index(): pass...&gt;&gt;&gt; @app.route(&apos;/login&apos;)... def login(): pass...&gt;&gt;&gt; @app.route(&apos;/user/&lt;username&gt;&apos;)... def profile(username): pass...&gt;&gt;&gt; with app.test_request_context():... print url_for(&apos;index&apos;)... print url_for(&apos;login&apos;)... print url_for(&apos;login&apos;, next=&apos;/&apos;)... print url_for( &apos;profile , username= &apos;John Doe&apos; ) ...//login/login?next=//user/John%20Doe 上述例子还使用了test_request_context()方法，下面解释该方法。它告诉Flask去模拟处理一次请求，即使我们在和python shell交流。（之后的内容我实在不知道怎么翻译，只能说大体我认为有用的内容）它讲了为什么要使用url_for()这个方法。 之后如果需要修改url只需更改一次，而不用记住所有使用url的位置。 URL building 会造成一些特殊的字符或者Unicode数据，会造成一些麻烦，使用url_for()可以避免这些麻烦。 url_for会帮你正确的找出路径。]]></content>
+      <categories>
+        <category>python框架</category>
+      </categories>
+      <tags>
+        <tag>Flask</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Django-基于类的视图部分翻译]]></title>
+    <url>%2F2017%2F10%2F27%2FDjango-%E5%9F%BA%E4%BA%8E%E7%B1%BB%E7%9A%84%E8%A7%86%E5%9B%BE%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91%2F</url>
+    <content type="text"><![CDATA[可调用的视图层需要接受一个请求并返回一个响应，他的功能不仅仅是一个方法这么简单，Django提供了一些列类可以被用与创建视图。它们可以使你规划你的视图结构，通过harnessing，inheritance，和mixins减少你的代码。接下来会看到一些普通的例子，但你可能更需要去设计适合你个人项目的视图结构，并且能重复使用它们。https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。 Basic examplesDjango提供了基本视图类，适配了广泛的应用，所有的视图都继承自视图类。这些类处理了视图与URLs的关系，HTTP方法的发送，或其他。RedirectView为了用来做简单的HTTP重定向，TemplateView拓展自基类使他也能进行模版渲染 Generic display veiws（通用显示视图）下面有两个基于类的通用视图。在很多项目中，他们是典型的也是最常用的视图函数。 DetailViews该视图继承了下面这些类的属性和方法 django.views.generic.detail.SingleObjectTemplateResponseMixin django.views.generic.base.TemplateResponseMixin django.views.generic.detail.BaseDetailView django.views.generic.detail.SingleObjectMixin django.views.generic.base.View 可用的方法（MRO列表） dispatch() http_method_not_allowed() get_template_names() get_slug_field() get_queryset() get_object() get_context_object_name() get_context_data() get()10 render_to_response() 一个例子 12345678910111213from django.views.generic.detail import DetailViewfrom django.utils import timezonefrom articles.models import Articleclass ArticleDetailView(DetailView): model = Article def get_context_data(self, **kwargs): context = super(ArticleDetailView, self).get_context_data(**kwargs) context[&apos;now&apos;] = timezone.now() return context]]></content>
+      <categories>
+        <category>python框架</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Django-Sending email部分翻译]]></title>
+    <url>%2F2017%2F10%2F24%2FDjango-Sending%20email%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91%2F</url>
+    <content type="text"><![CDATA[尽管Python可以使用smtplib包使发送email相对的简单化。但是Django提供了一些列轻量化封装去代替它。也能提供非常快捷的发送email功能，是你在开发的时候更加简单的测试email功能，这些代码存储在django.core.mail模块一个简单的例子123456789from django.core.mail import send_mailsend_mail( &apos;subject here&apos;, &apos;here is the message&apos;, &apos;form@example.com&apos;, [&apos;to@example.com&apos;], fail_silently = False,) 发送邮件使用SMTP协议还需要在settings中的EMAIL_HOST,EMAIL_PORT指定host和port。EMAIL_HOST_USER和EMAIL_HOST_PASSWORD设置用来与SMTP服务进行身份验证。还有两个重要参数EMAIL_USE_TLS和EMAIL_USE_SSL设置是否启用这些安全连接协议。 send_mail()方法 最简单的发送email方式就是使用django.core.mail.send_mail() subject,message,form_email,recipient_list是必要参数。 subject,message,rom_email是string类型。 recipient_list是一个列表，列表内的对象是string类型，这些对象就是接收者，每一个接收的对象都能在邮件内容中看到其他接收者。 fail_silently是一个布尔类型的值，如果为False，send_mail方法会产生一个smtplib.SMTPException.你需要查看smtplib的文档去查看一系列可能的异常。 auth_password可选参数进行服务认证，如果你没有提供该参数，那么django会查找并且使用在settings中的EMAIL_HOST_PASSWORD设置auth_user该参数配合auth_password使用，方法同上 send_mass_mail()方法 django.core.mail.send_mass_mail()的目的是处理大量的邮件业务。datatuple是一个元组，格式如下(subject, message, form_email, recipient_list) 12345from django.core.mail import send_mass_mailmessage1 = (&apos;Subject here&apos;, &apos;Here is the message&apos;, &apos;from@example.com&apos;,[&apos;first@example&apos;, &apos;other@example.com&apos;])message2 = (&apos;Another Subject&apos;, &apos;Here is another message&apos;, &apos;from@example.com&apos;, [&apos;second@test.com&apos;])send_mass_mail((message1, message2), fail_silently=False) 返回值就是大量成功投递的信息（最好是这样） send_mass_mail() VS send_mail() send_mass_mail()和send_mail()的主要区别在于，send_mail()在每次执行时都会打开到邮件服务器的连接，而send_mass_mail()则使用单个连接来处理所有消息。这使得send_mass_mail()稍微高效一些。]]></content>
+      <categories>
+        <category>python框架</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[成功使用Nginx和Gunicorn部署Django博客总结]]></title>
+    <url>%2F2017%2F10%2F21%2F%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E6%80%BB%E7%BB%93%2F</url>
+    <content type="text"><![CDATA[前言 早在上周我就写完了Django博客，在本地调试好之后，开始向服务器上部署，我使用Nginx代理静态文件，服务器的系统是CentOS6.8。Ubuntu的Nginx配置和centos的不同。这里就不提了。本文记下了我这一周踩的所有坑 没有0bug的系统，只有前仆后继的程序员说实话这是我第一次向线上部署我的博客，跟hexo的不同，Hexo完全帮你完成了生成框架，自动化部署这些问题，而你只需要向github提交你的ssh。这样就能托管在github上了。可是我还想要一个自己域名的博客。 400Bad Request满怀着激动的心情，我从周一开始学着部署，前两天真的是毫无进展，我甚至没法在服务器上跑一个runserver，更别提部署了，400错误一直显示在我的显示器上。周一周二我一直因为这个问题在一个一个网页之间跳转，熬夜，直到周三我头疼身体发冷，恶心想吐。说实话真的很沮丧。写完代码，不会部署，一切都是零。 下面开始讲我之后如何解决400问题的： 首先，我在本地测试好后，才上传到github上面的。在服务器上面从github上面拽下代码后，先要进行的两个步骤是： 更改数据库连接设置 进行数据迁移。 我使用的Mysql数据库，确认数据库连接没问题之后，我做了数据迁移（migrate）。之后访问地址后，出现了400错误，Django有一个Debug模式，开启它发现有几张表找不到，这是导致400错误的直接原因。 之后我反复检查python manage.py migrate这条命令的结果，发现我自己写的app根本就没有进行迁移。甚至Django自身的几个app都没有迁移进去，我才知道了Django还有这条命令 1python manage.py migrate app_name 使用该命令对未迁移的app进行单独迁移，别问我为什么。400错误到此结束。 500Server Error 从这里就要开始讲Nginx的部署问题了。开始我提到了我使用的是CentOS系统，而不是Ubuntu，因为这两个系统的Nginx目录结构，和配置文件放置的位置都不相同。在Nginx的根目录有一个Nginx.conf文件里面写着在conf.d这个目录想的所有conf文件他都会进行处理。所以一开始我的配置文件根本不知道放在哪里。这里真要感谢爱写备注的程序员们。这里贴上我的nginx配置文件 12345678910111213141516171819202122server &#123; charset utf-8; listen 80; server_name mirrorgo.top; #charset koi8-r; #access_log /var/log/nginx/host.access.log main; location / &#123; proxy_set_header Host $host; proxy_pass http://unix:/tmp/mirrorgo.top.socket; client_max_body_size 1000m; &#125; location /static &#123; alias /home/mirror/my-blog/static; &#125; client_max_body_size 75M; #error_page 404 /404.html;&#125; 明白了如何写配置文件和文件放置的位置500的问题就解决了。呼真的累。噩梦才开始 403Forbidden 每一次开启服务都是一次期待，其实看到403的时候我是很开心的，因为我知道这是个权限问题，我的项目和nginx配置应该是没有问题了。因为我使用Nginx的目的是代理静态文件，别的高级功能什么负载均衡我还不会用。所以我把需要代理静态文件目录路径里的所有目录的权限都改成了755。 这个问题被很快的解决了。如果有同学对这个步骤的安全性有疑问的话请联系我。 404Not Found呵呵呵呵哇哈哈哈哈哈，没错我已经疯了，这些状态码我早就学过了。没想到我还要亲身经历一遍。虽然有内容了，但是没有样式，根本没法看。 这个问题我怎么解决的说出来你可能不信，我看了推理小说，然后周六的早上玩推理游戏玩的我头疼。突然灵机一动，直接找到了我可爱的静态文件夹为什么找不到的问题。注意在nginx配置文件，指向你目标静态文件夹的路径是你的项目根目录。这是因为在进行了 1python manage.py collectstatic 之后会在你的项目根目录生成一个static文件夹。而且在Django官文中说，如果要部署要在settings.py文件夹中静态文件目录要加一条 1STATIC_ROOT = os.path.join(BASE_DIR, &apos;/static/&apos;) 他所指的静态目录正是上层目录，也就是项目根目录。一切问题解决后我可爱的页面就出来了。 200200没什么好说的。我爱绿色由于我现在主要还用这个博客，那边没什么文章。就没再挂着了。等我学会自动化部署在开放吧 转载请注明出处 这是我一周的心血，侵删谢谢。]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[如何在CentOS6.8上安装Python3.6]]></title>
+    <url>%2F2017%2F10%2F20%2F%E5%AE%89%E8%A3%85python%2F</url>
+    <content type="text"><![CDATA[如何在CentOS6.8上安装Python3.6 最近向服务器安装了两次环境，每次都很麻烦，这次写一个总结。在Centos上安装python3.6 1.第一步1wget http://www.python.org/ftp/python/3.6.3/Python-3.6.3.tgz centos会自动下载python3.6 2.第二步 1tar -xzvf Python-3.6.3.tgz 解压Python3.6.3.tgz，这里是tgz文件，格式的不同会有不同的参数 3.第三步 1./configure —prefix=/user/local/python3.6 首先要cd进入解压好的python3.6.3目录中，此命令的目的是设置安装目录 4.第四步1make 编译命令 5.第五步1make install 安装命令 需要注意之后的步骤是设置默认的python版本，我们把python3.6中/bin/python3复制到/usr/bin/中重命名为python，之后python的，默认版本就变成了python3. 由于系统的yum是基于python老版本的，所以更改默认版本后，yum无法使用了。 6.第六步1vi /usr/bin/yum 然后将头部文件 1#!/usr/bin/python更改为#!/usr/bin/python2.6 最后一步，要将/python3.6/bin文件添加进入环境变量，这样我们pip安装的包才能在命令行中使用。 以上，python安装完毕 补充 做pythonweb经常要安装sqlclient这个包,首先我们要安装几个依赖 1yum install -y mysql-devel python-devel python-setuptools]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Linux实用手册]]></title>
+    <url>%2F2017%2F10%2F09%2FLinux%E5%AE%9E%E7%94%A8%E6%89%8B%E5%86%8C%2F</url>
+    <content type="text"><![CDATA[Linux实用手册前言说起来我可能是太懒惰了，linux其实在大一就接触过了，并且我知道它的重要，在此之前一直在学习，不能算是学习吧。想起来了看两眼。如今我完成了自己的博客系统准备让它上线的时候。直到我买了学习用的服务器，一个崭新的centos安装在我的服务器上的时候。惊喜，兴奋，但是措手不及。这一系列文章，边学边采坑。 创建用户，设置密码，删除用户在刚进入linux系统的时候，你可能是一个root用户，但是考虑到实际应用，以及权限的问题，我们需要创建一个个人用户，用来做日程的处理。创建用户 1useradd 用户名 创建好后，你的用户文件会被创建在/home中，我们要为我们的用户创建一个密码 1passwd 用户名 之后你会看到输入密码的提醒。 注意：如果在ubuntu下，可能你安装了系统后，没有设置root密码这一步所以需要 1sudo passwd root 可以设置root密码 用户切换使用 1su 用户名 然后输入密码即可完成切换 我们可以创建一个用来测试的用户，然后学习如何删除他 1userdel 用户名 删除该用户后，使用su切换到该用户就会显示，该用户已经不存在了。但是别忘了你在创建用户的时候，还在/home目录下面有一个你的用户文件夹。你需要删除掉他 切换到/home目录下 1rm -rf 你的用户名 其中，-r代表了向下递归删除，-f代表了强制删除，不作任何提醒 今天为了部署nginx踩了不少的坑，先写这么多吧。下一章内容，我会讲在centos系统下，使用sudo命令出错的问题。]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[搭建个人博客]]></title>
+    <url>%2F2017%2F09%2F30%2F%E6%90%AD%E5%BB%BAblog%E6%95%99%E7%A8%8B%2F</url>
+    <content type="text"><![CDATA[前言 我不想说这篇教程有多简单或者多难，也并不承诺你会在几个小时内完成它。因为在你做的过程中总会遇到问题，只是看你会不会克服它并且继续走下去。 从我刚搭建好，注册了github账号开始到现在已经半年多了。我满怀激动写下这篇教程，一是为了有一个更为全面细致的教程帮助有兴趣的同学踩更少的坑，二是因为这个好玩的blog并不是我发现的，我借助了各式各样的教程完成了它，好的东西应该分享出去。 以后可能会有人写出更佳细致简单的教程，这只是一个不断更新的过程。 除了本篇教程，你最好阅读一些hexo的文档https://hexo.io 环境安装部分我们需要node.js和git的支持 在这里省略node.js和git的安装过程，一步一步截图会导致篇幅过长，这算是第一个小关卡吧，如果对你来说很简单那就继续往下进行。有一点要强调的是，在我们安装完成后我们需要在环境变量里面检查是否有git和node.js的环境 完成了上面两部之后需要我们注册的github账号Username最好使用你名字的拼音，请务必记住你的username创建完成后登录github，点击绿色按钮创建一个新的仓库仓库名字的格式为你的Username.github,io,这将是你的blog地址 创建仓库的时候下面有一个是否添加README文件的选项，请不要勾选（就是不添加） &gt;教程到现在请确认你已经拥有了：git，node.js的环境github账号接下来进入gitbash输入下面三个命令(进入gitbash的方法，在桌面或者任何目录下右键会有一个gitbash选项打开是一个黑色的命令行界面) 12git config --global user.name &apos;你的用户名&apos;git config --global user.email &apos;你的注册邮箱&apos; 第三个命令是 1ssh-keygen -t rsa 这个命令会在你的本地生成一个公钥(id_rsa.pub)，一个密钥(id_rsa)请在你C盘的用户目录下查找id_rsa.pub文件使用记事本打开 复制内容（我使用sublime打开的，并且我的公钥已经认证过了）然后从浏览器进入github,在settings里面找到SSHKeys点击New SSH Key,标题可以写blog，Key里面粘贴你的公钥。然后点击Add SSH Key 公钥添加成功之后，在gitbash里面输入ssh -T git@github.com 如果通知你成功认证了，那么你真是一个幸运的boy，如果没成功出现了ip认证失败的问题也不用担心直接输入 ssh git@github.com会为你本地多添加一个文件，一直回车就ok，然后再输入一次ssh -T git@github.com。成功后，我当初走过的第一个坑已经结束了下面我们开始操作hexo在你的E盘，没有E盘的同学在D盘内，右键打开gitbash输入 1hexo init blog hexo会生成一个blog文件，下面一定要先进入该目录。命令行中输入 1cd blog 进入刚生成的blog目录，不然你接下来的hexo命令会无效。在blog目录下有一个_config.yml这是一个配置文件，建议使用sublime打开这里只讲最关键的配置部分，在该文件的最下面 请参照我的配置方法，自行配置。 配置完成之后还是在命令行内输入hexo generate（或者hexo g）会生成向github上面部署的文件，上传文章的办法，官方文档使用的方法是1hexo new &apos;文章标题&apos; 但是我建议是 直接在本地使用markdown语法编辑好你的文章 复制进入blog目录下的source中的post文件夹（E:\博客\blog\source\_posts） 在命令行中输入hexo g hexo deploy 你可以在generate之后通过hexo server在本地提前浏览页面情况，避免尴尬问题发生 接着在浏览器内输入连接就可以浏览你的博客了 插曲 这之间因为感冒头晕中断了两三天，趁着周末好不容易清醒一点，立刻背包去同学宿舍帮他完整的做完了整个的配置，手感火热，有些可能会遇到的问题都遇到了。这是好事，回来之后立马记录下来。我写这个插曲并不想说带病写这个很辛苦，而是想表达做什么事要要埋头向前，坚持努力。 最后 在文章的最初我为每一步都添加了图片，导致图片太多了，我只保留了一些需要命令操作的部分，和一些容易犯错的部分。如果你在某个点不太明白欢迎你baidu或者发邮件给我。我的教程中，只完成了博客的搭建部分，一个好的环境还需要你自己去装饰配置，hexo提供的插件非常多，很多主题提供的插件也不少，既然你想要一个纯粹的写作环境。那我希望你不要把你的博客环境做得像Qzone一样。 我的blog地址moshiwei.github.io 我的email：1194317170@qq,com, Mirrorpy@outlook.com]]></content>
+      <categories>
+        <category>感想</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Django-Form]]></title>
+    <url>%2F2017%2F09%2F29%2FDjango-Form%2F</url>
+    <content type="text"><![CDATA[Django-Form Django provides a rich framework to facilitate the creation of forms and the manipulation of form data. Django提供了强大的框架使得创建表格或是更改表格更加容易 Working with forms如果你想构建一个功能强大的网站不仅仅是发布文章的话，你就需要理解如何使用forms，去接受用户的提交内容。Django提供了一系列的工具和方法去帮助你构建forms。获取你用户的提交内容做出处理和应答。 HTML表单在HTML中，表单是内部的元素集合…，允许访问者执行输入文本，选择选项，操纵对象或控件等操作，然后将该信息发送回服务器。 例如，Django管理员的登录表单包含几个 元素：一个type=”text”用于用户名，一个 type=”password”用于密码，另一个type=”submit”用于“登录”按钮。它还包含用户看不到的一些隐藏的文本字段，Django用于确定接下来要做什么。 它还告诉浏览器，表单数据应该发送到“ action属性”中指定的URL /admin/- 并且应该使用method属性 指定的HTTP机制发送post。 Django’s role in forms处理表格是一项复杂的业务，管理员需要准备不同类型的数据，以HTML的形式显示，使用方便的界面编辑，返回到服务器，验证和清理，然后保存或传递进一步处理。 准备和重组数据，并且渲染他们 创建HTML表单 从客户接收和处理提交的表单和数据 Instantiating, processing, and redering forms(实例化，处理，渲染)当渲染一个Django对象时，我们通常会 从视图中获取它 将它传递到模版页面 使用模版变量将其拓展为HTML标记 在模版中渲染表单，和渲染任何其它类型的对象几乎工作是相同的，但有一些关键的区别。当我们实例化表单时，我们可以选择将其留空或预先填充它。 下面我们做一个实例。 Building a form就像这样做假设您想在您的网站上创建一个简单的表单，以获得用户名。您在模板中需要类似这样的东西 12345&lt;form action=&quot;/your-name/&quot; method=&quot;post&quot;&gt; &lt;label for=&quot;your_name&quot;&gt;Your name: &lt;/label&gt; &lt;input id=&quot;your_name&quot; type=&quot;text&quot; name=&quot;your_name&quot; value=&quot;&#123;&#123; current_name &#125;&#125;&quot;&gt; &lt;input type=&quot;submit&quot; value=&quot;OK&quot;&gt;&lt;/form&gt; 这将告诉浏览器去返回一个数据表到URL，使用POST方法，如果模版中有变量，那将会填补your_name字段。你需要一个渲染模版表单的视图，根据需要提供current_name字段。提交表单时，POSt发送到服务器的请求将包含表单数据。接下来需要制作相应的视图，该视图要在请求中找到响应的键值对，然后处理他们。 表单可能包含数十或者上百的字段，其中许多字段可能需要预先填充，我们可能希望用户化在完成操作之前多次使用编辑提交循环。 在Django中创建一个表单 forms.py 1234from django import formsclass NameForm(forms.Form): your_name = forms.CharField(label=&apos;Your name&apos;, max_length=100) 在这个Form类中，只有一个字段就是your_name。max_length是熟悉的参数了。 Form实例有一个is_valid()方法，它运行其所有字段的验证历程，调用次方法，如果所有的数据都有效，那么他将会返回Ture，然后将表单数据放在其cleaned_data中。表单在第一次呈现时如下： 12&lt; label for = “your_name” &gt;您的姓名：&lt;/ label &gt; &lt; input id = “your_name” type = “text” name = “your_name” maxlength = “100” required / 它不包括标签，需要我们在模版中自己提供。 编写view发送到Django网站的表单数据由视图处理。 views.py 12345678910111213141516171819202122from django.shortcuts import renderfrom django.http import HttpResponseRedirectfrom .forms import NameFormdef get_name(request): # if this is a POST request we need to process the form data if request.method == &apos;POST&apos;: # create a form instance and populate it with data from the request: form = NameForm(request.POST) # check whether it&apos;s valid: if form.is_valid(): # process the data in form.cleaned_data as required # ... # redirect to a new URL: return HttpResponseRedirect(&apos;/thanks/&apos;) # if a GET (or any other method) we&apos;ll create a blank form else: form = NameForm() return render(request, &apos;name.html&apos;, &#123;&apos;form&apos;: form&#125;) 当我们使用get请求访问的时候，它将会创建一个空的实例渲染在模版上，这正是我们期望的。如果表单中提交了post请求，视图将会再次创建一个表单实例，并使用来自请求的数据进行天后从，这称为“将数据绑定到表单”form=NameForm(request.POST) 我们还调用了表单的is_valid()方法，如果返回值不是Ture，我们将会返回模版的表单，这时表单将不会为空，直到用户书写正确的内容。 如果is_valid()返回了Ture，那么我们可以在其cleaned_data属性中找到所有验证表单数据。再将HTTP重定向发送到浏览器之前，我们可以使用这些数据更新数据库或进行其他处理，告诉他下一步如何做]]></content>
+      <categories>
+        <category>python框架</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Django-upload部分翻译]]></title>
+    <url>%2F2017%2F09%2F25%2FDjango-upload%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91%2F</url>
+    <content type="text"><![CDATA[当Django在处理文件上传的时候，文件数据最后储存在request.FILES.这篇文档解释了文件是如何存储在硬盘和内存当中，和如何定制我们自己想要的存储方式 警告 如果你接受到来自未知的不可信赖的用户发送的数据，将会有一定的安全风险，请查看安全手册中的数据迁移细节基本文件上传创建一个包括FileField的简单表格forms.py 12345from django import formsclass UploadFileForm(forms.Form): title = forms.CharField(max_length=50) file = forms.FileField() 一个视图将会处理这个从request.FILES接受文件数据的表格，该表格好比一个目录包括了键和每一个文件字段或是图片文件，所以上述数据表可用request.FILES[’file’] 注意request.FILES方法只包含数据，如果请求方法是POST，然后请求方法中带有参数，enctype=“multipart/form-data”。否则，request.FILES将会为空 大多数情况，你可以简单的从request中找到方法访问文件流在表格内。 view.py 12345678910111213141516from django.http import HttpResponseRedirectfrom django.shortcuts import renderfrom .forms import UploadFileForm# Imaginary function to handle an uploaded file.from somewhere import handle_uploaded_filedef upload_file(request): if request.method == &apos;POST&apos;: form = UploadFileForm(request.POST, request.FILES) if form.is_valid(): handle_uploaded_file(request.FILES[&apos;file&apos;]) return HttpResponseRedirect(&apos;/success/url/&apos;) else: form = UploadFileForm() return render(request, &apos;upload.html&apos;, &#123;&apos;form&apos;: form&#125;)]]></content>
+      <categories>
+        <category>python框架</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Django-models部分翻译]]></title>
+    <url>%2F2017%2F09%2F24%2FDjango-models%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91%2F</url>
+    <content type="text"><![CDATA[每一个model映射了一个独立的数据库表model是django.db.models.Model的子类每一个model的属性对应着一个database的fieldmodel内的类属性代表了每一个字段每一个属性映射除了数据表的列也就是说：类代表了数据表，类的属性代表了数据表中的列，表名可更改，主键可更改 使用models当你定义好了你的models，你需要去告诉Django你将要使用这些models，首先你需要在设置文件中（settings file）在INSTALLED_APPS中添加你的app，当你添加了新的app在INSTALLED_APPS中时，需要确认你运行了manage.py migrate去进行数据迁移。之后还要运行一遍manage.py makemigrations FieldsFields是model中最重要的部分，是models唯一需要的部分，类的属性指定了Fields，为了防治冲突请不要使用models的API来命名Field Field types你model中的每一个fields都应该时一个合适的例子Django使用这些field class类别去确认这几件事 ● 列的类型将会告诉数据库去储存什么格式的数据（e.g. INTEGER, VARCHAR, TEXT） ● 默认的HTML控件会参考它去渲染页面 ● 还有一个关于提供管理认证的东西Django战舰有很多内置的Field类型，你可以在别处找到完成整的对照表。你甚至可以轻松的写下你自己需要的field类型。 Field optionsfield中有一些特定的参数，例如，CharField（和他的子类）需要max_length曲具体限定VARCHAR类型的数据field的储存长度 还有一系列常用的参数给所有的field使用，它们都是可选的。下面有一些快速的摘要关于一些常用的参数 nullif Ture，Django会储存一个空值在数据库中，此参数默认为False blankif Ture，field将会允许内容为空，默认为False这里要注意blank和null是不同的，但null=Ture时，field仅仅只储存了一个NULL的空值，但是blank设计到了一个认证的问题，当blank设置为False时，该field是不允许为空格的，也就是不能没有内容 choices一个可迭代的列表或是元组，下面有一个使用二维元组作为参数的例子，当有此参数时，默认的表格空间会选择盒子内的选项代表标准的field内容，并且会限制你给予的可选项一个可选列表就像这样 1234567YEAR_IN_SCHOOL_CHOICES = ( (&apos;FR&apos;, &apos;Freshman&apos;), (&apos;SO&apos;, &apos;Sophomore&apos;), (&apos;JR&apos;, &apos;Junior&apos;), (&apos;SR&apos;, &apos;Senior&apos;), (&apos;GR&apos;, &apos;Graduate&apos;),) 每一个元组中的第一个元素将会被储存在数据库中，第二个元素将会被显示在默认表格或在ModelChoiceField中，下面个给一个model的模型。可以通过get_Foo_display()方法来显示属性 12345678910from django.db import modelsclass Person(models.Model): SHIRT_SIZES = ( (&apos;S&apos;, &apos;Small&apos;), (&apos;M&apos;, &apos;Medium&apos;), (&apos;L&apos;, &apos;Large&apos;), ) name = models.CharField(max_length=60) shirt_size = models.CharField(max_length=1, choices=SHIRT_SIZES) 123456&gt;&gt;&gt; p = Person(name=&quot;Fred Flintstone&quot;, shirt_size=&quot;L&quot;)&gt;&gt;&gt; p.save()&gt;&gt;&gt; p.shirt_size&apos;L&apos;&gt;&gt;&gt; p.get_shirt_size_display()&apos;Large&apos; deafult如果设置了默认值，默认值可以是一个确定的值也可以是一个可调用的对象，如果是可调用的对象那么该对象会在新项目生成时再次调用。 help_text额外的“帮助”文本显示与表单小部件。即使你的字段不是在表单上使用，它也很有用 primary_keyDjango会自动创建一个IntegerField去包含主键（primary key），所以你不必特别的写primary_key = Ture如果你不需要，可以重写此方法 Automatic primary key fields默认情况下，Django给与了每一个model一个字段：id = models.AutoField(primary_key=Ture)这是一个自增的主键如果你想要指定一个自定义的主键，只需指定primary_key=Ture在你的字段中，如果Django看到了你明确的设置了字段的主键，他将不会增加一个自动增加的id列 Verbose field names（详细的字段名称）每一个字段类型，除了ForeignKey.ManyToManyField,OneToOneField,需要一个可选择的位置参数，都有详细的字段名称，如果它没有被给与，Django将会使用字段的属性名字自动创建一个。]]></content>
+      <categories>
+        <category>python框架</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python多线程编程]]></title>
+    <url>%2F2017%2F09%2F09%2Fpython%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%2F</url>
+    <content type="text"><![CDATA[引入 先说一个有意思的例子，在我上高中的时候迷恋做饭，一心想着要当米其林大厨来着，我就开始看着方面的书。其中有一篇是讲了厨房效率，从做饭的步骤联系到了工具台的位置该如何部署。 那我们把做一道菜的过程比喻成为进程，如果客人要吃米饭，那么这种做米饭的且不影响菜肴烹饪的行为就是线程，我们不可能等着米饭做好了再去炒菜，两个应该同时进行，保证客人吃上热饭热菜。这就是并行，假设完成这道菜肴我们需要烤制一份牛肉作为辅助，电饭煲和烤箱不能同时进行，但牛肉是完成这道菜的必备步骤，这时要触发中断，做米饭要让他先行就是让步了。 多线程编程无论是任务本身需要按照步骤顺序执行，还是整个程序实际上包含多个子任务，都需要按照这种顺序方式执行。那么，假如这些子任务相互独立，都没因果关系（也就是说，各个子任务的结果并不影响其他子任务的结果），这样的做法是不是很不合理呢？ 要是让这些独立的任务同时运行，会怎么样呢？很明显，这种并行处理方式可以显著的提高整个任务的性能，这就是多线程编程。 线程和进程进程 计算机程序只是储存在磁盘上的可执行二进制（或其他类型）的文件。只有把他们加载到内存中并被操作系统调用，才拥有其生命期。进程（有时称为重量级进程）就是一个执行中的程序，每个进程都有自己的地址空间，内存，数据栈以及其他用于跟踪执行的辅助数据。 线程线程（有时候称为轻量级进程）与进程类似，不过他们是在同一个进程下执行的，并共享相同的上下文，可以将它们认为是一个主进程或“主线程”中并行运行的一些“迷你进程”。 线程包括开始，执行顺序和结束三部分，他有一个指令指针，用于记录当前运行的上下文，但其他线程运行时，他可以被抢占（中断）和临时挂起（也称为睡眠）——这种做法叫做让步（yielding）。 使用代码来举例不使用线程的情况1234567891011121314151617181920from time import sleep, ctimedef loop0(): print &apos;start loop 0 at:&apos;, ctime() sleep(4) print &apos;loop0 done at:&apos;, ctime()def loop1(): print &apos;start loop 1 at:&apos;, ctime() sleep(2) print &apos;loop1 done at:&apos;, ctime()def main(): print &apos;starting at:&apos;, ctime() loop0() loop1() print &apos;all DONE at:&apos;, ctime() if __name__ ==&apos;__main__&apos;: main() 结果： 123456starting at: Sat Sep 09 13:08:34 2017start loop 0 at: Sat Sep 09 13:08:34 2017loop0 done at: Sat Sep 09 13:08:38 2017start loop 1 at: Sat Sep 09 13:08:38 2017loop1 done at: Sat Sep 09 13:08:40 2017all DONE at: Sat Sep 09 13:08:40 2017 整个运行时间至少会有6s，而在启动时可能有1s多的开销。使整个时间多达7s 使用线程和锁12345678910111213141516171819202122232425262728293031import threadfrom time import sleep, ctimeloops = [4, 2]def loop(nloop, nsec, lock): print &apos;start loop&apos;, nloop, &apos;at:&apos;, ctime() sleep(nsec) print &apos;loop&apos;, nloop, &apos;done at:&apos;, ctime() lock.release(0) def main(): print &apos;starting at:&apos;, ctime() locks = [] nloops = range(len(loops)) for i in nloops: lock = thread.allocate_lock() lock.acquire() locks.append(lock)for i in nloops: thread.start_new_thread(loop, (i, loops[i], locks[i])) for i in nloops: while locks[i].locked():pass print &apos;all DONE at:&apos;, ctime()if __name__ ==&apos;__main__&apos;: main() 结果 123456starting at: Sat Sep 09 13:20:41 2017start loop 0 at: Sat Sep 09 13:20:41 2017start loop 1 at: Sat Sep 09 13:20:41 2017loop0 done at: Sat Sep 09 13:20:43 2017loop1 done at: Sat Sep 09 13:20:45 2017all DONE at: Sat Sep 09 13:20:45 2017 使他们并行从开始到完成只需要4s 代码中的loop模拟的是一次运行过程，loop0运行一次需要4s，loop1运行一次需要2s，这样串行需要6秒多完成，并行只需要4s 这篇写完好长好累…..]]></content>
+      <categories>
+        <category>python进阶</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[开学想说的话]]></title>
+    <url>%2F2017%2F09%2F04%2F2017.09.04%E5%BC%80%E5%AD%A6%E6%88%91%E6%83%B3%E8%AF%B4%2F</url>
+    <content type="text"><![CDATA[大三刚开学我想说什么我好像还是不适合课堂内学习，对我自己来讲，如果有兴趣的话，自学的效率会更高。 开学第一天 暑假 这个假期我第一次留校学习，新鲜感十足，每天早上能在七点之前起床洗漱好，然后开始学习自己喜欢的东西，说实话，那时学习带给我的满足感和成就感，远远大于我会做一道课堂中学的题，这也许是兴趣的问题吧。自我结束更新blog快一周了。其实说罢了就是在偷懒而已。 关于为什么开始写日记 更新blog，我坚持了一个暑假了。简单，且开心。 我有一个软件叫格志，它就像小学的时候刚开始玩qq空间，流行在里面写日志的时候，qq空间在里面推出了一个格子日志，不知道有没有同学记得，就是一个九宫格，里面会有他为你提供的一点话题，为了让你有东西可写，可是坚持在上面写的话，会有一种拘束感，我把它保留下来了，因为他提供了一些话题还是不错的。 我本身是希望能够每天都更新一点笔记在上面的，这样可以证明你没有浪费这一天的时光，能够看到自己的进步，我觉得最重要的一点就是有些新出现的毛病的解决方法可以记录在上面方便以后查看，因为baidu出来的很多问题都很老旧，开发环境也很旧，所以新的问题解决方法基本都在官方的论坛或者私人的blog里面。说实话，自己寻找答案并且记录，会有一种满足的喜悦感。 最后，好的话题和点子会因为你偷懒没有立即记录下来而残忍的离开你。]]></content>
+      <categories>
+        <category>感想</category>
+      </categories>
+      <tags>
+        <tag>思考</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python数据结构之链表]]></title>
+    <url>%2F2017%2F09%2F02%2Fpython%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E9%93%BE%E8%A1%A8%2F</url>
+    <content type="text"><![CDATA[python数据结构单链表的实现 链表中的元素可以储存在内存的任何地方，连标的每个元素都储存了下一个元素的地址，从而使一系列随机的内存地址串在一起，这就好比一个寻宝游戏，你前往第一个地址，那里有一张纸条写着，下一个元素的地址为123，因此，你要前往123，然后又有一张纸条，写着下一个元素的地址。 下面这段代码是python2.7实现的123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174175176177178179180181182183184185#!/usr/bin/python# -*- coding: utf-8 -*-class Node(object): def __init__(self,val,p=0): self.data = val self.next = pclass LinkList(object): def __init__(self): self.head = 0 def __getitem__(self, key): if self.is_empty(): print &apos;linklist is empty.&apos; return elif key &lt;0 or key &gt; self.getlength(): print &apos;the given key is error&apos; return else: return self.getitem(key) def __setitem__(self, key, value): if self.is_empty(): print &apos;linklist is empty.&apos; return elif key &lt;0 or key &gt; self.getlength(): print &apos;the given key is error&apos; return else: self.delete(key) return self.insert(key) def initlist(self,data): self.head = Node(data[0]) p = self.head for i in data[1:]: node = Node(i) p.next = node p = p.next def getlength(self): p = self.head length = 0 while p!=0: length+=1 p = p.next return length def is_empty(self): if self.getlength() ==0: return True else: return False def clear(self): self.head = 0 def append(self,item): q = Node(item) if self.head ==0: self.head = q else: p = self.head while p.next!=0: p = p.next p.next = q def getitem(self,index): if self.is_empty(): print &apos;Linklist is empty.&apos; return j = 0 p = self.head while p.next!=0 and j &lt;index: p = p.next j+=1 if j ==index: return p.data else: print &apos;target is not exist!&apos; def insert(self,index,item): if self.is_empty() or index&lt;0 or index &gt;self.getlength(): print &apos;Linklist is empty.&apos; return if index ==0: q = Node(item,self.head) self.head = q p = self.head post = self.head j = 0 while p.next!=0 and j&lt;index: post = p p = p.next j+=1 if index ==j: q = Node(item,p) post.next = q q.next = p def delete(self,index): if self.is_empty() or index&lt;0 or index &gt;self.getlength(): print &apos;Linklist is empty.&apos; return if index ==0: q = Node(item,self.head) self.head = q p = self.head post = self.head j = 0 while p.next!=0 and j&lt;index: post = p p = p.next j+=1 if index ==j: post.next = p.next def index(self,value): if self.is_empty(): print &apos;Linklist is empty.&apos; return p = self.head i = 0 while p.next!=0 and not p.data ==value: p = p.next i+=1 if p.data == value: return i else: return -1l = LinkList()l.initlist([1,2,3,4,5])print l.getitem(4)l.append(6)print l.getitem(5)l.insert(4,40)print l.getitem(3)print l.getitem(4)print l.getitem(5)l.delete(5)print l.getitem(5)l.index(5)]]></content>
+      <categories>
+        <category>python数据结构</category>
+      </categories>
+      <tags>
+        <tag>python链表</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python解决实际问题04]]></title>
+    <url>%2F2017%2F08%2F27%2Fpython%E5%AE%9E%E6%88%982017.08.27%2F</url>
+    <content type="text"><![CDATA[实际案例比如要写一个爬虫爬取各个城市的气温信息，如果一次抓取所有的城市天气再显示，这样我们得到信息的时间就是最后一条信息爬取完的时间，这样有很高的延时，并且浪费储存空间，我们希望以“用时访问”的策略，也就是说，爬一条显示一条，还要把所有城市气温封装到一个对象里，可用for语句进行迭代。 可迭代对象和迭代器对象list1 = [1, 2, 3, 4]str1 = ‘abcdef’我们知道python中列表和字符串都是可以迭代的，所以他们都是一个可迭代对象；list1有两个接口，一个iter(),getiterm()。而str1只有一个getitem()。通过调用接口 12&gt;&gt;&gt;list1.__iter__()&lt;list_iterator object at 0x000001BB9D637358&gt; 发现它会变成一个迭代器对象。 iter()python3中的iter()有两个参数，这里只介绍iter(object)。object必须是一个集合对象，并且支持迭代协议（iteration protocol）或者支持序列协议（sequence protocol）。也就是说它会找你的接口里面是否有iter(),没有就找getiterm()iter创建了一个迭代器对象，每次调用这个迭代器对象的next()方法时，都会调用object，如果next的返回值等于sentinel，则抛出StopIteration的异常，否则返回下一个值，这也就是for循环的工作流程 实现迭代器对象其实方法就是写两个类，一个继承iterator，一个继承iterable，可迭代对象的类使用iter方法返回一个迭代器对象，迭代器对象使用next方法，每次返回一组数据。]]></content>
+      <categories>
+        <category>python实际问题</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python解决实际问题03]]></title>
+    <url>%2F2017%2F08%2F23%2Fpython%E5%AE%9E%E6%88%982017.08.23%2F</url>
+    <content type="text"><![CDATA[实际案例 某随机序列[12, 5, 6, 4, 6, 5, 5, 7, …]中，找到出现次数最高的三个元素，他们出现次数是多少？ 对某英文文章的单词，进行词频统计，找到出现次数最高的10个单词，他们出现次数是多少？解决方案问题1生成一个随机数列表。 123456789from random import randint# 第一步：生成一个随机数列表。list1 = [randin(0, 20) for x in range(30)]# 第二步：将列表的元素化为字典中的键，默认的值为0，创建一个字典dict1 = dict.fromkeys(list1, 0)# 第三步：如果x出现在了列表当中，那么他的值加1for x in list1: c[x] += 1print(dict1) 问题2 12345from collections import Counterimport retxt = open(&quot;TEXT&quot;).read()words = Counter(re.split(&apos;\w+&apos;,txt))words.most_common(10) 代码补充dict.fromkeys(list1, None)dict的fromkeys方法可以将给定的键生成一个新的字典，每一个键都有一个默认的值None，这个值也可以自己给定。fromkeys方法接收两个参数，一个列表作为新字典中的键，一个默认值]]></content>
+      <categories>
+        <category>python实际问题</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python解决实际问题02]]></title>
+    <url>%2F2017%2F08%2F22%2Fpython%E5%AE%9E%E6%88%982017.08.22(1)%2F</url>
+    <content type="text"><![CDATA[实际案例 学生信息系统中数据位固定格式： （名字, 年龄, 性别, 邮箱地址, …） 学生数量很大为了减少储存开销，对每个学生信息用元组表示： (‘Jim’, 16, ‘male’, ‘jim8721#gmail.com’)… 访问时，我们使用索引访问，大量索引降低程序可读性，如何解决这个问题？ 解决方案方法112345678910NAME, AGE, SEX, EMAIL = range(4)student = (&apos;Jim&apos;, 16, &apos;male&apos;, &apos;jim8721#gmail.com&apos;)# NAME print(student[NAME])# AGEprint(student[AGE])# SEXpritn(student[SEX])# EMAILprint(student[EMAIL]) 方法2使用标准库中的collections.namedtuple替代内置tuple 1234567891011form collections import namedtupleStudent = namedtuple(&apos;Student&apos;, [&apos;name&apos;,&apos;age&apos;, &apos;sex&apos;, &apos;email&apos;])s1 = Student(&apos;Jim&apos;, 16, &apos;male&apos;, &apos;jim8721#gmail.com&apos;)# names1.name# ages1.age# sexs1.sex# emails1.email 这是一种通过类建立对象然后访问属性的方法。]]></content>
+      <categories>
+        <category>python实际问题</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python解决实际问题01]]></title>
+    <url>%2F2017%2F08%2F22%2Fpython%E5%AE%9E%E6%88%982017.08.22%2F</url>
+    <content type="text"><![CDATA[实际案例 过滤掉列表[3, 9, -1, 10, -2, 20, …]中的负数 筛选出字典{‘LiLei’:79, ‘Jim’:88, ‘Lucy’:92, …}中值高于90的项 筛选出集合{77, 89, 32, 20, …}中能被3整除的元素 解决方案列表 filter函数 1filter（lambda x:x&gt;0, data） 列表解析 1[x for x in data if x&gt;=0] 字典 字典解析 1&#123;k:v for k, v in d.iteritems() if v&gt;90&#125; 集合 集合解析 1&#123;x for x in s if x%3 == 0&#125; 以上解决方法对应上述问题 补充代码 生成一个范围随机数列表 12from random import randintlist1 = [randint(-10,10) for x in range(10)] 使用timeit对第一个问题的两种解决方法做一个运行时间对比，发现列表解析的方法是要优于filter函数的。并且这两种方式，都要优于通过普通迭代的方法。 生成一个范围随机数字典 1dict1 = &#123;k:radint(60, 100) for k in range(1, 21)&#125;]]></content>
+      <categories>
+        <category>python实际问题</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python面向对象]]></title>
+    <url>%2F2017%2F08%2F19%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.19%2F</url>
+    <content type="text"><![CDATA[定义一个类方法 写一个类的时候，类名首字母要以大写开头 在类中定义的全部是实方法，实例方法第一个参数self是实例本身 通过标记一个@classmethod，该方法将绑定到类上，而非类的实例。类方法的第一个参数将传入类本身，通常将参数名命名为cls。 创建实例属性python是一门动态语言，对于每一个实例，都可以直接给他们的属性赋值。 初始化实例属性一种类型的实例应该自带一些属性，比如人应该有名字，性别，生日，或者书籍应该有书名，作者，出版日期等，有一个特殊的init方法，当实例被创建时，该方法会被自动调用，将属性赋值给实例。 init方法的第一个参数必须是self，后续的参数可以自由制定，和定义函数没有任何区别。 相应的，创建实例时，就必须要提供self以外的参数。 访问限制python对属性权限的控制是通过属性名来实现的，如果一个属性由双下划线开头，该属性就无法被外部访问。 类属性我们知道实例的属性是互相不影响的，如果在类上绑定一个属性，则所有的实例都可以访问到这个属性，总结来讲，实例的属性都是各自拥有的，相互独立，但是类属性有且只有一份，类属性是可以动态添加和修改的。 有一个例子很好的解释了这一点 实现一个功能，创建一个实例，就计数一次 12345678910111213class Person(): count = 0 def __init__(self, name): self.name = name Person.count += 1p1 = Person(&apos;Bob&apos;)print Person.count,p2 = Person(&apos;Alice&apos;)print Person.count,p3 = Person(&apos;Tim&apos;)print Person.count 优先级 先看例子 1234567891011class Person(object): address = &apos;Earth&apos; def __init__(self, name): self.name = namep1 = Person(&apos;Bob&apos;)p2 = Person(&apos;Alice&apos;)print &apos;Person.address = &apos; + Person.addressp1.address = &apos;China&apos;print &apos;p1.address = &apos; + p1.addressprint &apos;Person.address = &apos; + Person.addressprint &apos;p2.address = &apos; + p2.address 结果 1234Person.address = Earthp1.address = ChinaPerson.address = Earthp2.address = Earth 可以看到，实例访问了类属性，并且做了更改。或者说这个实例访问的并不是类属性，而是它自身创建了一个实例属性和类属性同名了，因为可以看到我们输出了类属性后，发现类属性没有变化。那么下次我们输出实例的时候，访问address属性的时候是访问的哪一个属性呢。 这里就涉及到了优先级的问题。当类属性和实例属性重名的时候，实例会优先检查实例属性，如果没有再去访问类属性。换句话说，在实例上修改类属性，他实际并没有修改类属性，而是绑定了一个新的实例属性。 定义实例方法一个实例的私有属性就是以__开头的属性，无法被外部访问，那这些属性定义有什么用？虽然私有属性无法从外部访问，但是从类的内部是可以访问的，除了可以定义实例的属性外，还可以定义实例的方法。 实例的方法就是在类中定义的函数，她的第一个参数永远是self，指向调用该方法的实例本身。 在实例方法的内部，可以访问所有实例属性，这样，如果外部需要访问私有属性，可以通过方法调用获得，这种数据封装的形式除了能保护内部数据一致性外，还可以简化外部调用的难度。]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[装饰器的理解]]></title>
+    <url>%2F2017%2F08%2F17%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.17%2F</url>
+    <content type="text"><![CDATA[装饰器 引入学了一周的python函数式编程了，觉得好玩的两个点就是匿名函数，和装饰器了。因为他们都能让我觉得写代码可以更加优雅。 如果你想给一个函数增加一些功能，但是你又不想在原函数中改，那么你就可以使用装饰器，这样的话，假如有很多函数都需要这个功能，装饰器就会显示出它作用，可以减少不少重复的代码。 按照我自己的理解，我们自己制作的装饰器就像一个提供给函数的小插件，想要谁拥有新功能我们给谁安插件就好了。 原理 1234567891011def log(func): def wrapper(*args, **kwargs): logging.warn(&quot;%s is running&quot; %func.\_\_name\_\_) return func(*args) return wrapperdef foo(): print(&quot;call foo()&quot;) foo = log(foo)foo() 如果不理解函数式编程，请看前几节python学习笔记。 装饰器有一个语法糖,那就是使用@，@装饰器是不是很可爱 于是代码可以变成这样 123@logdef foo(): print(&quot;call foo()&quot;) @装饰器可以省略下面的代码，但是函数使用时，还需要自己调用。 1foo = log(foo) 这样以来，如果我们有其他需要打印日志的函数，就可以直接调用装饰器来修饰函数，而不用重复修改函数，或者增加新的封装。这样我们就提高了程序的可重复利用性，并且增加了程序的可读性。 个人理解 刚开始还是比较绕的，但是遇到事情多想想是吧。首先我们把上面的log(func)函数叫做装饰器，然后它的内层函数返回了我们想装饰的函数，保证我们的原函数顺利执行，我们想装饰的内容也写在了内层函数里，这样应该就比较好理解了。 当我们阅读代码的时候，被装饰器装饰的函数还是会被顺利执行，我们只需查询装饰器做了什么修改。]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[匿名函数的理解]]></title>
+    <url>%2F2017%2F08%2F16%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.15%2F</url>
+    <content type="text"><![CDATA[匿名函数 首先Lambda在很多编程语言中都可以使用、 对于很多只用到一次的简单函数，简单到它叫什么名字都无关紧要，使用lambda对它们进行精简是最好不过的了 Explicit is better than implicit(明了胜于晦涩) 高阶函数可以接收函数做参数，有些时候，我们不需要显示的定义函数，直接传入匿名函数跟方便，在python中，对匿名函数提供了有限的支持。 关键字lambda表示匿名函数，冒号前面的变量表示函数参数 匿名函数有个限制，就是只能有一个表达式，不写return，返回值就是该表达式的结果。 理解lambda表达式在函数式编程理论里，和Python、C++这样语言的实践中意义略有不同。对于Python和C++这样的语言来说，Lambda表达式就是：能嵌入到其他表达式当中的匿名函数（闭包）。它的第一个重要意义是可以在表达式当中直接定义一个函数，而不需要将定义函数和表达式分开，这样有助于将逻辑用更紧凑的方式表达出来。它的第二个重要意义是引入了闭包。基本上来说常见的支持lambda表达式的语言里，不存在不支持闭包的lambda表达式；从函数式编程的角度来说，支持闭包也是很重要的。闭包是指将当前作用域中的变量通过值或者引用的方式封装到lambda表达式当中，成为表达式的一部分，它使你的lambda表达式从一个普通的函数变成了一个带隐藏参数的函数。它的第三个重要意义（如果有的话）是允许函数作为一个对象来进行传递。某些语言由于历史原因，只有匿名函数可以作为对象传递，而具名函数不可以，比如PHP。 灵剑 知乎www.zhihu.com/question/20125256/answer/141817632]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[新生]]></title>
+    <url>%2F2017%2F08%2F15%2F%E6%97%A0%E6%A0%87%E9%A2%98Markdown%2F</url>
+    <content type="text"><![CDATA[new life：）]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[闭包问题的理解和样例分析]]></title>
+    <url>%2F2017%2F08%2F14%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.14%2F</url>
+    <content type="text"><![CDATA[python中的闭包 在学完python中的返回函数的时候，下一节就是学python闭包，感觉上一节的学习完全懵了，这里总结一下，写出思考过程，方便未来更改查看。 定义 首先，内层函数引用了外层函数的变量（参数也算变量），然后返回内层函数的情况下，称为闭包（Closure） 闭包的特点是返回的函数还引用了外层函数的局部变量，所以要正确使用闭包，就要确保引用的局部变量在函数返回后不能变。 返回函数 python的函数不但可以返回，int，str，list，dict等数据类型，还可以返回函数。 12345def f(): print(&quot;call f()&quot;) def g(): print(&quot;call g()&quot;) return g 我们在定义了一个函数f()之后，在其内部又定义了一个函数g()。注意函数f返回的是g而不是g()。这会产生什么影响呢，调用函数f()之后返回的函数还需要通过指向内层函数，因此可以调用内层函数，返回函数可以把一些计算延迟执行。 先看看它怎么运作 12345&gt;&gt;&gt; x = f() #调用f()call f()...# 变量x是f()返回的函数&gt;&gt;&gt; x() # x指向函数，因此可以调用call g()... 阅读此处的时候最后写下里对比上面的代码，画线找一下对应关系 样例编写一个函数calc_prod(lst)，它接收一个list，返回一个函数，返回函数可以计算参数的乘积。 123456def calc_prod(lst): def a(): return reduce((lambda x,y: x*y),lst) return af = calc_prod([1, 2, 3, 4])print f() 引入闭包 开始学习闭包的时候，直接进入例子，发现特别懵，扣了很长时间，对比上一个例子，还看了一些别人的笔记，有了一个初步的了解，现在分享出来。 希望一次返回3个函数，分别计算1x1,2x2,3x3: 12345678910def count(): fs = [] for i in range(1, 4): def f(): return i*i fs.append(f) return fsf1, f2, f3 = count()print(f1(), f2(), f3()) 这段代码并不能实现输出1x1,2x2,3x3，原因是并没有正确的使用闭包。 新的赋值语句说实话一开始不是很能理解最后一行的赋值方法，找了一下笔记，得知它是这样赋值的。 1f1, f2, f3 = count() 等同于 123f1 = count()[1]f2 = count()[2]f3 = count()[3] 注意，就因为这句代码，使得count()这个函数被调用了三次，此时的i已经变成3了返回的fs列表里应该是三个返回函数 1fs = [f1, f2, f3] 由于返回函数的性质，f1不同于f1(),也就是说f1()函数还没有调用 在print(f1(), f2(), f3())在这里才调用了内层函数，但是i已经是3了，所以输出的是9，9，9 读到这里应该返回去看一下闭包的概念，引用的局部变量在函数返回后不能变，f()函数引用了循环参量i，但是i在调用上层函数的时候会改变。这是我理解的问题所在。 如何实现正确闭包12345678910def count(): fs = [] for i in range(1, 4): def f(m = i): return m * m fs.append(f) return fsf1, f2, f3 = count()print f1(), f2(), f3() 函数在只有在执行时才回去获取外层参数i，如果函数在定义时就可以获取储存到i，（这里使用m储存到了i），问题就可以解决了。所以使用默认参数，正好可以完成定义时获取i值且运行函数时无需参数输入的功能，所以在函数f()定义中改为f(m = i),函数f返回值改为m*m即可 结论返回函数，不要引用任何循环变量，或者后续会发生变化的变量。]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python学习笔记]]></title>
+    <url>%2F2017%2F08%2F12%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.12%2F</url>
+    <content type="text"><![CDATA[储存数据到PyMySql引入开发包1import pymysql.cursors 获取数据库连接12345connection = pymysql.connect(host = &apos;localhost&apos;, user = &apos;root&apos;, password = &apos;&apos;, db = &apos;&apos; charset = &apos;uf8mb4&apos;) 执行SQL语句1cursor.execute(sql，(参数1， 参数n)) 提交1connection.commit() 关闭1connection.close() 创建数据库使用Navicat for MySQL123new databaseCharacter set : uf8mb4 -- UTF-8UnicodeCollation : uf8mb4_general_ci 代码实现获取数据库连接123456789101112131415161718connection = pymysql.connect(host = &apos;localhost&apos;, user = &apos;root&apos;, password = &apos;123456&apos;, db = &apos;url&apos; charset = &apos;uf8mb4&apos;)try: # 获取会话指针 with connection.cursor() as cursor: #创建sql语句 sql = &quot;insert into &apos;urls&apos; (&apos;urlname&apos;, &apos;urlhref&apos;) values(%s, %s)&quot;\ #执行sql语句 cursor.excute(sql, (url.get_text,&quot;url&quot;))#此处的url对应上方urlhref字段，也就是说这里的url对象是抓取到的url集合 #提交 connection.commit()finally: connection.close() 数据库查询引入开发包1import pymysql.cursors 连接数据库12345connection = pymysql.connect(host = &apos;localhost&apos;, user = &apos;root&apos;, password = &apos;123456&apos;, db = &apos;url&apos; charset = &apos;uf8mb4&apos;) 获取会话链接1sql = connection.cursor() 执行SQL语句1cursor.execute(sql, (参数1， 参数n)) 得到总记录数，返回一个int型的数值1cursor.execute() 查询下一行1cursor.fetchone() 得到指定大小1cursor.fetchmany(size = None) 得到全部1cursor.fetchall() 关闭1connection.close() 范例123456789101112try: with connection.cursor() as cursor: #查询语句 sql = “select &apos;urlname&apos;, &apos;urlhref&apos; from &apos;urls&apos; where &apos;id&apos; is not null&quot; count = cursor.execute(sql) print(count) #查询数据 result = cursor.fetchall() print(result)finally: connection.close()]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>pymysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Django_part2]]></title>
+    <url>%2F2017%2F08%2F09%2FDjango02%2F</url>
+    <content type="text"><![CDATA[Writing your first Django app part2go on 第二节我们将会设置数据库，创建你的第一个model，然后快速了解Django自动生成的管理网站 Django有自己默认的数据库 如果你想使用自己的数据库，请自己安装，然后再settings中，设置你的数据库 你需要一条命令进行数据迁移 1$ python manage.py migrate 迁移命令会查看INSTALLED_APPS设置，并根据mysite / settings中的数据库设置创建任何必要的数据库表。py文件和应用程序附带的数据库迁移。你将看到它应用的每个迁移的消息 创建模型定义models相当于书写数据库的布局 在我们简单的投票系统中我们会建立两个模型 问题和选择问题有两个字段，问题和提问日期 选择也有两个，一个选择，一个投票的点数 每一个选择关联一个问题 使用一个简单的python类就可以表现这些概念，在polls/models.py中编写他们 12345678from django.db import modelsclass Question(models.Model): question_text = models.CharField(max_length=200) pub_date = models.DateTimeField(&apos;date published&apos;)class Choice(models.Model): question = models.ForeignKey(Question, on_delete=models.uCASCADE) choice_text = models.CharField(max_length=200) votes = models.IntegerField(default=0) 代码直截了当，django.db.models.Model的子类代表了每一个模型，每一个模型都有多个类变量，每一个类变量对应数据库的一个字段 每个字段由一个字段类的实例来表示。例如，为datetimes由DateTimeField提供，字符字段由CharField提供。这告诉Django每个字段持有的数据类型 在你的python代码中使用这些实例名称，它将是你数据库的列名称 一些Field类，需要参数，比如CharField需要一个max_length参数，它不仅用于数据库模式，还用于验证，之后我们会看到 一些字段还有可选参数，在本例中，我们设置了一个默认参数votes=0最后，注意定义了关系，使用foreign - key。这告诉Django每个选项都与一个问题有关。Django支持所有常见的数据库关系:多对多、多对多和一对一 激活模型 上面一点代码给与了Django很多信息，Django会根据它做出一下操作 为这个app创建一个数据库框架 创建python数据库访问API来访问Question和Choice这两个对象 但首先我们需要告诉我们的项目投票（polls）app已经被安装了所以我们要将写的app写入mysite/settings.py文件下的INSTALLED_APPS中，像这样 123456789INSTALLED_APPS = [ &apos;polls.apps.PollsConfig&apos;, &apos;django.contrib.admin&apos;, &apos;django.contrib.auth&apos;, &apos;django.contrib.contenttypes&apos;, &apos;django.contrib.sessions&apos;, &apos;django.contrib.messages&apos;, &apos;django.contrib.staticfiles&apos;,] 这样Django就会知道包含了polls这个app，然后我们运行这一条命令 1$ python manage.py makemigrations polls 通过这条命令（makemigrations），你会告诉Django，你做了一些更改在你的模版中（models），你希望将数据迁移储存 数据迁移储存了Django如何对模型做了更改，他们仅仅是个文件，你可以在polls/migrations/0001_initial.py中阅读到他们。不过别担心，他们被设计成人可编辑的格式，以防你想做一些改动 有一个命令可以帮你运行迁移，并自动管理数据库模式，叫做migrate，首先让我们看看什么样的SQL语句会被migration执行。sqlmigrate命令接收迁移名称并返回他们的SQL语句 1$ python manage.py sqlmigrate polls 0001 你应该能看到类似下面的情况 1234567891011121314151617181920212223242526272829BEGIN;---- Create model Choice--CREATE TABLE &quot;polls_choice&quot; ( &quot;id&quot; serial NOT NULL PRIMARY KEY, &quot;choice_text&quot; varchar(200) NOT NULL, &quot;votes&quot; integer NOT NULL);---- Create model Question--CREATE TABLE &quot;polls_question&quot; ( &quot;id&quot; serial NOT NULL PRIMARY KEY, &quot;question_text&quot; varchar(200) NOT NULL, &quot;pub_date&quot; timestamp with time zone NOT NULL);---- Add field question to choice--ALTER TABLE &quot;polls_choice&quot; ADD COLUMN &quot;question_id&quot; integer NOT NULL;ALTER TABLE &quot;polls_choice&quot; ALTER COLUMN &quot;question_id&quot; DROP DEFAULT;CREATE INDEX &quot;polls_choice_7aa0f6ee&quot; ON &quot;polls_choice&quot; (&quot;question_id&quot;);ALTER TABLE &quot;polls_choice&quot; ADD CONSTRAINT &quot;polls_choice_question_id_246c99a640fbbd72_fk_polls_question_id&quot; FOREIGN KEY (&quot;question_id&quot;) REFERENCES &quot;polls_question&quot; (&quot;id&quot;) DEFERRABLE INITIALLY DEFERRED;COMMIT; 请注意 确切的输出将根据您使用的数据库而有所不同。上面的示例是为PostgreSQL生成的 表名是通过结合应用程序的名称和模型的小写名称来自动生成的 主键被自动添加 按照约定，Django将“_id”附加到外键字段名 sqlmigration命令实际上并没有在数据库上运行迁移——它只是将其打印到屏幕上，以便您可以看到需要使用的SQLDjango。对于检查Django将要做什么，或者如果有数据库管理员需要SQL脚本进行更改，这是很有用的 现在再运行一次migrate将这些模型表创建在你的数据库中 1$ python manage.py migrate 迁移是非常强大的，并且随着时间的推移，让您更改您的模型，当您开发项目时，无需删除您的数据库或表，并生成新的数据——它专门用于升级您的数据库，而不丢失数据。在本教程的后面部分，我们将更深入地讨论这些问题，但是现在，请记住对模型进行更改的三个步骤: 更改你的models 运行python manage.py makemigrations 为这些更改创建迁移文件 运行python manage.py migrate 去提交这些变动给数据库之所以将迁移命令分成两个部分，因为您将向您的版本控制系统提交迁移，并将它们交付给应用程序;它们不仅使您的开发更加容易，而且还可以由其他开发人员和生产人员使用（不是很理解这句话） 玩转API 现在，让我们跳到交互式Python shell中，并使用Django提供的免费API。要调用Python shell，请使用此命令 1$ python manage.py shell 我们使用这个而不是使用python是因为，manage.py为DJANGO_SETTINGS_MODULE设置了环境变量 一旦你进入了shell，就可以探索数据库API了 1234567891011121314151617181920212223242526272829&gt;&gt;&gt; from polls.models import Question, Choice # Import the model classes we just wrote.# No questions are in the system yet.&gt;&gt;&gt; Question.objects.all()&lt;QuerySet []&gt;# Create a new Question.# Support for time zones is enabled in the default settings file, so# Django expects a datetime with tzinfo for pub_date. Use timezone.now()# instead of datetime.datetime.now() and it will do the right thing.&gt;&gt;&gt; from django.utils import timezone&gt;&gt;&gt; q = Question(question_text=&quot;What&apos;s new?&quot;, pub_date=timezone.now())# Save the object into the database. You have to call save() explicitly.&gt;&gt;&gt; q.save()# Now it has an ID. Note that this might say &quot;1L&quot; instead of &quot;1&quot;, depending# on which database you&apos;re using. That&apos;s no biggie; it just means your# database backend prefers to return integers as Python long integer# objects.&gt;&gt;&gt; q.id1# Access model field values via Python attributes.&gt;&gt;&gt; q.question_text&quot;What&apos;s new?&quot;&gt;&gt;&gt; q.pub_datedatetime.datetime(2012, 2, 26, 13, 0, 0, 775217, tzinfo=&lt;UTC&gt;)# Change values by changing the attributes, then calling save().&gt;&gt;&gt; q.question_text = &quot;What&apos;s up?&quot;&gt;&gt;&gt; q.save()# objects.all() displays all the questions in the database.&gt;&gt;&gt; Question.objects.all()&lt;QuerySet [&lt;Question: Question object&gt;]&gt; 这里完全是对对象毫无帮助的表示方法，让我们通过一个方法来解决这个问题（str()）（我们想让他显示他本来的名字） 在polls/models.py下 123456789101112from django.db import modelsfrom django.utils.encoding import python_2_unicode_compatible@python_2_unicode_compatible # only if you need to support Python 2class Question(models.Model): # ... def __str__(self): return self.question_text@python_2_unicode_compatible # only if you need to support Python 2class Choice(models.Model): # ... def __str__(self): return self.choice_text 使用str()方法是很重要的，不仅是为了方便处理交互式提示，还因为在Django的自动生成的管理中使用了对象的表示方式 介绍Django管理器 创建一个管理员账户 首先我们需要创建一个用户去登录管理网站，运行这个命令： 1$ python manage.py createsuperuser 输入你想要的名字然后按回车 Username: admin 然后你需要输入email Email address: admin@example.com然后输入密码 Password: ** Password (again): * Superuser created successfully. Django的管理网站是默认激活的，让我们开启服务器去探索它打开浏览器需要在网页后面加/admin/，然后输入你的用户名和密码 进入管理网站 使用你在上一步创建的的超级账号登录，你将会看到Django的管理索引页。 你应该会看到一些可编辑的内容，groups和users，他们由django.contrib.auth创建，Django提供身份验证的框架 在管理网站修改投票app那么我们的投票app在哪呢？他还没有被显示在管理索引页上只需要做一件事：我们需要告诉管理员Question这个对象有一个管理界面，为了去做这件事，打开polls/admin.py文件，然后写下如下代码 123from django.contrib import adminfrom .models import Questionadmin.site.register(Question) 探索自由的管理功能 现在我们已经注册了Question，Django明白他应该被显示在管理索引页上，像这样点击“Question”然后你会跳转到变更界面，这个界面会展示数据库内所有的问题，你可以点击单个去编辑他们。 点击“What’s up?”去编辑它 要注意的事： 这个表单是又Question的model自动生成的 不同的模型字段类型(DateTimeField、CharField)对应于适当的HTML输入小部件。每种类型的字段都知道如何在Django管理中显示自己 每个DateTimeField都获得了免费的JavaScript快捷方式。日期会有一个“今天”的快捷方式和日历弹出，并且时间会有一个“现在”的快捷键和一个很方便的弹出列表当您熟悉模型API并熟悉管理站点时，请阅读本教程的第3部分，了解如何向我们的投票应用程序添加更多的视图]]></content>
+      <categories>
+        <category>Django官方文档</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python函数式编程]]></title>
+    <url>%2F2017%2F08%2F07%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.07%2F</url>
+    <content type="text"><![CDATA[python高阶函数reduce()函数 reduce()函数也是Python内置的一个高阶函数，reduce()函数接收的参数和map()类似，一个函数，一个list，但行为和map()不同，reduce()传入的函数必须接收两个参数，reduce()对list的每个元素反复调用函数，并返回最终值。 1234def prod(x, y): return x*yprint reduce(prod, [2, 4, 5, 7, 12]) 求列表中所有数字之积 也可以使用上一篇文章，合成列表里面，我用了一个匿名函数lambda 12from functools import reduceprod = reduce(lambda, x,y:x*y, [2, 4, 5, 7, 12]) &gt; 在python3中使用需要 1from functools import reduce filter()函数 filter()函数是Python内置的另一个有用的高阶函数，filter()函数接收一个函数，和一个list，这个函数的作用是对每个元素进行判断，返回True或False，filter()根据判断结果自动过滤掉不符合条件的元素，返回由符合条件元素组成的新的list 这里举一个对我自己来说非常有用的例子： 删除none或者空字符串在爬虫里总是会和搜集到储存在列表里面的信息，对于他们加一些过滤，或是异常处理是很有必要的 123def is_not_empty(s): return s and len(s.strip()) &gt; 0filter(is_not_empty, [&apos;test&apos;, None, &apos;&apos;, &apos;str&apos;, &apos; &apos;, &apos;END&apos;]) 结果：[‘test’, ‘str’, ‘END’]]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[将两个元素对应的list合并成一个字典]]></title>
+    <url>%2F2017%2F08%2F05%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.05%2F</url>
+    <content type="text"><![CDATA[我是怎么把两个列表合成一个字典的 昨天帮朋友筛选一组数据，提取两个元素，一个人名，一个编号。最后我分别做出了一个列表。但是我需要快速查询啊，于是需要把两个列表合成一个字典。有一个前提，两个列表的元素必须是一一对应的。 zip() 12345x = [1, 2, 3]y = [4, 5, 6]z = [7, 8, 9]xyz = zip(x, y, z)print(xyz) 结果是： 1[(1, 4, 7), (2, 5, 8), (3, 6, 9)] 所以目前使用zip()函数的方法我想到两个。 1table = dict(zip(list1, list2)) 这个方法，table不用实现被定义的 还有一个办法： 123table = &#123;&#125;for x,y in zip(list1, list2): table[x] = y 这个办法也是可以的。但是table必须事先被定义好 还有一个我查到的方法 map()map()是Python中内置的高阶函数。它结合艘一个函数。和一个list，并通过把函数依次作用在list的每个元素上，得到一新的list并且返回。 dict(map(lambda x,y:[x,y], list1, list2)) 上面的提到的lambda表达式，通常是在需要一个函数，但是又不想去费神去命名一个函数的场合下使用，也就是指匿名函数。 将元组转换成list 12&gt;&gt;&gt; map(int, (1,2,3))[1, 2, 3] 将字符串转换成list12&gt;&gt;&gt; map(int, &apos;1234&apos;)[1, 2, 3, 4] 提取字典的key，并将结果存放在一个list中12&gt;&gt;&gt; map(int, &#123;1:2,2:3,3:4&#125;)[1, 2, 3] 字符串转换成元组，并将结果以列表的形式返回12&gt;&gt;&gt; map(tuple, &apos;agdf&apos;)[(&apos;a&apos;,), (&apos;g&apos;,), (&apos;d&apos;,), (&apos;f&apos;,)]]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[blog变动]]></title>
+    <url>%2F2017%2F08%2F04%2Fblog%E6%88%90%E9%95%BF%E8%BF%87%E7%A8%8B%2F</url>
+    <content type="text"><![CDATA[blog成长过程Version：1.0 我在2017年3月29号搭建起了这个博客，他自动生成了第一篇Hello World。最初了主题也不是现在的NexT,而是自带的一个landscape。面对着空空如也的文章列表，我想着有一天慢慢的写起文章，然后公布我的博客地址。所以最初的样子只有文章和标题。剩下的什么都没有。所以1.0的版本只有如下变动： 更新了文章 Version：1.1（17.08.01） 随着文章的积累,我决定在2017年8月底公布我的博客地址，于是开始装修我的博客； 对2.0的版本做了如下变动： 将博客页面语言更改为中文 完善了作者信息（包括头像，描述） 更换了主题格式 本来是有一个很酷炫的背景的，部分同学说会有晕眩的情况，不得已做了替换。 增加了一个公益404页面，如果页面丢失了，我们还可以找找丢失的孩子。 Version：1.2（17.08.05）我自己写的一些笔记在回查的时候很麻烦，找的笔记的时间太长了，所以为所有文章添加了标签，以及分类。 Version：1.3（17.08.16） 使用插件生成了RSS订阅源支持rss订阅]]></content>
+      <categories>
+        <category>关于博客</category>
+      </categories>
+      <tags>
+        <tag>update</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Requsets_part02]]></title>
+    <url>%2F2017%2F07%2F30%2FRequests_part02%2F</url>
+    <content type="text"><![CDATA[自学Requests更加复杂的post请求 通常，我们会想要发送一些编码为表单形式的数据。要实现这个，只需要简单的传递一个字典给data参数。你的数据字典在发出请求时会自动编码为表单的形式 好像学到这里很多功能都是通过传递dict给参数实现的对吧 12345payload = &#123; &apos;key1&apos; ：&apos;value1&apos;, &apos;key2&apos; ：&apos;value2&apos;,&#125;response = requests.post(&quot;http://python.org&quot;, data = payload) 然后我们打印response.text会出现这样的结果 123456&#123; &quot;form&quot;:&#123; &apos;key1&apos; ：&apos;value1&apos;, &apos;key2&apos; ：&apos;value2&apos;, &#125;&#125; POST一个多部分编码(Multipart-Encoder)的文件12345url = &quot;http://python.org&quot;files = &#123; &apos;file&apos;:open(&apos;report.xls&apos;, &apos;rb&apos;)&#125;response = requests.post(url, files=files) 打印post内容 12345&#123; &quot;files&quot;:&#123; &quot;file&quot;:&quot;&lt;censored...binary...data&gt;&quot; &#125;,&#125; 如果你发送一个非常大的文件作文multipart/form—data请求，你可能希望将请求做成数据流。默认下requests不支持，但是有个第三方包requests-toolbelt是支持的]]></content>
+      <categories>
+        <category>python包</category>
+      </categories>
+      <tags>
+        <tag>Requests</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Requsets_part01]]></title>
+    <url>%2F2017%2F07%2F30%2FRequests_part01%2F</url>
+    <content type="text"><![CDATA[自学Requsets从请求第一个网页开始1response = request.get(url) response是request的一个响应对象，打印它会出现一个状态码 读取响应内容 1response.text 传递URL参数 Requests允许使用params关键字参数，以一个dict来提供这些参数比如你想传递key1=value1，key2=value2。到某个url你可以这么写12345payload = &#123; &apos;key1&apos; ：&apos;value1&apos;, &apos;key2&apos; ：&apos;value2&apos;,&#125;response = request.get(&apos;http://python.org&apos;, params=payload) 通过打印该URL，你可以看到URL已经被正确编码 12&gt;&gt;&gt;print(r.url)http://python.org/get?key1=value1&amp;key2=value2 还可以将一个列表传入参数中，看看会发生什么呢。 12345payload = &#123; &apos;key1&apos; ：&apos;value1&apos;, &apos;key2&apos; ：[&apos;value3&apos;, &apos;value2&apos;]&#125;response = request.get(&apos;http://python.org&apos;, params=payload) 此时输出的URL应该是这样的 1http://python.org/get?key1=value1&amp;key2=value2&amp;key2=value3 定制请求头 这里介绍另一个参数headers,同样简单传递一个dict给headers就好，user-agent可以使用浏览器然后进入开发者模式找到。 1234headers = &#123; &apos;user-agent&apos;:&apos;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.110 Safari/537.36&apos;&#125;response = request.get(&apos;http://python.org&apos;, headers = headers)]]></content>
+      <categories>
+        <category>python包</category>
+      </categories>
+      <tags>
+        <tag>Requests</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python面向对象]]></title>
+    <url>%2F2017%2F07%2F29%2F%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%2F</url>
+    <content type="text"><![CDATA[关于面向对象设计的思考 当考虑要什么类以及类要有什么方法时，应该尝试下面的办法。 写下问题的描述（程序要做什么），把所有的名词，动词和形容词加下划线。 对于所有的名词，用作可能的类。 对于所有的动词，用作可能的方法。 对于所有的形容词，用作可能的特性。 把所有的方法和特性分配到类现在已经有了面向对象的模型草图了。还可以考虑类和对象之间的关系（比如继承或协作）以及他们的作用，可以用一下步骤精炼模型。 写下（或者想象）一系列的使用实例，也就是程序应用时的场景，试着包括所有的功能。 一步步考虑每个使用实例，保证模型包括所有需要的东西。如果有些遗漏的话就添加进来，如果某处不太正确则改正。继续，直到满意为止。]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[正则表达式day01]]></title>
+    <url>%2F2017%2F07%2F28%2F%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8Fday1%2F</url>
+    <content type="text"><![CDATA[正则表达式序言 有些人面临一个问题时会想：“我知道，可以使用正则表达式来解决这个问题。”于是现在他们就有两个问题了 ——Jamie Zawinski 通配符别被这个名字吓到了，因为我一开始看它的时候就被吓到了。通配符其实就是一个“.”,它可以匹配任何字符，并且只能匹配一个。比如“.ython”只能匹配到“python”、“qython”、或者别的“+ython”。但是不能匹配到“qpython”因为通配符只能匹配到一个字符。 令人头痛的转义如果我想匹配python.org怎么办，在“python.org”里面有一个点“.”他有可能会匹配成“pythonaorg”对吧。所以我们需要转义，ok，现在要打起精神，我们需要在它的前面加上反斜线了“python\\.org” 1python\\.org ok，本来我们只要转义“.”不就好了么，”.”转义是“\.”,那为什么上面要两个斜线呢？这里面涉及到两层转义，一个是解释器的转义，另一个是re模块的转义。为了让我看的更加明白我要把这里我用markdown编辑的内容截个图就明白了，其实为了让文章显示我想要的符号，我已经使用了一次转义了。这里请细细体会 上面的图文请对比转义的地方看，会有所启发 如果真的很讨厌这样写的话，可以使用原始字符串r’python\.org’ 选择符和子模式我想要的那么多，不可能只匹配个python吧，如果我想要“python”和“perl”呢？使用选择符“python|perl”，但是他们都有一个相同的部分“p”’，那就使用子模式，括号括起来的部分就是子模式了，“p（ython|erl）”。 可选项和重复子模式在子模式后面加上问号，他就变成了可选项。他可能出现在匹配字符串中，但并非必须的。例如 1r&apos;(http://)?(www\.)?python\\.org&apos; 使用了什么呢，首先是使用了原始字符串，过滤了一次转义，然后是两个可选项对吧 它只能匹配到这几种字符串1&apos;http://www.python.org&apos; 1&apos;www.python.org&apos; 1&apos;http://python.org&apos; 1&apos;python.org&apos; 可选项表示模式可以出现一次或者根本不出现。下面这些运算符允许子模式重复多次。 (pattern)*:允许模式重复0次或多次 (pattern)+:允许模式重复1次或多次 (pattern){m,n}:允许模式重复m到n次 字符串的开始和结尾‘^’表示以什么开始 ‘$’表示以什么结尾 常用的方法1compile() re.compole将正则表达式（以字符串书写的）转换为模式对象，你也许不知道模式对象是什么，现记住它叫pattern 1search() 函数search会在给定字符串中寻找第一个匹配给定正则表达式的自字符串。1re.search(pat, string) 里面的pat是用字符串表示的正则表达式。上式等价于 1pat.search(string) 这里的pat，就是一个由compile()转换的一个模式对象了。明白了吧]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>regular</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[HTTP响应解析]]></title>
+    <url>%2F2017%2F07%2F27%2FHTTP%E5%93%8D%E5%BA%94%2F</url>
+    <content type="text"><![CDATA[HTTP响应 在接受和解释请求消息后，服务器返回一个HTTP响应消息。 HTTP响应也是由三个部分组成，分别是：状态行、消息报头、响应正文 状态行格式如下： HTTP-Version、Status-Code、Reason-Phrase 其中，HTTP-Version表示服务器HTTP协议的版本；Status-Code表示服务器发挥的响应状态代码；Reason-Phrase表示状态代码的文本描述。 状态代码有三位数字组成，第一个数字定义了响应的类别，切有五种可能的取值： 1xx：指示信息–表示请求已接收，继续处理 2xx：成功–表示请求已被成功接收、理解、接受 3xx：重定向–要完成请求必须进行更进一步的操作 4xx：客户端错误–请求有语法错误或请求无法实现 5xx：服务器端错误–服务器未能实现合法的请求 常见状态代码、状态描述、说明：200 OK //客户端请求成功 400 Bad Request//客户端请求有语法错误，不能被服务器所理解 401 Unauthorized //请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用 403 Forbidden //服务器收到请求，但是拒绝提供服务 404 Not Found //请求资源不存在，eg：输入了错误的URL 500 Internal Server Error //服务器发生不可预期的错误 503 Server Unavailable//服务器当前不能处理客户端的请求，一段时间后可能恢复正常]]></content>
+      <categories>
+        <category>网络</category>
+      </categories>
+      <tags>
+        <tag>HTTP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[pyecharts]]></title>
+    <url>%2F2017%2F07%2F25%2Fpyecharts%2F</url>
+    <content type="text"><![CDATA[pyecharts（数据可视化） 前言如果让我说写python的时候最幸福的感觉是什么，我会说我遇到了一个好用的包（package），而且方法真的太好用了。说起来还有一个笑话，遇到pyecharts的那天，我兴奋的说这个包（package）像玩具一样好玩。不一会几个妹子点赞了，很肯定我的说法…. 简单易用from pyecharts import chart_tpye chart_str = chart_type() chart_str.add() char_str.show_config() char_str.render() char_type就是图表的类型，下面我会介绍几种 bar（柱状图）123456from pyecharts import Barbar = Bar(&quot;blog内容个梗概&quot;)bar.add(&quot;bolg类别&quot;, [&quot;python学习笔记&quot;, &quot;个人感想&quot;, &quot;杂文&quot;, &quot;教程&quot;], [5, 4, 3, 2])bar.show_config()bar.render() pie（饼图）1234567891011from pyecharts import Pieattr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]v1 = [11, 12, 13, 10, 10, 10]v2 = [19, 21, 32, 20, 20, 33]pie = Pie(&quot;饼图-玫瑰图示例&quot;, title_pos=&apos;center&apos;, width=900)pie.add(&quot;商品A&quot;, attr, v1, center=[25, 50], is_random=True, radius=[30, 75], rosetype=&apos;radius&apos;)pie.add(&quot;商品B&quot;, attr, v2, center=[75, 50], is_random=True, radius=[30, 75], rosetype=&apos;area&apos;, is_legend_show=False, is_label_show=True)pie.show_config() pie.render() WordCloud（词云图） 12345678910111213# -*- coding:utf-8 -*-from pyecharts import WordCloudname = [&apos;Python&apos;, &apos;C&apos;, &apos;Java&apos;, &apos;C++&apos;, &apos;C#&apos;, &apos;R&apos;, &apos;JavaScript&apos;, &apos;PHP&apos;, &apos;Go&apos;, &apos;Swift&apos;, &apos;Arduino&apos;, &apos;Ruby&apos;, &apos;Assembly&apos;, &apos;Scala&apos;, &apos;Matlib&apos;, &apos;HTML&apos;, &apos;Shell&apos;, &apos;Perl&apos;, &apos;Visual Basic&apos;, &apos;SQL&apos;]value = [10000, 6181, 4386, 4055, 2467, 2244, 1898, 1484, 1112, 965, 847, 582, 555, 550, 462, 366, 360, 282, 273, 265]wordcloud = WordCloud(width=1300, height=620)wordcloud.add(&quot;&quot;, name, value, word_size_range=[20, 100])wordcloud.show_config()wordcloud.render() 水球图 123456from pyecharts import Liquidliquid = Liquid(&quot;水球图示例&quot;)liquid.add(&quot;Liquid&quot;, [0.6, 0.5, 0.4, 0.3], is_liquid_animation=False, shape=&apos;diamond&apos;)liquid.show_config()liquid.render() 地理坐标 123456789101112131415161718192021222324252627282930313233343536373839404142from pyecharts import Geodata = [ (&quot;海门&quot;, 9),(&quot;鄂尔多斯&quot;, 12),(&quot;招远&quot;, 12),(&quot;舟山&quot;, 12),(&quot;齐齐哈尔&quot;, 14),(&quot;盐城&quot;, 15), (&quot;赤峰&quot;, 16),(&quot;青岛&quot;, 18),(&quot;乳山&quot;, 18),(&quot;金昌&quot;, 19),(&quot;泉州&quot;, 21),(&quot;莱西&quot;, 21), (&quot;日照&quot;, 21),(&quot;胶南&quot;, 22),(&quot;南通&quot;, 23),(&quot;拉萨&quot;, 24),(&quot;云浮&quot;, 24),(&quot;梅州&quot;, 25), (&quot;文登&quot;, 25),(&quot;上海&quot;, 25),(&quot;攀枝花&quot;, 25),(&quot;威海&quot;, 25),(&quot;承德&quot;, 25),(&quot;厦门&quot;, 26), (&quot;汕尾&quot;, 26),(&quot;潮州&quot;, 26),(&quot;丹东&quot;, 27),(&quot;太仓&quot;, 27),(&quot;曲靖&quot;, 27),(&quot;烟台&quot;, 28), (&quot;福州&quot;, 29),(&quot;瓦房店&quot;, 30),(&quot;即墨&quot;, 30),(&quot;抚顺&quot;, 31),(&quot;玉溪&quot;, 31),(&quot;张家口&quot;, 31), (&quot;阳泉&quot;, 31),(&quot;莱州&quot;, 32),(&quot;湖州&quot;, 32),(&quot;汕头&quot;, 32),(&quot;昆山&quot;, 33),(&quot;宁波&quot;, 33), (&quot;湛江&quot;, 33),(&quot;揭阳&quot;, 34),(&quot;荣成&quot;, 34),(&quot;连云港&quot;, 35),(&quot;葫芦岛&quot;, 35),(&quot;常熟&quot;, 36), (&quot;东莞&quot;, 36),(&quot;河源&quot;, 36),(&quot;淮安&quot;, 36),(&quot;泰州&quot;, 36),(&quot;南宁&quot;, 37),(&quot;营口&quot;, 37), (&quot;惠州&quot;, 37),(&quot;江阴&quot;, 37),(&quot;蓬莱&quot;, 37),(&quot;韶关&quot;, 38),(&quot;嘉峪关&quot;, 38),(&quot;广州&quot;, 38), (&quot;延安&quot;, 38),(&quot;太原&quot;, 39),(&quot;清远&quot;, 39),(&quot;中山&quot;, 39),(&quot;昆明&quot;, 39),(&quot;寿光&quot;, 40), (&quot;盘锦&quot;, 40),(&quot;长治&quot;, 41),(&quot;深圳&quot;, 41),(&quot;珠海&quot;, 42),(&quot;宿迁&quot;, 43),(&quot;咸阳&quot;, 43), (&quot;铜川&quot;, 44),(&quot;平度&quot;, 44),(&quot;佛山&quot;, 44),(&quot;海口&quot;, 44),(&quot;江门&quot;, 45),(&quot;章丘&quot;, 45), (&quot;肇庆&quot;, 46),(&quot;大连&quot;, 47),(&quot;临汾&quot;, 47),(&quot;吴江&quot;, 47),(&quot;石嘴山&quot;, 49),(&quot;沈阳&quot;, 50), (&quot;苏州&quot;, 50),(&quot;茂名&quot;, 50),(&quot;嘉兴&quot;, 51),(&quot;长春&quot;, 51),(&quot;胶州&quot;, 52),(&quot;银川&quot;, 52), (&quot;张家港&quot;, 52),(&quot;三门峡&quot;, 53),(&quot;锦州&quot;, 54),(&quot;南昌&quot;, 54),(&quot;柳州&quot;, 54),(&quot;三亚&quot;, 54), (&quot;自贡&quot;, 56),(&quot;吉林&quot;, 56),(&quot;阳江&quot;, 57),(&quot;泸州&quot;, 57),(&quot;西宁&quot;, 57),(&quot;宜宾&quot;, 58), (&quot;呼和浩特&quot;, 58),(&quot;成都&quot;, 58),(&quot;大同&quot;, 58),(&quot;镇江&quot;, 59),(&quot;桂林&quot;, 59),(&quot;张家界&quot;, 59), (&quot;宜兴&quot;, 59),(&quot;北海&quot;, 60),(&quot;西安&quot;, 61),(&quot;金坛&quot;, 62),(&quot;东营&quot;, 62),(&quot;牡丹江&quot;, 63), (&quot;遵义&quot;, 63),(&quot;绍兴&quot;, 63),(&quot;扬州&quot;, 64),(&quot;常州&quot;, 64),(&quot;潍坊&quot;, 65),(&quot;重庆&quot;, 66), (&quot;台州&quot;, 67),(&quot;南京&quot;, 67),(&quot;滨州&quot;, 70),(&quot;贵阳&quot;, 71),(&quot;无锡&quot;, 71),(&quot;本溪&quot;, 71), (&quot;克拉玛依&quot;, 72),(&quot;渭南&quot;, 72),(&quot;马鞍山&quot;, 72),(&quot;宝鸡&quot;, 72),(&quot;焦作&quot;, 75),(&quot;句容&quot;, 75), (&quot;北京&quot;, 79),(&quot;徐州&quot;, 79),(&quot;衡水&quot;, 80),(&quot;包头&quot;, 80),(&quot;绵阳&quot;, 80),(&quot;乌鲁木齐&quot;, 84), (&quot;枣庄&quot;, 84),(&quot;杭州&quot;, 84),(&quot;淄博&quot;, 85),(&quot;鞍山&quot;, 86),(&quot;溧阳&quot;, 86),(&quot;库尔勒&quot;, 86), (&quot;安阳&quot;, 90),(&quot;开封&quot;, 90),(&quot;济南&quot;, 92),(&quot;德阳&quot;, 93),(&quot;温州&quot;, 95),(&quot;九江&quot;, 96), (&quot;邯郸&quot;, 98),(&quot;临安&quot;, 99),(&quot;兰州&quot;, 99),(&quot;沧州&quot;, 100),(&quot;临沂&quot;, 103),(&quot;南充&quot;, 104), (&quot;天津&quot;, 105),(&quot;富阳&quot;, 106),(&quot;泰安&quot;, 112),(&quot;诸暨&quot;, 112),(&quot;郑州&quot;, 113),(&quot;哈尔滨&quot;, 114), (&quot;聊城&quot;, 116),(&quot;芜湖&quot;, 117),(&quot;唐山&quot;, 119),(&quot;平顶山&quot;, 119),(&quot;邢台&quot;, 119),(&quot;德州&quot;, 120), (&quot;济宁&quot;, 120),(&quot;荆州&quot;, 127),(&quot;宜昌&quot;, 130),(&quot;义乌&quot;, 132),(&quot;丽水&quot;, 133),(&quot;洛阳&quot;, 134), (&quot;秦皇岛&quot;, 136),(&quot;株洲&quot;, 143),(&quot;石家庄&quot;, 147),(&quot;莱芜&quot;, 148),(&quot;常德&quot;, 152),(&quot;保定&quot;, 153), (&quot;湘潭&quot;, 154),(&quot;金华&quot;, 157),(&quot;岳阳&quot;, 169),(&quot;长沙&quot;, 175),(&quot;衢州&quot;, 177),(&quot;廊坊&quot;, 193), (&quot;菏泽&quot;, 194),(&quot;合肥&quot;, 229),(&quot;武汉&quot;, 273),(&quot;大庆&quot;, 279)]geo = Geo(&quot;全国主要城市空气质量&quot;, &quot;data from pm2.5&quot;, title_color=&quot;#fff&quot;, title_pos=&quot;center&quot;,width=1200, height=600, background_color=&apos;#404a59&apos;)attr, value = geo.cast(data)geo.add(&quot;&quot;, attr, value, visual_range=[0, 200], visual_text_color=&quot;#fff&quot;, symbol_size=15, is_visualmap=True)geo.show_config()geo.render()]]></content>
+      <categories>
+        <category>python包</category>
+      </categories>
+      <tags>
+        <tag>pyecharts</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python学习笔记]]></title>
+    <url>%2F2017%2F07%2F24%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.07.26%2F</url>
+    <content type="text"><![CDATA[属性 学习这一章内容的时候，有几个名次我觉得很有用：访问器方法，和隐藏属性。 以前总是用到get方法，比如get_url(), get_img(),这类的（这里统称get方法），访问器是一个简单的方法，它能使用上面那类名字去得到或绑定一些特性，如果在访问给定的特性是必须要采取一些行动，那么像这样的封装状态变量（特性）就很重要。 property函数property可以将访问器方法隐藏。]]></content>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[django梗概]]></title>
+    <url>%2F2017%2F07%2F24%2FDjango00%2F</url>
+    <content type="text"><![CDATA[Djangooverview在Django官网的Overview中，第一句话就写了：Django was invented to meet fast-moving newsroom deadlines,while satisfying the tough requirements of experienced Web developers.翻译一下就是：Django的诞生呢是为了满足飞速变化的新闻编辑室的最后期限而发明的，同时满足了经验丰富的Web开发人员的严格要求。大概想表达Django效率高，功能强大。 为什么使用Django呢？Django封装的非常好，可以让你专注于对app开发代码的书写，而不必重复去造轮子；Django在安全问题讲道到它本身的安全性很高，会帮助开发者避免犯一些常规的安全错误，比如SQL资料隐码攻击，跨站脚本攻击，跨站点请求伪造和点击，我认为吸引我的就是以上两点，当然Django还有别的优点我现在还不知道，留着以后更新。 DOWNLOAD一个最新的官方版本，也就是稳定版，另一个就是最新的开发版了，你可以在开发板中使用它的新特性，发现bug并且相互交流。只需在git中修改它。此处体现了Django的开源。当你得到Django之后，你可以查询安装指南去进一步了解如何正确的安装Django。然后你可以登录django-users mailing list。那里有Django使用者和开发者可以帮助你解决问题。首先你得英语好。 Django文档Everything you need to know about Django大体有四篇文档提供给我们参考。Tutorials教程部分，教程中一步步教你如何制作一个网站。Toptic guides的内容大概是Django中的key words介绍他们的作用。Reference guide中写了Django的拓展功能，和一些API的使用方法。How-to中写了Django是如何工作的。 然后就开始我们的Django学习啦]]></content>
+      <categories>
+        <category>python框架</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python学习笔记]]></title>
+    <url>%2F2017%2F07%2F23%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.07.23%2F</url>
+    <content type="text"><![CDATA[格式化操作符格式化操作符教你怎么打印超市小票 基本的转换说明符 1.：%字符 ：标记转换说明符的开始 2.：转换标志（可选）：-表示左对齐；+表示不管是正数还是负数都标出符号；空格表示正数之前保留空格；0表示转换值若位数不够则用0填充。 3.：最小字段宽度（可选）：转换后的字符串至少应该具有指定的宽度，如果是*，则宽度从元组中去找 4.：点（.）后跟精度值（可选）：如果转换的是实数，精度值就表示出现在小数点后的位数。如果转换的是字符串，那么该数字就表示最大字段宽度。，如果是*方法同上。&gt; 一定要仔细阅读格式化操作符，下面上代码 123456789101112131415width = 35price_width = 10item_width = width-price_width# #填写样式header_format = &apos;%-*s%*s&apos;item_format = &apos;%-*s%*.2f&apos;print(&apos;=&apos;*width)print(header_format % (item_width, &apos;Item&apos;, price_width, &apos;Price&apos;))print(&apos;-&apos;*width)print(item_format % (item_width, &apos;Apples&apos;, price_width, 0.4))print(item_format % (item_width, &apos;Pears&apos;, price_width, 0.5))print(item_format % (item_width, &apos;Cantaloupes&apos;, price_width, 1.92))print(item_format % (item_width, &apos;beef&apos;, price_width, 10))print(item_format % (item_width, &apos;pork&apos;, price_width, 8))print(item_format % (item_width, &apos;fish&apos;, price_width, 12)) &gt; 涉及到的两个格式化操作符的部分 #表头样式 1header_format = &apos;%-*s%*s&apos; &gt; 首先左对齐，然后匹配商品的宽度，和商品的字符串，再匹配价格的宽度和价格的字符串 商品表样式1item_format = &apos;%-*s%*.2f&apos; &gt; 还是左对齐，和表头样式不一样的是，价格匹配的是浮点型，并且我们选择了一个两位数的精度，保留两位小数。 最后运行就不写出来了，直接上图]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python(%)</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Django_part1]]></title>
+    <url>%2F2017%2F07%2F23%2FDjango01%2F</url>
+    <content type="text"><![CDATA[Writing your first Django app part1如何开始 通过一个例子来学习如何使用Django该例子有两个部分组成 一个公共的网站可以查看民意调查和投票 一个管理网站可以让你增添，更改，删除数据该例子是由python3.4以上版本写的，Django1.11版本以上 Creating a project从命令行中cd进入L你想管理你代码的目录然后运行以下代码 1$ django-admin startproject mysite 这将会创建一个工程在你的目录中startproject命令将会创建以下目录结构 1234567mysite/ manage.py mysite/ __init__.py settings.py urls.py wsgi.py 这些文件是： mysite这个文件是你项目的根目录 manage.py是一个命令行实用程序，你可以阅读更多的细节在https://docs.djangoproject.com/en/1.11/ref/django-admin/ 内部的mysite目录是一个python包，你可以引用它 init.py是一个空文件，它告诉python这个目录是一个python的包 settings.py内可以对项目进行相关设置 urls.py你的每一张网页都对应一个地址，地址要在这里设置 wsgi.py是Django提供的一个WSGI服务 接下来让我们证实它确实工作了 在命令行中运行下面的代码（请确定你在项目目录中也就是在mysite中） 1$ python manage.py runserver 然后你将会看到: 1234June 09, 2017 - 15:50:53Django version 1.11, using settings &apos;mysite.settings&apos;Starting development server at http://127.0.0.1:8000/Quit the server with CONTROL-C. 你已经打开了一个完全由python写的轻量级服务器，也就是说我们可以低成本甚至没有成本的快速开发测试我们的网站，无需去配置大型服务器，直到我们完成开发决定去运行 现在服务器跑起来了，你可以浏览http：//127.0.0.8000/在你的浏览器上你将会看到它开始工作了！ 你还可以在上述命令中后面加一个参数 1$ python manage.py runserver 8080 这样你的服务器就会运行在8080端口 自动重新加载runserver 当你在开发的时候，不必每一次改动就去重启服务器，服务器会自动重新加载，当你的代码逻辑有错误时，服务器会报告错误。但有些动作是不会触发重载服务器的。你需要记住这些情况记得重启服务器。 创建投票app 运行命令前请确认你在含有manage.py的目录下，也就是mysite下 1$ python manage.py startapp polls Django自带实用程序自动生成，所以你不必自己创建app的目录 在运行完命令后会创建一个polls的目录 123456789polls/ __init__.py admin.py apps.py migrations/ __init__.py models.py tests.py views.py 写下第一个view 打开polls下的views.py写下python代码 123from django.http import HttpResponsedef index(request): return HttpResponse(&quot;Hello, world. You&apos;re at the polls index.&quot;) 这是最简单的Django视图，要调用它我们需要将它映射到一个url上，所以我们需要创建一个urls.py的文件。在创建完成后你的目录会变成这样 12345678910polls/ __init__.py admin.py apps.py migrations/ __init__.py models.py tests.py urls.py views.py 然后在polls下的urls.py中写下代码 123456789101112from django.conf.urls import urlfrom . import viewsurlpatterns = [ url(r&apos;^$&apos;, views.index, name=&apos;index&apos;),]下一步在根目录下的urls.py中from django.conf.urls import include, urlfrom django.contrib import adminurlpatterns = [ url(r&apos;^polls/&apos;, include(&apos;polls.urls&apos;)), url(r&apos;^admin/&apos;, admin.site.urls),] 为什么使用include()以后在补充 在命令行中使用python manage.py runserver 进入 http://localhost:8000/polls/你就可以看到他们了 url()这个方法有四个传递参数，两个请求参数（regex，view），两个可选参数（kwargs，name） regex：正则表达式，这里不介绍正则表达式是什么。Django使用正则表达式去匹配列表里的url，直到找到匹配的为止。 view：当Django使用正则表达式匹配的时候，Django会调用指定的view方法 kwargs（key word arguments ）：关键字参数可以通过字典传递到目标视图 name：命名url可以让你其它地方明确的找到它 总结 如果想让页面显示内容，首先你需要写下view是，然后在urls.py中写下urlpattern叫做url通配符的东西，然后在根目录的urls.py中配置地址，]]></content>
+      <categories>
+        <category>Django官方文档</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python学习笔记]]></title>
+    <url>%2F2017%2F07%2F22%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.07.22%2F</url>
+    <content type="text"><![CDATA[python异常处理今天真的太累了，还有一个小时十二点，我不想断更，想坚持下去 异常名称 描述 BaseException 所有异常的基类 SystemExit 解释器请求退出 KeyboardInterrupt 用户中断执行(通常是输入^C) Exception 常规错误的基类 StopIteration 迭代器没有更多的值 GeneratorExit 生成器(generator)发生异常来通知退出 StandardError 所有的内建标准异常的基类 ArithmeticError 所有数值计算错误的基类 FloatingPointError 浮点计算错误 OverflowError 数值运算超出最大限制 ZeroDivisionError 除(或取模)零 (所有数据类型) AssertionError 断言语句失败 AttributeError 对象没有这个属性 EOFError 没有内建输入,到达EOF 标记 EnvironmentError 操作系统错误的基类 IOError 输入/输出操作失败 OSError 操作系统错误 WindowsError 系统调用失败 ImportError 导入模块/对象失败 LookupError 无效数据查询的基类 IndexError 序列中没有此索引(index) KeyError 映射中没有这个键 MemoryError 内存溢出错误(对于Python 解释器不是致命的) NameError 未声明/初始化对象 (没有属性) UnboundLocalError 访问未初始化的本地变量 ReferenceError 弱引用(Weak reference)试图访问已经垃圾回收了的对象 RuntimeError 一般的运行时错误 NotImplementedError 尚未实现的方法 SyntaxError Python 语法错误 IndentationError 缩进错误 TabError Tab 和空格混用 SystemError 一般的解释器系统错误 TypeError 对类型无效的操作 ValueError 传入无效的参数 UnicodeError Unicode 相关的错误错误 UnicodeDecodeError Unicode 解码时的错误 UnicodeEncodeError Unicode 编码时错误 UnicodeTranslateError Unicode 转换时错误 Warning 警告的基类 DeprecationWarning 关于被弃用的特征的警告 FutureWarning 关于构造将来语义会有改变的警告 OverflowWarning 旧的关于自动提升为长整型(long)的警告 PendingDeprecationWarning 关于特性将会被废弃的警告 RuntimeWarning 可疑的运行时行为(runtime behavior)的警告 SyntaxWarning 可疑的语法的警告 UserWarning 用户代码生成的警告]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python(异常)</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[戒骄戒躁]]></title>
+    <url>%2F2017%2F07%2F21%2F%E6%B5%AE%E8%BA%81%2F</url>
+    <content type="text"><![CDATA[今天有点想法 为什么今天没有更学习笔记呢，因为昨天晚上，我写完了爬虫（使用scrapy框架）的基本爬取功能，想要调试的时候，然后报错，然后改错，然后爬虫终于通了，然后2017-07-20 22:53:53 [scrapy.core.engine] INFO: Spider opened 2017-07-20 22:53:53 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min) 2017-07-20 22:53:53 [scrapy.extensions.telnet] DEBUG: Telnet console listening on 127.0.0.1:6023 2017-07-20 22:53:53 [scrapy.core.engine] DEBUG: Crawled (200) (referer: None) 2017-07-20 22:53:53 [scrapy.core.scraper] ERROR: Spider error processing (referer: None) 反正没有爬到东西就对了，查了一下异常貌似是缩进的问题。 晚上很沮丧，我在想是不是真的太浮躁了，像做数电实验一样，像刚做完的模拟洗衣机的课设一样，辛辛苦苦连完了线，然后测试，一脸轻松的告诉别人，ok果然不亮。 我也问自己问什么自己coding的通过率这么低，其实立马能想到很多不足的，基础不足，没有异常处理，还会犯拼写错误，有时候想说为什么不一点一点的把他抠明白呢。 不说了吧，我去看书了 虚心学习，厚积薄发]]></content>
+      <categories>
+        <category>感想</category>
+      </categories>
+      <tags>
+        <tag>思考</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python学习笔记]]></title>
+    <url>%2F2017%2F07%2F19%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.07.19%2F</url>
+    <content type="text"><![CDATA[2017/7/19 21：08 学习日记 生成器yield书上说：“生成器可以帮助读者写出非常优雅的代码，当然，便携任何程序时不使用生成器也是可以的”。ok，我喜欢优雅，所以今天来学习一下。 首先任何包含yield语句的函数称为生成器，注意一定是函数内有yield，而且我测试了一下，打印了一个带有yield语句的函数的type。得到的是 其实关于理解生成器的想法我想了很多，这不是一个教程，这只是我的一个学习思路。 下面写出两种代码 123456nested = [[1, 2], [3,4], [5]]def flatten(nested): for lists in nested: for num in lists: print(num)flatten(nested) 1,2,3,4,5会被顺利的打印出来 下面是还有yield的 1234567nested = [[1, 2], [3,4], [5]]def flatten(nested): for lists in nested: for num in lists: yield numfor num in flatten(nested): print num 1,2,3,4,5也会被打印出来，注意这一次迭代了生成器，第一段代码我们直接调用方法的时候，数字会被直接释放出来。通过第二个例子我大概能理解到这句话的意思。 生成器每次产生一个值，函数就会被冻结；即函数停在那点等待被重新唤醒，函数被重新唤醒后就从停止的那点开始执行。 我们发现，代码而通过迭代生成器，实现了反复唤醒函数，第一次输出1后停止，等待第二次迭代，而且保存了断点。这时候我想到使用ide的断点测试。虽然我现在还不会断点调试，以后会更新断点调试的笔记。 yield与return的区别是，yield会产生多个值，而return会直接结束函数，不会保存断点。 生成器是一个包含yield的关键字的函数，当它被调用时，在函数体中的代码不会被执行，而会返回一个迭代器。每次请求一个值，就会执行生成器中的代码，直到遇到一个yield，yield语句意味着应该生成一个值，return语句意味着生成器要停止执行（不再生成任何东西，return语句只有一个生活曾启中使用才能进行无参数调用。） 换句话说，生成器由两部分组成：生成器的函数和生成器的迭代器。生成器的函数是用def语句定义的，包含yield的部分； 1234def flatten(nested): for lists in nested: for num in lists: yield num 这就是一个生成器 生成器的迭代器会输出这个函数的返回部分。也就是说迭代器代替了原本在代码1函数内的print（这里姑且先这么理解） 12for num in flatten(nested): print num 这是迭代器 两个实体（生成器的函数，生成器的迭代器）经常被当做一个，合起来叫做生成器。]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python(yield)</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python学习笔记]]></title>
+    <url>%2F2017%2F07%2F19%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.07.18%2F</url>
+    <content type="text"><![CDATA[2017/7/18 21：50 学习日记 爬取信息的细节处理去除空格与换行符今天在写一个文章爬虫策略的时候我想get到出版时间（pub_time），使用的是xpath，代码如下： 首先是抓取时间的代码 1pub_time=response.xpath(&quot;//div[@class=&apos;entry-meta&apos;]/p/text()&quot;).extract() 然后得到了如下信息 [‘\r\n\r\n 2017/07/18 · ‘, ‘\r\n \r\n \r\n\r\n \r\n · ‘, ‘, ‘, ‘\r\n \r\n’] 可以看到时间已经被我找到了，可是有很多的换行符，那么如何去掉他们的。 1strip（） 无参数，默认删除/n,/r,/t,’ ‘ 注意该方法的对象是一个字符串，而我们得到的信息是一个列表，所以改一下代码, 1pub_time=response.xpath(&quot;//div[@class=&apos;entry-meta&apos;]/p/text()&quot;).extract()[0] 然后我们得到 ‘\r\n\r\n 2017/07/18 · ‘ ok，现在我们的pub_time已经是一个字符串了，然后引用strip() 1pub_time=response.xpath(&quot;//div[@class=&apos;entry-meta&apos;]/p/text()&quot;).extract()[0].strip() 得到：‘2017/07/18 ·’ 可以看到已经去掉这些/r/n了 使用replace进一步改良数据从上个例子看到，我们不可能每一次都获得到完美数据的，虽然说空格已经去掉了，可是我只想要时间，可是我拿到的东西，后面居然还有一个点（’2017/07/18 ·’）。这怎么可以。下面再使用一个方法处理掉它。 1replace(&quot;str1&quot;, &quot;str2&quot;) 该方法有两个参数，后面的字符串替换前面的字符串,也就是str2替换str1，现在我们可以解决掉后面的点了 不过这里分享一个办法，替换的时候最好复制出来，也就是把那个点的地方，用复制再粘贴到str1的位置，因为我尝试自己输出那个点，发现怎么都替换不掉，说明我写的是错的。有时候总有很奇怪的符号，最好使用复制的办法替换。 1response.xpath(&quot;//div[@class=&apos;entry-meta&apos;]/p/text()&quot;).extract()[0].strip().replace(&quot;·&quot;,&quot;&quot;) 然后得到’2017/07/18 ‘，小讨厌就消失了。完美收尾。]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python(数据处理)</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python学习笔记]]></title>
+    <url>%2F2017%2F07%2F18%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.07.17%2F</url>
+    <content type="text"><![CDATA[2017/7/17 22：09 学习日记 python脚本（控制命令行）如何实现通过脚本控制命令行也就是终端。 python有两个内置的模块，一个是os一个是sys，通过协作来实现控制命令行。我们知道如果要在终端里面运行python，首先，系统的环境变量里面要有python的路径。所以我们使用sys模块的方法，将脚本的路径添加到系统环境里面1sys.path.append() 考虑到未来这个脚本的运行环境会改变，有可能换一台主机，有可能在云端，我们使用os模块来配合sys获取我们当前的路径 1os.path.dirname(os.path.abspath(__fiel__)) 然后我们使用append方法将该路径添加到sys.path中。 1sys.path.append(os.path.dirname(os.path.abspath(__fiel__))) execute([‘scrapy’, ‘crawl’, ‘spider_name’]) 实现代码的书写我们会创建一个数组，添加关键字来实现在命令行中使用代码控制项目，实现一个完全自动化的脚本。也就是说，最后只需调用该方法，加入参数，实现等同于在命令行中输入操作代码一样的效果。]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python(os,sys)</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[谈谈写文章]]></title>
+    <url>%2F2017%2F07%2F17%2F%E8%B0%88%E8%B0%88%E5%86%99%E6%96%87%E7%AB%A0%2F</url>
+    <content type="text"><![CDATA[谈谈写文章1.0启发 今年三四月份逛知乎的时候，偶然发现了一篇写关于如何使用hexo搭建轻量级的静态博客的文章，正好自己也注册了github账号，就当即玩了起来。我花了一周的时间各种坑里跳出来，搭建好了这个你正在阅读的页面。并且更新了几篇文章，在最初的计划里，我的博客的面向人群很小，我没有公布我的blog地址，甚至没有说我拥有它。只是给很小的一部分同学私信给他们看。 后来就没有想过在去更新blog，直到这个暑假我选择留校学习，开始系统学习git，然后我通过自己的理解，写了一篇通俗的git教程。推到了上面。因为是自己的理解，所以会把git的一些指令比喻成一些生活中好理解的东西。或许准确或许不准确，但都是为了帮助萌新好好理解。ok，那么一篇文章的开始首先有一个标题。最初，我取了一个非常浮夸的标题； 《我居然有了一家物流公司？（git教程）》这是第一个版本 之后问题来了，我的一个朋友提醒我说你起这样的名字，搜索引擎无法检索到，这样人家看不到，你的文章就没办法帮助更多的人。其实意思就是我应该将关键字放在我的标题上面 这里首先要谢谢我的朋友可以提醒我这一点； 然后说说我自己的看法，在我更新的第一篇文章里面我说了，我搭建这个blog的时候真的很不容易，看了很多所谓的小白教程（类似几个小时搭建博客这类的）。虽然我没有按照他们的流程搭建成功，但是他们大体的流程方向是对的，因为每一台电脑配置，环境变量，都不尽相同，甚至与你使用的操作终端不同都有关系。我还是受到了他们很大的启发，以及通过知乎提问，也有好心人帮助我，所以我的第一篇文章说，如果有人想搭建的话，我很乐意提供我的所有经验。 《git指令的使用与个人理解》 这是那篇文章现在的标题，有了这个标题证明什么呢？证明了我对我朋友的话做出了妥协，我希望它是被好检索的，也许你觉得这个标题还是不够好。在好玩，和被别人方便查找，并且不会对有迷惑性的文章标题感到困扰之中，我还是选择了后者。 厚积薄发也可能是现在的文章还不够多，还不够充实，文章的质量个人认为也不够好，所以才没有公布地址吧。也许更多的是为了好玩，但是更新blog也要对它负责什么的。 最后感谢看完我啰嗦这么多，祝大家天天进步一点点。 谈谈写文章2.0反思我买过慕课网的python课程，怎么评价呢，贴出来的好评都是精选出来的。我对一堂课好坏的评价在于老师是不是会融入自己的理解在其中，用自己的想法引导学生。也可能是自己愚笨。之所以会这样说是因为有一天我决定自己去看官方文档的时候，看过的东西似曾相识，原来不过是那老师读了一遍官方文档，按照他的顺序来讲罢了。 我的blog坚持写了半个月，大多数文章是一些学习笔记，目前看来唯一一的文章（git指令的使用与个人理解）融入我自己的理解，加上自己的图片，比较让我满意吧。 嘴边总挂着的文章质量，有些文章真的是稀碎。我认为我该花时间去将他们整理整理，而不是只要push上去就好了。我更希望有一些我自己的理解，自己的话语去引导自己，去引导需要的同学。 总之，虚心学习]]></content>
+      <categories>
+        <category>感想</category>
+      </categories>
+      <tags>
+        <tag>思考</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[git指令的使用与个人理解]]></title>
+    <url>%2F2017%2F07%2F15%2Fgit%E5%91%BD%E4%BB%A4%E6%80%8E%E4%B9%88%E7%94%A8%2F</url>
+    <content type="text"><![CDATA[我居然有了一家物流公司？（git教程） 从最早我们学习的时候，当我们引用公式，名言或是别的什么的时候，都会连带着出处一同记忆。Git是Linux的发明者Linus开发的一款新时代的版本控制系统。这个消息真是太好了。因为我们知道了原来这个厉害的家伙发明了两个厉害的东西。 上面我们提到了一个名词，版本控制系统。只要理解了版本控制系统就好了吧。 拿框架来说吧。Django是我学习的第一个python框架。那么Django发布了多少个版本呢 我们看到了早期Django已经发布了几个版本了，这里记录了早期版本的发布时间，还有每一个版本的变更内容，我们可以下载到早期的稳定版本，也可以下载最细的版本去测试其中的新功能。又比如刚发布的Django1.11出现了一个严重的bug导致不得不紧急恢复到上一个稳定版本时，git也会有重大的作用。 先说一个我们可能使用最频繁的命令 git status 我们会经常使用这个代码去查看当前的状态 git init 代表初始化git仓库，也就是将你的目录变成一个git仓库在介绍下一个代码的时候首先要引入一个概念我们的目的是将更新的文件最终push到github上面去那么我们就需要一个介质，把我们要传达的东西发出去 你想上传的文件在你的文件夹里静静的躺着，上传成功的文件也会在github里面的躺着的那么我们不可见的地方，就是git仓库了，别慌好吧我们可以用上一个命令git status查啊，查快递一样对不对。那么git仓库就是我们的express了，git仓库像一个强大的物流公司。是吧~好了不说了快向上面搬东西吧 git add git add 后加你想要上传的文件全名例如git add newblog.md 然后使用 git commit 我们输入git commit -m “first commit”这个命令是什么意思呢？代表我们提交了更改，字符串代表了提交了一个log，你希望你的这次提交有个备注吧。 git log 那么这个命令就该知道什么意思了吧，git log可以查看所有commit的记录 git tag 这里面要再使用前面Django的例子，基本所有的框架都会显示版本号，比如1.10，1.11之类的，不同版本代码会有或多或少的变动，我们要把变动过的新版本加上标签。这样无论未来有何变动我们还有测试余地。 想要切换到某一个tag怎么办使用? git checkout v1.10 好了，东西都搬上去了，下面看看我们怎么发货 ssh 在你拥有了一个github账号之后，你一开始是不能直接推送你的更新的，我们需要一种授权就是ssh授权，ssh是一种网络协议，用于计算之间的加密登陆，想要在github提交代码的第一步就是要添加ssh key配置git 生成ssh key 我们要在命令行中输入 ssh-keygen -t rsa 制定rsa算法生成密钥，连续三个回车，就会生成两个文件，id_rea和id_rsa.pub，前者是密钥，后者就是公钥了。然后我们搜索出公钥将公钥的内容添加在github上，这样你本地的密钥与github上的公钥进行匹配，授权成功才可以提交代码 这里是没有教如何上传公钥的 ok我们把ssh比喻成一个合同吧，也就是说我们个git仓库已经可以和github交易了下一步就是从仓库发货了 首先我们去github上面建一个仓库（repositories） git remote add origin git@github.com:Moshiwei/test.git 这时我们本地的git仓库已经和远程github的仓库关联了。git@github.com:Moshiwei/test.git这段ssh就是我们的发货地址啦 git remote -v 可以看到哪些远程被关联的，也就是看看有几条发货地址。 最后发货啦!!!!!! git push origin master 发货的时候写上发货人啊 git config –global user.name “Moshiwei” git config –global user.email “1194317170@qq.com” 这里的git命令都只是我们自己push一些文件，或者变动所需要的，没有写多人协同合作的指令，重点在理解git与github如何交互嘛 如果出错了不要着急，看看是没有权限还是出现错误，错误有可能是你命令输错了，也有可能目录不对。 有些话想说 这篇文章的标题本来是&lt;如何理解git与github的交互&gt;，但后来我为了让标题更加吸引人，加了一个浮夸的问句。就成了现在这样了 上述内容是我按照自己的理解写的，如果有人看着引起不适的话我很抱歉。希望这篇形象的教程能帮助到你。未来我可能会为每一个步骤添加一些样图以便更好的理解，为什么说是以后加呢，因为这篇教程我在onenote上已经写了一遍了，搬到blog上真的费劲，可能我的markdown还不过关吧。如果有问题可以发邮件，一起进步吧。]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[我不是不喜欢学习 我只是不喜欢学校]]></title>
+    <url>%2F2017%2F04%2F15%2F%E4%B8%80%E7%9B%B4%E7%BB%99%E8%87%AA%E5%B7%B1%E5%85%85%E7%94%B5%E5%90%A7%2F</url>
+    <content type="text"><![CDATA[一直给自己充电吧如果你遇到了问题学习的时候，不管你用什么方法，或者通过什么渠道（例如看视频去学习，下载电子书）。到你自己操作时的时候总会遇到一些问题。这些琐碎的小问题足以让你百度一会了（当然如果你能百度到的话），我在搭建这个博客的时候看了许多教程，他们取得名字我觉得很不负责任，例如什么白痴方法搭建博客啦，五分钟教你快速搭建一个博客。我搭建这个博客花了五个晚上的时间，大多都浪费得在百度各种琐碎的小问题上面了，你会问，为什么他操作是这样的，为什么我操作的时候它显示的这是什么玩意？不是说白痴方法搭建么，为什么我觉得一点也不简单。 我说了这么多，只是想说千万不要放弃。我在做信号与系统试验的时候，一个看起来比我大没多少的女老师说：“如果你们自己没把想要的图形调试出来，千万别怀疑自己的能力什么的，可能是仪器有问题，多试几次”，我在想这个老师还这么照顾学生心理么。但这种做法确实是对的。别怀疑自己，别放弃，再试试，你才有解决问题的轻松与喜悦。 差距总是有的也许你现在刚学的技术，人家在一年前已经学会了 也许你现在会用的技术，人家在一年前已经熟练了 差距就是这样的，python这门语言还是我在迷茫的时候我的舍友告诉我的，IT这么多的方向，单学习一个是不够的，你得学好几门语言，但是会好几门语言就厉害了么，你得精通一两门语言。有了差距才有前进的动力。很多东西都是一个念头产生的，比如说我今晚写不出爬取花瓣网短发小姐姐的爬虫我就不睡觉了，也许一晚上的时间你就会把你与别人一年的差距成倍的缩短，写博客也一样吧。都要坚持]]></content>
+      <categories>
+        <category>感想</category>
+      </categories>
+      <tags>
+        <tag>思考</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[设计自己的家]]></title>
+    <url>%2F2017%2F04%2F15%2F%E8%87%AA%E5%B7%B1%E4%BD%8F%E7%9A%84%E5%9C%B0%E6%96%B9%E6%80%8E%E4%B9%88%E8%83%BD%E4%B8%8D%E8%87%AA%E5%B7%B1%E8%AE%BE%E8%AE%A1%EF%BC%9F%EF%BC%9F%2F</url>
+    <content type="text"><![CDATA[自己的房子当然要由自己设计从哪里开始呢无聊不知道干什么的的时候做什么呢，我会看看知乎。你都这么大的人了，还是不要选择纯文字的吧，当然要看图文并茂生动活泼的文章了。最符合上述选项的就是装修板块了，自己也梦想着是不是能画些手稿什么的（这个时候好像有人能教我画画），手残就手残，那就开始吧。我的漫漫设计之路从此开始了 问题真的很多起初我对装修只是觉得自己去选择喜欢的家具，然后把他们放在合适的地方，这样我的家就组装好啦。事实证明我太天真了，真是一入豪门深似海，我越想越要考虑的东西多。 你需要准备什么呢自从发现了家居体验店这种东西之后，就完全挡不住我要进去逛的心情，我对给我做引导的人说，这个我想要，那个我也想要，这个一平米多少钱。最后得倒最多的就是一个笑容和一句话，我们需要您家里的各种尺寸哦。 ============================ 分割线 ==================================== 下面进入正文作为一个资深吃货，出去旅游只想着吃的同学，想装修的第一个位置当然是厨房了。吃货除了吃，还喜欢动手去做饭。想想自己做了好吃的给喜欢的人吃，也是很开心的嘛，只喜欢吃不愿意动手的同学当我没说过这句话…好了，工欲善其事，必先利其器，几乎每本介绍厨房用具的书都有这句话。那我想做的厨房是什么样的呢？当然是开放式厨房了啊。鉴于大多数家庭的厨房都是一间屋子，然后妈妈在里面辛苦的炒菜还要被油烟熏，这也太可怜了吧。就不能我做着你看着么？ 我第一个想到在厨房里加的东西是岛台，我第一次见到这种东西是在外国电影了，当时就算我年纪还小，也觉得这个东西实在是太酷了。光有灶台那么点地方肯定是不够用的啊。没有岛台我都不好意思说自己弄了个开放式的厨房]]></content>
+      <categories>
+        <category>设计</category>
+      </categories>
+      <tags>
+        <tag>装修</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[纸镜的第一篇文章]]></title>
+    <url>%2F2017%2F03%2F30%2F%E7%BA%B8%E9%95%9C%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%2F</url>
+    <content type="text"><![CDATA[欢迎参观我的博客关于这博客从开始有拥有一个自己的博客到想办法去做成这件事用了两天时间，感谢一个知乎作者和我的室友，我个人很喜欢尝试各种新鲜的事物，我的一个做前端的朋友告诉我这么好玩的事后，我立马想去尝试。创建这个博客的过程中遇到了非常多的困难，查了很多的解决方法，甚至睡不着的时候也会用手机打开baidu去查一查。做一件事，想赶紧把它做好，如今你看到的这篇博客。它大大的增加了我的成就感。这篇博客的框架选用的是Hexo，简单且轻便（虽然我使用起来出现了很多问题），所以如果你也打算使用的话，请花一些时间去阅读它的官方文档。 写博客用来做什么搭建这篇博客纯属个人爱好，这篇博客是托管在github上面的。但是空间有限，没法上传过多的高清图片。本人爱好极广，当然不情愿将自己的博客打造成为一个单调的技术博客。 未来有一天自己毕业有了工资，也许会去租服务器，重新搭建一个全新的博客。去满足自己，上传自己的设计，自己做的美食，也会有一些疑难解答。因为自己搭建博客时出现了太多的问题，去baidu的结果也不尽人意，所以既然这篇博客的创建始于前任的帮助与经验，自己当然也有义务去帮助别人。 最后这是我第一次用markdown语法写文章，可能不太美观请见谅，如果你来到我的博客并且感兴趣，也想自己搭建一个玩的话，可以联系我。我能提供一些帮助和经验，希望它们可以帮到你 感谢感谢我父亲的精神和经济支持，我才能有很多的资源可以使用。祝他身体健康 我的邮箱 October1stMM@outlook.com]]></content>
+      <categories>
+        <category>关于博客</category>
+      </categories>
+      <tags>
+        <tag>第一篇文章</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[test]]></title>
+    <url>%2F2017%2F03%2F29%2Ftest%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2017%2F03%2F29%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+</search>
