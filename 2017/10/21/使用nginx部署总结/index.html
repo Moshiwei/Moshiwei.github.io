@@ -1,0 +1,749 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nginx," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言
+早在上周我就写完了Django博客，在本地调试好之后，开始向服务器上部署，我使用Nginx代理静态文件，服务器的系统是CentOS6.8。Ubuntu的Nginx配置和centos的不同。这里就不提了。本文记下了我这一周踩的所有坑
+没有0bug的系统，只有前仆后继的程序员说实话这是我第一次向线上部署我的博客，跟hexo的不同，Hexo完全帮你完成了生成框架，自动化部署这些问题，而你只需要向g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="成功使用Nginx和Gunicorn部署Django博客总结">
+<meta property="og:url" content="http://Moshiwei.github.io/2017/10/21/使用nginx部署总结/index.html">
+<meta property="og:site_name" content="纸镜">
+<meta property="og:description" content="前言
+早在上周我就写完了Django博客，在本地调试好之后，开始向服务器上部署，我使用Nginx代理静态文件，服务器的系统是CentOS6.8。Ubuntu的Nginx配置和centos的不同。这里就不提了。本文记下了我这一周踩的所有坑
+没有0bug的系统，只有前仆后继的程序员说实话这是我第一次向线上部署我的博客，跟hexo的不同，Hexo完全帮你完成了生成框架，自动化部署这些问题，而你只需要向g">
+<meta property="og:image" content="https://github.com/Moshiwei/test/blob/master/images/Djanogblog.png?raw=true">
+<meta property="og:updated_time" content="2017-10-21T15:32:09.159Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="成功使用Nginx和Gunicorn部署Django博客总结">
+<meta name="twitter:description" content="前言
+早在上周我就写完了Django博客，在本地调试好之后，开始向服务器上部署，我使用Nginx代理静态文件，服务器的系统是CentOS6.8。Ubuntu的Nginx配置和centos的不同。这里就不提了。本文记下了我这一周踩的所有坑
+没有0bug的系统，只有前仆后继的程序员说实话这是我第一次向线上部署我的博客，跟hexo的不同，Hexo完全帮你完成了生成框架，自动化部署这些问题，而你只需要向g">
+<meta name="twitter:image" content="https://github.com/Moshiwei/test/blob/master/images/Djanogblog.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://Moshiwei.github.io/2017/10/21/使用nginx部署总结/"/>
+
+
+
+
+
+  <title> 成功使用Nginx和Gunicorn部署Django博客总结 | 纸镜 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">纸镜</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/10/21/使用nginx部署总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Moshiwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                成功使用Nginx和Gunicorn部署Django博客总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-21T23:31:00+08:00">
+                2017-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>早在上周我就写完了Django博客，在本地调试好之后，开始向服务器上部署，我使用Nginx代理静态文件，服务器的系统是CentOS6.8。Ubuntu的Nginx配置和centos的不同。这里就不提了。本文记下了我这一周踩的所有坑</p>
+<h3 id="没有0bug的系统，只有前仆后继的程序员"><a href="#没有0bug的系统，只有前仆后继的程序员" class="headerlink" title="没有0bug的系统，只有前仆后继的程序员"></a>没有0bug的系统，只有前仆后继的程序员</h3><p>说实话这是我第一次向线上部署我的博客，跟hexo的不同，Hexo完全帮你完成了生成框架，自动化部署这些问题，而你只需要向github提交你的ssh。这样就能托管在github上了。可是我还想要一个自己域名的博客。<br> <a id="more"></a></p>
+<h3 id="400Bad-Request"><a href="#400Bad-Request" class="headerlink" title="400Bad Request"></a>400Bad Request</h3><p>满怀着激动的心情，我从周一开始学着部署，前两天真的是毫无进展，我甚至没法在服务器上跑一个runserver，更别提部署了，400错误一直显示在我的显示器上。<br>周一周二我一直因为这个问题在一个一个网页之间跳转，熬夜，直到周三我头疼身体发冷，恶心想吐。说实话真的很沮丧。写完代码，不会部署，一切都是零。</p>
+<p>下面开始讲我之后如何解决400问题的：</p>
+<p>首先，我在本地测试好后，才上传到github上面的。在服务器上面从github上面拽下代码后，先要进行的两个步骤是：</p>
+</blockquote>
+<ol>
+<li>更改数据库连接设置</li>
+<li>进行数据迁移。</li>
+</ol>
+<blockquote>
+<p>我使用的Mysql数据库，确认数据库连接没问题之后，我做了数据迁移（migrate）。之后访问地址后，出现了400错误，Django有一个Debug模式，开启它发现有几张表找不到，这是导致400错误的直接原因。</p>
+<p>之后我反复检查python manage.py migrate这条命令的结果，发现我自己写的app根本就没有进行迁移。甚至Django自身的几个app都没有迁移进去，我才知道了Django还有这条命令</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python manage.py migrate app_name</div></pre></td></tr></table></figure>
+<p>使用该命令对未迁移的app进行单独迁移，别问我为什么。<br>400错误到此结束。</p>
+<h3 id="500Server-Error"><a href="#500Server-Error" class="headerlink" title="500Server Error"></a>500Server Error</h3><blockquote>
+<p>从这里就要开始讲Nginx的部署问题了。开始我提到了我使用的是CentOS系统，而不是Ubuntu，因为这两个系统的Nginx目录结构，和配置文件放置的位置都不相同。在Nginx的根目录有一个Nginx.conf文件里面写着在conf.d这个目录想的所有conf文件他都会进行处理。所以一开始我的配置文件根本不知道放在哪里。这里真要感谢爱写备注的程序员们。<br>这里贴上我的nginx配置文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    charset      utf-8;</div><div class="line">    listen       80;</div><div class="line">    server_name  mirrorgo.top;</div><div class="line"></div><div class="line">    #charset koi8-r;</div><div class="line">    #access_log  /var/log/nginx/host.access.log  main;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        proxy_set_header Host $host;</div><div class="line">        proxy_pass http://unix:/tmp/mirrorgo.top.socket;</div><div class="line">        client_max_body_size    1000m;</div><div class="line">    &#125;</div><div class="line">    location /static &#123;</div><div class="line">        alias /home/mirror/my-blog/static; </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    client_max_body_size 75M;</div><div class="line"></div><div class="line">    #error_page  404              /404.html;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>明白了如何写配置文件和文件放置的位置500的问题就解决了。呼真的累。噩梦才开始</p>
+<h3 id="403Forbidden"><a href="#403Forbidden" class="headerlink" title="403Forbidden"></a>403Forbidden</h3><blockquote>
+<p>每一次开启服务都是一次期待，其实看到403的时候我是很开心的，因为我知道这是个权限问题，我的项目和nginx配置应该是没有问题了。因为我使用Nginx的目的是代理静态文件，别的高级功能什么负载均衡我还不会用。所以我把需要代理静态文件目录路径里的所有目录的权限都改成了755。</p>
+<p>这个问题被很快的解决了。如果有同学对这个步骤的安全性有疑问的话请联系我。</p>
+<h3 id="404Not-Found"><a href="#404Not-Found" class="headerlink" title="404Not Found"></a>404Not Found</h3><p>呵呵呵呵哇哈哈哈哈哈，没错我已经疯了，这些状态码我早就学过了。没想到我还要亲身经历一遍。虽然有内容了，但是没有样式，根本没法看。</p>
+<p>这个问题我怎么解决的说出来你可能不信，我看了推理小说，然后周六的早上玩推理游戏玩的我头疼。突然灵机一动，直接找到了我可爱的静态文件夹为什么找不到的问题。<br>注意在nginx配置文件，指向你目标静态文件夹的路径是你的项目根目录。这是因为在进行了</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python manage.py collectstatic</div></pre></td></tr></table></figure>
+<blockquote>
+<p>之后会在你的项目根目录生成一个static文件夹。<br>而且在Django官文中说，如果要部署要在settings.py文件夹中静态文件目录要加一条</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">STATIC_ROOT = os.path.join(BASE_DIR, &apos;/static/&apos;)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>他所指的静态目录正是上层目录，也就是项目根目录。<br>一切问题解决后我可爱的页面就出来了。</p>
+<h3 id="200"><a href="#200" class="headerlink" title="200"></a>200</h3><p>200没什么好说的。我爱绿色<br><img src="https://github.com/Moshiwei/test/blob/master/images/Djanogblog.png?raw=true" alt="image"><br>由于我现在主要还用这个博客，那边没什么文章。就没再挂着了。等我学会自动化部署在开放吧</p>
+<p>转载请注明出处</p>
+<p>这是我一周的心血，侵删谢谢。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag"># Nginx</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/20/安装python/" rel="next" title="如何在CentOS6.8上安装Python3.6">
+                <i class="fa fa-chevron-left"></i> 如何在CentOS6.8上安装Python3.6
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/24/Django-Sending email部分翻译/" rel="prev" title="Django-Sending email部分翻译">
+                Django-Sending email部分翻译 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Moshiwei" />
+          <p class="site-author-name" itemprop="name">Moshiwei</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#没有0bug的系统，只有前仆后继的程序员"><span class="nav-number">2.</span> <span class="nav-text">没有0bug的系统，只有前仆后继的程序员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#400Bad-Request"><span class="nav-number">3.</span> <span class="nav-text">400Bad Request</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#500Server-Error"><span class="nav-number">4.</span> <span class="nav-text">500Server Error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#403Forbidden"><span class="nav-number">5.</span> <span class="nav-text">403Forbidden</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#404Not-Found"><span class="nav-number">6.</span> <span class="nav-text">404Not Found</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#200"><span class="nav-number">7.</span> <span class="nav-text">200</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Moshiwei</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,731 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="引入
+先说一个有意思的例子，在我上高中的时候迷恋做饭，一心想着要当米其林大厨来着，我就开始看着方面的书。其中有一篇是讲了厨房效率，从做饭的步骤联系到了工具台的位置该如何部署。
+那我们把做一道菜的过程比喻成为进程，如果客人要吃米饭，那么这种做米饭的且不影响菜肴烹饪的行为就是线程，我们不可能等着米饭做好了再去炒菜，两个应该同时进行，保证客人吃上热饭热菜。这就是并行，假设完成这道菜肴我们需要烤制一份牛肉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python多线程编程">
+<meta property="og:url" content="http://Moshiwei.github.io/2017/09/09/python多线程编程/index.html">
+<meta property="og:site_name" content="纸镜">
+<meta property="og:description" content="引入
+先说一个有意思的例子，在我上高中的时候迷恋做饭，一心想着要当米其林大厨来着，我就开始看着方面的书。其中有一篇是讲了厨房效率，从做饭的步骤联系到了工具台的位置该如何部署。
+那我们把做一道菜的过程比喻成为进程，如果客人要吃米饭，那么这种做米饭的且不影响菜肴烹饪的行为就是线程，我们不可能等着米饭做好了再去炒菜，两个应该同时进行，保证客人吃上热饭热菜。这就是并行，假设完成这道菜肴我们需要烤制一份牛肉">
+<meta property="og:image" content="https://github.com/Moshiwei/test/blob/master/images/black.jpg?raw=true">
+<meta property="og:updated_time" content="2017-10-07T14:21:09.144Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python多线程编程">
+<meta name="twitter:description" content="引入
+先说一个有意思的例子，在我上高中的时候迷恋做饭，一心想着要当米其林大厨来着，我就开始看着方面的书。其中有一篇是讲了厨房效率，从做饭的步骤联系到了工具台的位置该如何部署。
+那我们把做一道菜的过程比喻成为进程，如果客人要吃米饭，那么这种做米饭的且不影响菜肴烹饪的行为就是线程，我们不可能等着米饭做好了再去炒菜，两个应该同时进行，保证客人吃上热饭热菜。这就是并行，假设完成这道菜肴我们需要烤制一份牛肉">
+<meta name="twitter:image" content="https://github.com/Moshiwei/test/blob/master/images/black.jpg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://Moshiwei.github.io/2017/09/09/python多线程编程/"/>
+
+
+
+
+
+  <title> python多线程编程 | 纸镜 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">纸镜</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/09/09/python多线程编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Moshiwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                python多线程编程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-09T17:54:00+08:00">
+                2017-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">python进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><blockquote>
+<p>先说一个有意思的例子，在我上高中的时候迷恋做饭，一心想着要当米其林大厨来着，我就开始看着方面的书。其中有一篇是讲了厨房效率，从做饭的步骤联系到了工具台的位置该如何部署。</p>
+<p>那我们把做一道菜的过程比喻成为进程，如果客人要吃米饭，那么这种做米饭的且不影响菜肴烹饪的行为就是线程，我们不可能等着米饭做好了再去炒菜，两个应该同时进行，保证客人吃上热饭热菜。这就是并行，假设完成这道菜肴我们需要烤制一份牛肉作为辅助，电饭煲和烤箱不能同时进行，但牛肉是完成这道菜的必备步骤，这时要触发中断，做米饭要让他先行就是让步了。<br><a id="more"></a></p>
+<h1 id="多线程编程"><a href="#多线程编程" class="headerlink" title="多线程编程"></a>多线程编程</h1><p>无论是任务本身需要按照步骤顺序执行，还是整个程序实际上包含多个子任务，都需要按照这种顺序方式执行。那么，假如这些子任务相互独立，都没因果关系（也就是说，各个子任务的结果并不影响其他子任务的结果），这样的做法是不是很不合理呢？</p>
+<p>要是让这些独立的任务同时运行，会怎么样呢？很明显，这种并行处理方式可以显著的提高整个任务的性能，这就是多线程编程。</p>
+</blockquote>
+<h1 id="线程和进程"><a href="#线程和进程" class="headerlink" title="线程和进程"></a>线程和进程</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><blockquote>
+<p>计算机程序只是储存在磁盘上的可执行二进制（或其他类型）的文件。只有把他们加载到内存中并被操作系统调用，才拥有其生命期。<br>进程（有时称为重量级进程）就是一个执行中的程序，每个进程都有自己的地址空间，内存，数据栈以及其他用于跟踪执行的辅助数据。</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程（有时候称为轻量级进程）与进程类似，不过他们是在同一个进程下执行的，并共享相同的上下文，可以将它们认为是一个主进程或“主线程”中并行运行的一些“迷你进程”。</p>
+<p>线程包括开始，执行顺序和结束三部分，他有一个指令指针，用于记录当前运行的上下文，但其他线程运行时，他可以被抢占（中断）和临时挂起（也称为睡眠）——这种做法叫做让步（yielding）。<br><img src="https://github.com/Moshiwei/test/blob/master/images/black.jpg?raw=true" alt="image"></p>
+</blockquote>
+<h1 id="使用代码来举例"><a href="#使用代码来举例" class="headerlink" title="使用代码来举例"></a>使用代码来举例</h1><h2 id="不使用线程的情况"><a href="#不使用线程的情况" class="headerlink" title="不使用线程的情况"></a>不使用线程的情况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">from time import sleep, ctime</div><div class="line"></div><div class="line">def loop0():</div><div class="line">    print &apos;start loop 0 at:&apos;, ctime()</div><div class="line">    sleep(4)</div><div class="line">    print &apos;loop0 done at:&apos;, ctime()</div><div class="line"></div><div class="line">def loop1():</div><div class="line">    print &apos;start loop 1 at:&apos;, ctime()</div><div class="line">    sleep(2)</div><div class="line">    print &apos;loop1 done at:&apos;, ctime()</div><div class="line"></div><div class="line">def main():</div><div class="line">    print &apos;starting at:&apos;, ctime()</div><div class="line">    loop0()</div><div class="line">    loop1()</div><div class="line">    print &apos;all DONE at:&apos;, ctime()</div><div class="line">    </div><div class="line">if __name__ ==&apos;__main__&apos;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">starting at: Sat Sep 09 13:08:34 2017</div><div class="line">start loop 0 at: Sat Sep 09 13:08:34 2017</div><div class="line">loop0 done at: Sat Sep 09 13:08:38 2017</div><div class="line">start loop 1 at: Sat Sep 09 13:08:38 2017</div><div class="line">loop1 done at: Sat Sep 09 13:08:40 2017</div><div class="line">all DONE at: Sat Sep 09 13:08:40 2017</div></pre></td></tr></table></figure>
+<p>整个运行时间至少会有6s，而在启动时可能有1s多的开销。使整个时间多达7s</p>
+<h2 id="使用线程和锁"><a href="#使用线程和锁" class="headerlink" title="使用线程和锁"></a>使用线程和锁</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">import thread</div><div class="line">from time import sleep, ctime</div><div class="line"></div><div class="line">loops = [4, 2]</div><div class="line"></div><div class="line">def loop(nloop, nsec, lock):</div><div class="line">    print &apos;start loop&apos;, nloop, &apos;at:&apos;, ctime()</div><div class="line">    sleep(nsec)</div><div class="line">    print &apos;loop&apos;, nloop, &apos;done at:&apos;, ctime()</div><div class="line">    lock.release(0)</div><div class="line"></div><div class="line">    def main():</div><div class="line">        print &apos;starting at:&apos;, ctime()</div><div class="line">        locks = []</div><div class="line">        nloops = range(len(loops))</div><div class="line">        </div><div class="line">    for i in nloops:</div><div class="line">        lock = thread.allocate_lock()</div><div class="line">        lock.acquire()</div><div class="line">        locks.append(lock)</div><div class="line"></div><div class="line">for i in nloops:</div><div class="line">    thread.start_new_thread(loop, (i, loops[i], locks[i]))</div><div class="line">    </div><div class="line">    for i in nloops:</div><div class="line">        while locks[i].locked():pass</div><div class="line">        </div><div class="line">    print &apos;all DONE at:&apos;, ctime()</div><div class="line"></div><div class="line">if __name__ ==&apos;__main__&apos;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">starting at: Sat Sep 09 13:20:41 2017</div><div class="line">start loop 0 at: Sat Sep 09 13:20:41 2017</div><div class="line">start loop 1 at: Sat Sep 09 13:20:41 2017</div><div class="line">loop0 done at: Sat Sep 09 13:20:43 2017</div><div class="line">loop1 done at: Sat Sep 09 13:20:45 2017</div><div class="line">all DONE at: Sat Sep 09 13:20:45 2017</div></pre></td></tr></table></figure>
+<p>使他们并行从开始到完成只需要4s</p>
+<p>代码中的loop模拟的是一次运行过程，loop0运行一次需要4s，loop1运行一次需要2s，这样串行需要6秒多完成，并行只需要4s</p>
+<p>这篇写完好长好累…..</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/04/2017.09.04开学我想说/" rel="next" title="开学想说的话">
+                <i class="fa fa-chevron-left"></i> 开学想说的话
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/24/Django-models部分翻译/" rel="prev" title="Django-models部分翻译">
+                Django-models部分翻译 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Moshiwei" />
+          <p class="site-author-name" itemprop="name">Moshiwei</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#引入"><span class="nav-number">1.</span> <span class="nav-text">引入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程编程"><span class="nav-number">2.</span> <span class="nav-text">多线程编程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程和进程"><span class="nav-number">3.</span> <span class="nav-text">线程和进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">3.1.</span> <span class="nav-text">进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">3.2.</span> <span class="nav-text">线程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用代码来举例"><span class="nav-number">4.</span> <span class="nav-text">使用代码来举例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不使用线程的情况"><span class="nav-number">4.1.</span> <span class="nav-text">不使用线程的情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用线程和锁"><span class="nav-number">4.2.</span> <span class="nav-text">使用线程和锁</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Moshiwei</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

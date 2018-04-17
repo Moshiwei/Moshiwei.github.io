@@ -1,0 +1,736 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="pyecharts," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="pyecharts（数据可视化）
+前言如果让我说写python的时候最幸福的感觉是什么，我会说我遇到了一个好用的包（package），而且方法真的太好用了。说起来还有一个笑话，遇到pyecharts的那天，我兴奋的说这个包（package）像玩具一样好玩。不一会几个妹子点赞了，很肯定我的说法….">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pyecharts">
+<meta property="og:url" content="http://Moshiwei.github.io/2017/07/25/pyecharts/index.html">
+<meta property="og:site_name" content="纸镜">
+<meta property="og:description" content="pyecharts（数据可视化）
+前言如果让我说写python的时候最幸福的感觉是什么，我会说我遇到了一个好用的包（package），而且方法真的太好用了。说起来还有一个笑话，遇到pyecharts的那天，我兴奋的说这个包（package）像玩具一样好玩。不一会几个妹子点赞了，很肯定我的说法….">
+<meta property="og:image" content="https://github.com/Moshiwei/test/blob/master/images/bar.png?raw=true">
+<meta property="og:image" content="https://github.com/chenjiandongx/pyecharts/raw/master/images/pie-1.png">
+<meta property="og:image" content="https://github.com/Moshiwei/test/blob/master/images/wordcloud.png?raw=true">
+<meta property="og:image" content="https://github.com/chenjiandongx/pyecharts/raw/master/images/liquid-1.gif">
+<meta property="og:image" content="https://github.com/chenjiandongx/pyecharts/raw/master/images/geo-0.gif">
+<meta property="og:updated_time" content="2017-08-10T14:34:15.286Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pyecharts">
+<meta name="twitter:description" content="pyecharts（数据可视化）
+前言如果让我说写python的时候最幸福的感觉是什么，我会说我遇到了一个好用的包（package），而且方法真的太好用了。说起来还有一个笑话，遇到pyecharts的那天，我兴奋的说这个包（package）像玩具一样好玩。不一会几个妹子点赞了，很肯定我的说法….">
+<meta name="twitter:image" content="https://github.com/Moshiwei/test/blob/master/images/bar.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://Moshiwei.github.io/2017/07/25/pyecharts/"/>
+
+
+
+
+
+  <title> pyecharts | 纸镜 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">纸镜</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/25/pyecharts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Moshiwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                pyecharts
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-25T18:23:00+08:00">
+                2017-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python包/" itemprop="url" rel="index">
+                    <span itemprop="name">python包</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="pyecharts（数据可视化）"><a href="#pyecharts（数据可视化）" class="headerlink" title="pyecharts（数据可视化）"></a>pyecharts（数据可视化）</h1><blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果让我说写python的时候最幸福的感觉是什么，我会说我遇到了一个好用的包（package），而且方法真的太好用了。说起来还有一个笑话，遇到pyecharts的那天，我兴奋的说这个包（package）像玩具一样好玩。不一会几个妹子点赞了，很肯定我的说法….<br><a id="more"></a></p>
+<h2 id="简单易用"><a href="#简单易用" class="headerlink" title="简单易用"></a>简单易用</h2><p>from pyecharts import chart_tpye</p>
+<p>chart_str = chart_type()</p>
+<p>chart_str.add()</p>
+<p>char_str.show_config()</p>
+<p>char_str.render()</p>
+<p>char_type就是图表的类型，下面我会介绍几种</p>
+<h2 id="bar（柱状图）"><a href="#bar（柱状图）" class="headerlink" title="bar（柱状图）"></a>bar（柱状图）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from pyecharts import Bar</div><div class="line"></div><div class="line">bar = Bar(&quot;blog内容个梗概&quot;)</div><div class="line">bar.add(&quot;bolg类别&quot;, [&quot;python学习笔记&quot;, &quot;个人感想&quot;, &quot;杂文&quot;, &quot;教程&quot;], [5, 4, 3, 2])</div><div class="line">bar.show_config()</div><div class="line">bar.render()</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/Moshiwei/test/blob/master/images/bar.png?raw=true" alt="image"></p>
+<h2 id="pie（饼图）"><a href="#pie（饼图）" class="headerlink" title="pie（饼图）"></a>pie（饼图）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">from pyecharts import Pie</div><div class="line"></div><div class="line">attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]</div><div class="line">v1 = [11, 12, 13, 10, 10, 10]</div><div class="line">v2 = [19, 21, 32, 20, 20, 33]</div><div class="line">pie = Pie(&quot;饼图-玫瑰图示例&quot;, title_pos=&apos;center&apos;, width=900)</div><div class="line">pie.add(&quot;商品A&quot;, attr, v1, center=[25, 50], is_random=True, radius=[30, 75], rosetype=&apos;radius&apos;)</div><div class="line">pie.add(&quot;商品B&quot;, attr, v2, center=[75, 50], is_random=True, radius=[30, 75], rosetype=&apos;area&apos;,</div><div class="line">        is_legend_show=False, is_label_show=True)</div><div class="line">pie.show_config() </div><div class="line">pie.render()</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/chenjiandongx/pyecharts/raw/master/images/pie-1.png" alt="image"></p>
+<h2 id="WordCloud（词云图）"><a href="#WordCloud（词云图）" class="headerlink" title="WordCloud（词云图）"></a>WordCloud（词云图）</h2></blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># -*- coding:utf-8 -*-</div><div class="line">from pyecharts import WordCloud</div><div class="line"></div><div class="line">name = [&apos;Python&apos;, &apos;C&apos;, &apos;Java&apos;, &apos;C++&apos;, &apos;C#&apos;,</div><div class="line">        &apos;R&apos;, &apos;JavaScript&apos;, &apos;PHP&apos;, &apos;Go&apos;, &apos;Swift&apos;, &apos;Arduino&apos;,</div><div class="line">        &apos;Ruby&apos;, &apos;Assembly&apos;, &apos;Scala&apos;, &apos;Matlib&apos;, &apos;HTML&apos;,</div><div class="line">        &apos;Shell&apos;, &apos;Perl&apos;, &apos;Visual Basic&apos;, &apos;SQL&apos;]</div><div class="line">value = [10000, 6181, 4386, 4055, 2467, 2244, 1898, 1484, 1112, 965, 847, 582, 555,</div><div class="line">         550, 462, 366, 360, 282, 273, 265]</div><div class="line">wordcloud = WordCloud(width=1300, height=620)</div><div class="line">wordcloud.add(&quot;&quot;, name, value, word_size_range=[20, 100])</div><div class="line">wordcloud.show_config()</div><div class="line">wordcloud.render()</div></pre></td></tr></table></figure>
+<blockquote>
+<p><img src="https://github.com/Moshiwei/test/blob/master/images/wordcloud.png?raw=true" alt="image"></p>
+<h2 id="水球图"><a href="#水球图" class="headerlink" title="水球图"></a>水球图</h2></blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from pyecharts import Liquid</div><div class="line"></div><div class="line">liquid = Liquid(&quot;水球图示例&quot;)</div><div class="line">liquid.add(&quot;Liquid&quot;, [0.6, 0.5, 0.4, 0.3], is_liquid_animation=False, shape=&apos;diamond&apos;)</div><div class="line">liquid.show_config()</div><div class="line">liquid.render()</div></pre></td></tr></table></figure>
+<blockquote>
+<p><img src="https://github.com/chenjiandongx/pyecharts/raw/master/images/liquid-1.gif" alt="image"></p>
+<h2 id="地理坐标"><a href="#地理坐标" class="headerlink" title="地理坐标"></a>地理坐标</h2></blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">from pyecharts import Geo</div><div class="line"></div><div class="line">data = [</div><div class="line">    (&quot;海门&quot;, 9),(&quot;鄂尔多斯&quot;, 12),(&quot;招远&quot;, 12),(&quot;舟山&quot;, 12),(&quot;齐齐哈尔&quot;, 14),(&quot;盐城&quot;, 15),</div><div class="line">    (&quot;赤峰&quot;, 16),(&quot;青岛&quot;, 18),(&quot;乳山&quot;, 18),(&quot;金昌&quot;, 19),(&quot;泉州&quot;, 21),(&quot;莱西&quot;, 21),</div><div class="line">    (&quot;日照&quot;, 21),(&quot;胶南&quot;, 22),(&quot;南通&quot;, 23),(&quot;拉萨&quot;, 24),(&quot;云浮&quot;, 24),(&quot;梅州&quot;, 25),</div><div class="line">    (&quot;文登&quot;, 25),(&quot;上海&quot;, 25),(&quot;攀枝花&quot;, 25),(&quot;威海&quot;, 25),(&quot;承德&quot;, 25),(&quot;厦门&quot;, 26),</div><div class="line">    (&quot;汕尾&quot;, 26),(&quot;潮州&quot;, 26),(&quot;丹东&quot;, 27),(&quot;太仓&quot;, 27),(&quot;曲靖&quot;, 27),(&quot;烟台&quot;, 28),</div><div class="line">    (&quot;福州&quot;, 29),(&quot;瓦房店&quot;, 30),(&quot;即墨&quot;, 30),(&quot;抚顺&quot;, 31),(&quot;玉溪&quot;, 31),(&quot;张家口&quot;, 31),</div><div class="line">    (&quot;阳泉&quot;, 31),(&quot;莱州&quot;, 32),(&quot;湖州&quot;, 32),(&quot;汕头&quot;, 32),(&quot;昆山&quot;, 33),(&quot;宁波&quot;, 33),</div><div class="line">    (&quot;湛江&quot;, 33),(&quot;揭阳&quot;, 34),(&quot;荣成&quot;, 34),(&quot;连云港&quot;, 35),(&quot;葫芦岛&quot;, 35),(&quot;常熟&quot;, 36),</div><div class="line">    (&quot;东莞&quot;, 36),(&quot;河源&quot;, 36),(&quot;淮安&quot;, 36),(&quot;泰州&quot;, 36),(&quot;南宁&quot;, 37),(&quot;营口&quot;, 37),</div><div class="line">    (&quot;惠州&quot;, 37),(&quot;江阴&quot;, 37),(&quot;蓬莱&quot;, 37),(&quot;韶关&quot;, 38),(&quot;嘉峪关&quot;, 38),(&quot;广州&quot;, 38),</div><div class="line">    (&quot;延安&quot;, 38),(&quot;太原&quot;, 39),(&quot;清远&quot;, 39),(&quot;中山&quot;, 39),(&quot;昆明&quot;, 39),(&quot;寿光&quot;, 40),</div><div class="line">    (&quot;盘锦&quot;, 40),(&quot;长治&quot;, 41),(&quot;深圳&quot;, 41),(&quot;珠海&quot;, 42),(&quot;宿迁&quot;, 43),(&quot;咸阳&quot;, 43),</div><div class="line">    (&quot;铜川&quot;, 44),(&quot;平度&quot;, 44),(&quot;佛山&quot;, 44),(&quot;海口&quot;, 44),(&quot;江门&quot;, 45),(&quot;章丘&quot;, 45),</div><div class="line">    (&quot;肇庆&quot;, 46),(&quot;大连&quot;, 47),(&quot;临汾&quot;, 47),(&quot;吴江&quot;, 47),(&quot;石嘴山&quot;, 49),(&quot;沈阳&quot;, 50),</div><div class="line">    (&quot;苏州&quot;, 50),(&quot;茂名&quot;, 50),(&quot;嘉兴&quot;, 51),(&quot;长春&quot;, 51),(&quot;胶州&quot;, 52),(&quot;银川&quot;, 52),</div><div class="line">    (&quot;张家港&quot;, 52),(&quot;三门峡&quot;, 53),(&quot;锦州&quot;, 54),(&quot;南昌&quot;, 54),(&quot;柳州&quot;, 54),(&quot;三亚&quot;, 54),</div><div class="line">    (&quot;自贡&quot;, 56),(&quot;吉林&quot;, 56),(&quot;阳江&quot;, 57),(&quot;泸州&quot;, 57),(&quot;西宁&quot;, 57),(&quot;宜宾&quot;, 58),</div><div class="line">    (&quot;呼和浩特&quot;, 58),(&quot;成都&quot;, 58),(&quot;大同&quot;, 58),(&quot;镇江&quot;, 59),(&quot;桂林&quot;, 59),(&quot;张家界&quot;, 59),</div><div class="line">    (&quot;宜兴&quot;, 59),(&quot;北海&quot;, 60),(&quot;西安&quot;, 61),(&quot;金坛&quot;, 62),(&quot;东营&quot;, 62),(&quot;牡丹江&quot;, 63),</div><div class="line">    (&quot;遵义&quot;, 63),(&quot;绍兴&quot;, 63),(&quot;扬州&quot;, 64),(&quot;常州&quot;, 64),(&quot;潍坊&quot;, 65),(&quot;重庆&quot;, 66),</div><div class="line">    (&quot;台州&quot;, 67),(&quot;南京&quot;, 67),(&quot;滨州&quot;, 70),(&quot;贵阳&quot;, 71),(&quot;无锡&quot;, 71),(&quot;本溪&quot;, 71),</div><div class="line">    (&quot;克拉玛依&quot;, 72),(&quot;渭南&quot;, 72),(&quot;马鞍山&quot;, 72),(&quot;宝鸡&quot;, 72),(&quot;焦作&quot;, 75),(&quot;句容&quot;, 75),</div><div class="line">    (&quot;北京&quot;, 79),(&quot;徐州&quot;, 79),(&quot;衡水&quot;, 80),(&quot;包头&quot;, 80),(&quot;绵阳&quot;, 80),(&quot;乌鲁木齐&quot;, 84),</div><div class="line">    (&quot;枣庄&quot;, 84),(&quot;杭州&quot;, 84),(&quot;淄博&quot;, 85),(&quot;鞍山&quot;, 86),(&quot;溧阳&quot;, 86),(&quot;库尔勒&quot;, 86),</div><div class="line">    (&quot;安阳&quot;, 90),(&quot;开封&quot;, 90),(&quot;济南&quot;, 92),(&quot;德阳&quot;, 93),(&quot;温州&quot;, 95),(&quot;九江&quot;, 96),</div><div class="line">    (&quot;邯郸&quot;, 98),(&quot;临安&quot;, 99),(&quot;兰州&quot;, 99),(&quot;沧州&quot;, 100),(&quot;临沂&quot;, 103),(&quot;南充&quot;, 104),</div><div class="line">    (&quot;天津&quot;, 105),(&quot;富阳&quot;, 106),(&quot;泰安&quot;, 112),(&quot;诸暨&quot;, 112),(&quot;郑州&quot;, 113),(&quot;哈尔滨&quot;, 114),</div><div class="line">    (&quot;聊城&quot;, 116),(&quot;芜湖&quot;, 117),(&quot;唐山&quot;, 119),(&quot;平顶山&quot;, 119),(&quot;邢台&quot;, 119),(&quot;德州&quot;, 120),</div><div class="line">    (&quot;济宁&quot;, 120),(&quot;荆州&quot;, 127),(&quot;宜昌&quot;, 130),(&quot;义乌&quot;, 132),(&quot;丽水&quot;, 133),(&quot;洛阳&quot;, 134),</div><div class="line">    (&quot;秦皇岛&quot;, 136),(&quot;株洲&quot;, 143),(&quot;石家庄&quot;, 147),(&quot;莱芜&quot;, 148),(&quot;常德&quot;, 152),(&quot;保定&quot;, 153),</div><div class="line">    (&quot;湘潭&quot;, 154),(&quot;金华&quot;, 157),(&quot;岳阳&quot;, 169),(&quot;长沙&quot;, 175),(&quot;衢州&quot;, 177),(&quot;廊坊&quot;, 193),</div><div class="line">    (&quot;菏泽&quot;, 194),(&quot;合肥&quot;, 229),(&quot;武汉&quot;, 273),(&quot;大庆&quot;, 279)]</div><div class="line"></div><div class="line">geo = Geo(&quot;全国主要城市空气质量&quot;, &quot;data from pm2.5&quot;, title_color=&quot;#fff&quot;, title_pos=&quot;center&quot;,</div><div class="line">width=1200, height=600, background_color=&apos;#404a59&apos;)</div><div class="line">attr, value = geo.cast(data)</div><div class="line">geo.add(&quot;&quot;, attr, value, visual_range=[0, 200], visual_text_color=&quot;#fff&quot;, symbol_size=15, is_visualmap=True)</div><div class="line">geo.show_config()</div><div class="line">geo.render()</div></pre></td></tr></table></figure>
+<blockquote>
+<p><img src="https://github.com/chenjiandongx/pyecharts/raw/master/images/geo-0.gif" alt="image"></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/pyecharts/" rel="tag"># pyecharts</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/24/Django00/" rel="next" title="django梗概">
+                <i class="fa fa-chevron-left"></i> django梗概
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/27/HTTP响应/" rel="prev" title="HTTP响应解析">
+                HTTP响应解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Moshiwei" />
+          <p class="site-author-name" itemprop="name">Moshiwei</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#pyecharts（数据可视化）"><span class="nav-number">1.</span> <span class="nav-text">pyecharts（数据可视化）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单易用"><span class="nav-number">1.2.</span> <span class="nav-text">简单易用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bar（柱状图）"><span class="nav-number">1.3.</span> <span class="nav-text">bar（柱状图）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pie（饼图）"><span class="nav-number">1.4.</span> <span class="nav-text">pie（饼图）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WordCloud（词云图）"><span class="nav-number">1.5.</span> <span class="nav-text">WordCloud（词云图）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#水球图"><span class="nav-number">1.6.</span> <span class="nav-text">水球图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地理坐标"><span class="nav-number">1.7.</span> <span class="nav-text">地理坐标</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Moshiwei</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

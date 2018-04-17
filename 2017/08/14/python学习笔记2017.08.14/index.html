@@ -1,0 +1,772 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="python中的闭包
+在学完python中的返回函数的时候，下一节就是学python闭包，感觉上一节的学习完全懵了，这里总结一下，写出思考过程，方便未来更改查看。
+
+定义
+首先，内层函数引用了外层函数的变量（参数也算变量），然后返回内层函数的情况下，称为闭包（Closure）
+闭包的特点是返回的函数还引用了外层函数的局部变量，所以要正确使用闭包，就要确保引用的局部变量在函数返回后不能变。
+
+返回函">
+<meta property="og:type" content="article">
+<meta property="og:title" content="闭包问题的理解和样例分析">
+<meta property="og:url" content="http://Moshiwei.github.io/2017/08/14/python学习笔记2017.08.14/index.html">
+<meta property="og:site_name" content="纸镜">
+<meta property="og:description" content="python中的闭包
+在学完python中的返回函数的时候，下一节就是学python闭包，感觉上一节的学习完全懵了，这里总结一下，写出思考过程，方便未来更改查看。
+
+定义
+首先，内层函数引用了外层函数的变量（参数也算变量），然后返回内层函数的情况下，称为闭包（Closure）
+闭包的特点是返回的函数还引用了外层函数的局部变量，所以要正确使用闭包，就要确保引用的局部变量在函数返回后不能变。
+
+返回函">
+<meta property="og:updated_time" content="2017-08-14T09:39:26.139Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="闭包问题的理解和样例分析">
+<meta name="twitter:description" content="python中的闭包
+在学完python中的返回函数的时候，下一节就是学python闭包，感觉上一节的学习完全懵了，这里总结一下，写出思考过程，方便未来更改查看。
+
+定义
+首先，内层函数引用了外层函数的变量（参数也算变量），然后返回内层函数的情况下，称为闭包（Closure）
+闭包的特点是返回的函数还引用了外层函数的局部变量，所以要正确使用闭包，就要确保引用的局部变量在函数返回后不能变。
+
+返回函">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://Moshiwei.github.io/2017/08/14/python学习笔记2017.08.14/"/>
+
+
+
+
+
+  <title> 闭包问题的理解和样例分析 | 纸镜 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">纸镜</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/14/python学习笔记2017.08.14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Moshiwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                闭包问题的理解和样例分析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-14T17:39:00+08:00">
+                2017-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">python学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="python中的闭包"><a href="#python中的闭包" class="headerlink" title="python中的闭包"></a>python中的闭包</h1><blockquote>
+<p>在学完python中的返回函数的时候，下一节就是学python闭包，感觉上一节的学习完全懵了，这里总结一下，写出思考过程，方便未来更改查看。</p>
+</blockquote>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>首先，内层函数引用了外层函数的变量（参数也算变量），然后返回内层函数的情况下，称为闭包（Closure）</p>
+<p>闭包的特点是返回的函数还引用了外层函数的局部变量，所以要<strong>正确</strong>使用闭包，就要确保<strong>引用的局部变量在函数返回后不能变</strong>。</p>
+</blockquote>
+<h2 id="返回函数"><a href="#返回函数" class="headerlink" title="返回函数"></a>返回函数</h2><blockquote>
+<p>python的函数不但可以返回，int，str，list，dict等数据类型，还可以返回函数。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def f():</div><div class="line">    print(&quot;call f()&quot;)</div><div class="line">    def g():</div><div class="line">        print(&quot;call g()&quot;)</div><div class="line">    return g</div></pre></td></tr></table></figure>
+<blockquote>
+<p>我们在定义了一个函数f()之后，在其内部又定义了一个函数g()。注意函数f返回的是g而不是g()。这会产生什么影响呢，调用函数f()之后返回的函数还需要通过指向内层函数，因此可以调用内层函数，返回函数可以把一些计算延迟执行。</p>
+<p>先看看它怎么运作</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; x = f()  #调用f()</div><div class="line">call f()...</div><div class="line"># 变量x是f()返回的函数</div><div class="line">&gt;&gt;&gt; x()   # x指向函数，因此可以调用</div><div class="line">call g()...</div></pre></td></tr></table></figure>
+<blockquote>
+<p>阅读此处的时候最后写下里对比上面的代码，画线找一下对应关系</p>
+<h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><p><strong>编写一个函数calc_prod(lst)，它接收一个list，返回一个函数，返回函数可以计算参数的乘积。</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def calc_prod(lst):</div><div class="line">    def a():</div><div class="line">        return reduce((lambda x,y: x*y),lst)</div><div class="line">    return a</div><div class="line">f = calc_prod([1, 2, 3, 4])</div><div class="line">print f()</div></pre></td></tr></table></figure>
+<h2 id="引入闭包"><a href="#引入闭包" class="headerlink" title="引入闭包"></a>引入闭包</h2><blockquote>
+<p>开始学习闭包的时候，直接进入例子，发现特别懵，扣了很长时间，对比上一个例子，还看了一些别人的笔记，有了一个初步的了解，现在分享出来。</p>
+<p><strong>希望一次返回3个函数，分别计算1x1,2x2,3x3:</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def count():</div><div class="line">    fs = []</div><div class="line">    for i in range(1, 4):</div><div class="line">        def f():</div><div class="line">             return i*i</div><div class="line">        fs.append(f)</div><div class="line">    return fs</div><div class="line"></div><div class="line">f1, f2, f3 = count()</div><div class="line">print(f1(), f2(), f3())</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这段代码并不能实现输出1x1,2x2,3x3，原因是并没有正确的使用闭包。</p>
+<h2 id="新的赋值语句"><a href="#新的赋值语句" class="headerlink" title="新的赋值语句"></a>新的赋值语句</h2><p>说实话一开始不是很能理解最后一行的赋值方法，找了一下笔记，得知它是这样赋值的。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f1, f2, f3 = count()</div></pre></td></tr></table></figure>
+<blockquote>
+<p>等同于</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">f1 = count()[1]</div><div class="line">f2 = count()[2]</div><div class="line">f3 = count()[3]</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意，就因为这句代码，使得count()这个函数被调用了三次，此时的i已经变成3了<br>返回的fs列表里应该是三个返回函数</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fs = [f1, f2, f3]</div></pre></td></tr></table></figure>
+<blockquote>
+<p>由于返回函数的性质，f1不同于f1(),也就是说f1()函数还没有调用</p>
+<p>在print(f1(), f2(), f3())在这里才调用了内层函数，但是i已经是3了，所以输出的是9，9，9</p>
+<p>读到这里应该返回去看一下闭包的概念，<strong>引用的局部变量在函数返回后不能变</strong>，f()函数引用了循环参量i，但是i在调用上层函数的时候会改变。这是我理解的问题所在。</p>
+</blockquote>
+<h2 id="如何实现正确闭包"><a href="#如何实现正确闭包" class="headerlink" title="如何实现正确闭包"></a>如何实现正确闭包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def count():</div><div class="line">    fs = []</div><div class="line">    for i in range(1, 4):</div><div class="line">        def f(m = i):</div><div class="line">            return m * m</div><div class="line">        fs.append(f)</div><div class="line">    return fs</div><div class="line"></div><div class="line">f1, f2, f3 = count()</div><div class="line">print f1(), f2(), f3()</div></pre></td></tr></table></figure>
+<blockquote>
+<p>函数在只有在执行时才回去获取外层参数i，如果函数在定义时就可以获取储存到i，（这里使用m储存到了i），问题就可以解决了。所以使用默认参数，正好可以完成定义时获取i值且运行函数时无需参数输入的功能，所以在函数f()定义中改为f(m = i),函数f返回值改为m*m即可</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>返回函数，不要引用任何循环变量，或者后续会发生变化的变量。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/12/python学习笔记2017.08.12/" rel="next" title="python学习笔记">
+                <i class="fa fa-chevron-left"></i> python学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/15/无标题Markdown/" rel="prev" title="新生">
+                新生 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Moshiwei" />
+          <p class="site-author-name" itemprop="name">Moshiwei</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#python中的闭包"><span class="nav-number">1.</span> <span class="nav-text">python中的闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回函数"><span class="nav-number">1.2.</span> <span class="nav-text">返回函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样例"><span class="nav-number">1.3.</span> <span class="nav-text">样例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引入闭包"><span class="nav-number">1.4.</span> <span class="nav-text">引入闭包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新的赋值语句"><span class="nav-number">1.5.</span> <span class="nav-text">新的赋值语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何实现正确闭包"><span class="nav-number">1.6.</span> <span class="nav-text">如何实现正确闭包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">1.7.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Moshiwei</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

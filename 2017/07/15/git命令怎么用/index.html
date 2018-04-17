@@ -1,0 +1,763 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="git," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="我居然有了一家物流公司？（git教程）
+从最早我们学习的时候，当我们引用公式，名言或是别的什么的时候，都会连带着出处一同记忆。Git是Linux的发明者Linus开发的一款新时代的版本控制系统。这个消息真是太好了。因为我们知道了原来这个厉害的家伙发明了两个厉害的东西。
+上面我们提到了一个名词，版本控制系统。只要理解了版本控制系统就好了吧。
+拿框架来说吧。Django是我学习的第一个python框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git指令的使用与个人理解">
+<meta property="og:url" content="http://Moshiwei.github.io/2017/07/15/git命令怎么用/index.html">
+<meta property="og:site_name" content="纸镜">
+<meta property="og:description" content="我居然有了一家物流公司？（git教程）
+从最早我们学习的时候，当我们引用公式，名言或是别的什么的时候，都会连带着出处一同记忆。Git是Linux的发明者Linus开发的一款新时代的版本控制系统。这个消息真是太好了。因为我们知道了原来这个厉害的家伙发明了两个厉害的东西。
+上面我们提到了一个名词，版本控制系统。只要理解了版本控制系统就好了吧。
+拿框架来说吧。Django是我学习的第一个python框架">
+<meta property="og:image" content="https://github.com/Moshiwei/test/blob/master/images/django-v.png?raw=true">
+<meta property="og:image" content="https://github.com/Moshiwei/test/blob/master/images/tree.png?raw=true">
+<meta property="og:updated_time" content="2017-08-10T14:33:46.053Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git指令的使用与个人理解">
+<meta name="twitter:description" content="我居然有了一家物流公司？（git教程）
+从最早我们学习的时候，当我们引用公式，名言或是别的什么的时候，都会连带着出处一同记忆。Git是Linux的发明者Linus开发的一款新时代的版本控制系统。这个消息真是太好了。因为我们知道了原来这个厉害的家伙发明了两个厉害的东西。
+上面我们提到了一个名词，版本控制系统。只要理解了版本控制系统就好了吧。
+拿框架来说吧。Django是我学习的第一个python框架">
+<meta name="twitter:image" content="https://github.com/Moshiwei/test/blob/master/images/django-v.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://Moshiwei.github.io/2017/07/15/git命令怎么用/"/>
+
+
+
+
+
+  <title> git指令的使用与个人理解 | 纸镜 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">纸镜</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/15/git命令怎么用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Moshiwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                git指令的使用与个人理解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-15T19:30:00+08:00">
+                2017-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="我居然有了一家物流公司？（git教程）"><a href="#我居然有了一家物流公司？（git教程）" class="headerlink" title="我居然有了一家物流公司？（git教程）"></a>我居然有了一家物流公司？（git教程）</h1><blockquote>
+<p>从最早我们学习的时候，当我们引用公式，名言或是别的什么的时候，都会连带着出处一同记忆。Git是Linux的发明者Linus开发的一款新时代的版本控制系统。这个消息真是太好了。因为我们知道了原来这个厉害的家伙发明了两个厉害的东西。</p>
+<p>上面我们提到了一个名词，版本控制系统。只要理解了版本控制系统就好了吧。</p>
+<p>拿框架来说吧。Django是我学习的第一个python框架。那么Django发布了多少个版本呢</p>
+<p><img src="https://github.com/Moshiwei/test/blob/master/images/django-v.png?raw=true" alt="image"></p>
+<p>我们看到了早期Django已经发布了几个版本了，这里记录了早期版本的发布时间，还有每一个版本的变更内容，我们可以下载到早期的稳定版本，也可以下载最细的版本去测试其中的新功能。<br>又比如刚发布的Django1.11出现了一个严重的bug导致不得不紧急恢复到上一个稳定版本时，git也会有重大的作用。<br><a id="more"></a></p>
+<p>先说一个我们可能使用最频繁的命令</p>
+<p><strong>git status</strong></p>
+<p>我们会经常使用这个代码去查看当前的状态</p>
+<p><strong>git init</strong></p>
+<p>代表初始化git仓库，也就是将你的目录变成一个git仓库<br>在介绍下一个代码的时候首先要引入一个概念<br>我们的目的是将更新的文件最终push到github上面去<br>那么我们就需要一个介质，把我们要传达的东西发出去</p>
+<p><img src="https://github.com/Moshiwei/test/blob/master/images/tree.png?raw=true" alt="image"></p>
+<p>你想上传的文件在你的文件夹里静静的躺着，上传成功的文件也会在github里面的躺着的<br>那么我们不可见的地方，就是git仓库了，别慌好吧我们可以用上一个命令git status查啊，查快递一样对不对。那么git仓库就是我们的express了，git仓库像一个强大的物流公司。是吧~<br>好了不说了快向上面搬东西吧</p>
+<p><strong>git add</strong></p>
+<p>git add 后加你想要上传的文件全名例如<br>git add newblog.md</p>
+<p>然后使用</p>
+<p><strong>git commit</strong></p>
+<p>我们输入git commit -m “first commit”这个命令是什么意思呢？代表我们提交了更改，字符串代表了提交了一个log，你希望你的这次提交有个备注吧。</p>
+<p><strong>git log</strong></p>
+<p>那么这个命令就该知道什么意思了吧，git log可以查看所有commit的记录</p>
+<p><strong>git tag</strong></p>
+<p>这里面要再使用前面Django的例子，基本所有的框架都会显示版本号，比如1.10，1.11之类的，不同版本代码会有或多或少的变动，我们要把变动过的新版本加上标签。这样无论未来有何变动我们还有测试余地。</p>
+<p>想要切换到某一个tag怎么办使用?</p>
+<p><strong>git checkout v1.10</strong></p>
+<p>好了，东西都搬上去了，下面看看我们怎么发货</p>
+<p><strong>ssh</strong></p>
+<p>在你拥有了一个github账号之后，你一开始是不能直接推送你的更新的，我们需要一种授权就是ssh授权，ssh是一种网络协议，用于计算之间的加密登陆，想要在github提交代码的第一步就是要添加ssh key配置git</p>
+<p>生成ssh key</p>
+<p>我们要在命令行中输入</p>
+<p><strong>ssh-keygen -t rsa</strong></p>
+<p>制定rsa算法生成密钥，连续三个回车，就会生成两个文件，id_rea和id_rsa.pub，前者是密钥，后者就是公钥了。然后我们搜索出公钥将公钥的内容添加在github上，这样你本地的密钥与github上的公钥进行匹配，授权成功才可以提交代码</p>
+<p>这里是没有教如何上传公钥的</p>
+<p>ok我们把ssh比喻成一个合同吧，也就是说我们个git仓库已经可以和github交易了<br>下一步就是从仓库发货了</p>
+<p>首先我们去github上面建一个仓库（repositories）</p>
+<p><strong>git remote add origin git@github.com:Moshiwei/test.git</strong></p>
+<p>这时我们本地的git仓库已经和远程github的仓库关联了。git@github.com:Moshiwei/test.git这段ssh就是我们的发货地址啦</p>
+<p><strong>git remote -v</strong></p>
+<p>可以看到哪些远程被关联的，也就是看看有几条发货地址。</p>
+<p><strong>最后发货啦!!!!!!</strong></p>
+<p><strong>git push origin master</strong></p>
+<p>发货的时候写上发货人啊</p>
+<p>git config –global user.name “Moshiwei”</p>
+<p>git config –global user.email “1194317170@qq.com”</p>
+<p>这里的git命令都只是我们自己push一些文件，或者变动所需要的，没有写多人协同合作的指令，重点在理解git与github如何交互嘛</p>
+<p>如果出错了不要着急，看看是没有权限还是出现错误，错误有可能是你命令输错了，也有可能目录不对。</p>
+<p><strong>有些话想说</strong></p>
+<p>这篇文章的标题本来是&lt;如何理解git与github的交互&gt;，但后来我为了让标题更加吸引人，加了一个浮夸的问句。就成了现在这样了</p>
+<p>上述内容是我按照自己的理解写的，如果有人看着引起不适的话我很抱歉。希望这篇形象的教程能帮助到你。未来我可能会为每一个步骤添加一些样图以便更好的理解，为什么说是以后加呢，因为这篇教程我在onenote上已经写了一遍了，搬到blog上真的费劲，可能我的markdown还不过关吧。如果有问题可以发邮件，一起进步吧。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/15/一直给自己充电吧/" rel="next" title="我不是不喜欢学习 我只是不喜欢学校">
+                <i class="fa fa-chevron-left"></i> 我不是不喜欢学习 我只是不喜欢学校
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/17/谈谈写文章/" rel="prev" title="谈谈写文章">
+                谈谈写文章 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Moshiwei" />
+          <p class="site-author-name" itemprop="name">Moshiwei</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#我居然有了一家物流公司？（git教程）"><span class="nav-number">1.</span> <span class="nav-text">我居然有了一家物流公司？（git教程）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Moshiwei</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

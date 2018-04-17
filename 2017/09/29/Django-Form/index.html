@@ -1,0 +1,756 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Django," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Django-Form
+Django provides a rich framework to facilitate the creation of forms and the manipulation of form data.
+
+Django提供了强大的框架使得创建表格或是更改表格更加容易
+Working with forms如果你想构建一个功能强大的网站不仅仅是发布文章的话，你就需要理解如何">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django-Form">
+<meta property="og:url" content="http://Moshiwei.github.io/2017/09/29/Django-Form/index.html">
+<meta property="og:site_name" content="纸镜">
+<meta property="og:description" content="Django-Form
+Django provides a rich framework to facilitate the creation of forms and the manipulation of form data.
+
+Django提供了强大的框架使得创建表格或是更改表格更加容易
+Working with forms如果你想构建一个功能强大的网站不仅仅是发布文章的话，你就需要理解如何">
+<meta property="og:updated_time" content="2017-09-29T13:39:28.338Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Django-Form">
+<meta name="twitter:description" content="Django-Form
+Django provides a rich framework to facilitate the creation of forms and the manipulation of form data.
+
+Django提供了强大的框架使得创建表格或是更改表格更加容易
+Working with forms如果你想构建一个功能强大的网站不仅仅是发布文章的话，你就需要理解如何">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://Moshiwei.github.io/2017/09/29/Django-Form/"/>
+
+
+
+
+
+  <title> Django-Form | 纸镜 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">纸镜</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/09/29/Django-Form/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Moshiwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Django-Form
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-29T21:38:00+08:00">
+                2017-09-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python框架/" itemprop="url" rel="index">
+                    <span itemprop="name">python框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Django-Form"><a href="#Django-Form" class="headerlink" title="Django-Form"></a>Django-Form</h1><blockquote>
+<p>Django provides a rich framework to facilitate the creation of forms and the manipulation of form data.</p>
+</blockquote>
+<p>Django提供了强大的框架使得创建表格或是更改表格更加容易</p>
+<h2 id="Working-with-forms"><a href="#Working-with-forms" class="headerlink" title="Working with forms"></a>Working with forms</h2><p>如果你想构建一个功能强大的网站不仅仅是发布文章的话，你就需要理解如何使用forms，去接受用户的提交内容。<br>Django提供了一系列的工具和方法去帮助你构建forms。获取你用户的提交内容做出处理和应答。<br><a id="more"></a></p>
+<h2 id="HTML表单"><a href="#HTML表单" class="headerlink" title="HTML表单"></a>HTML表单</h2><p>在HTML中，表单是内部的元素集合<form>…</form>，允许访问者执行输入文本，选择选项，操纵对象或控件等操作，然后将该信息发送回服务器。</p>
+<p>例如，Django管理员的登录表单包含几个 <input>元素：一个type=”text”用于用户名，一个 type=”password”用于密码，另一个type=”submit”用于“登录”按钮。它还包含用户看不到的一些隐藏的文本字段，Django用于确定接下来要做什么。</p>
+<p>它还告诉浏览器，表单数据应该发送到<form>“ action属性”中指定的URL /admin/- 并且应该使用method属性 指定的HTTP机制发送post。</form></p>
+<h2 id="Django’s-role-in-forms"><a href="#Django’s-role-in-forms" class="headerlink" title="Django’s role in forms"></a>Django’s role in forms</h2><p>处理表格是一项复杂的业务，管理员需要准备不同类型的数据，以HTML的形式显示，使用方便的界面编辑，返回到服务器，验证和清理，然后保存或传递进一步处理。</p>
+<ul>
+<li>准备和重组数据，并且渲染他们</li>
+<li>创建HTML表单</li>
+<li>从客户接收和处理提交的表单和数据</li>
+</ul>
+<h2 id="Instantiating-processing-and-redering-forms-实例化，处理，渲染"><a href="#Instantiating-processing-and-redering-forms-实例化，处理，渲染" class="headerlink" title="Instantiating, processing, and redering forms(实例化，处理，渲染)"></a>Instantiating, processing, and redering forms(实例化，处理，渲染)</h2><p>当渲染一个Django对象时，我们通常会</p>
+<ol>
+<li>从视图中获取它</li>
+<li>将它传递到模版页面</li>
+<li>使用模版变量将其拓展为HTML标记</li>
+</ol>
+<p>在模版中渲染表单，和渲染任何其它类型的对象几乎工作是相同的，但有一些关键的区别。<br>当我们实例化表单时，我们可以选择将其留空或预先填充它。</p>
+<p>下面我们做一个实例。</p>
+<h2 id="Building-a-form"><a href="#Building-a-form" class="headerlink" title="Building a form"></a>Building a form</h2><h3 id="就像这样做"><a href="#就像这样做" class="headerlink" title="就像这样做"></a>就像这样做</h3><p>假设您想在您的网站上创建一个简单的表单，以获得用户名。您在模板中需要类似这样的东西</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;form action=&quot;/your-name/&quot; method=&quot;post&quot;&gt;</div><div class="line">    &lt;label for=&quot;your_name&quot;&gt;Your name: &lt;/label&gt;</div><div class="line">    &lt;input id=&quot;your_name&quot; type=&quot;text&quot; name=&quot;your_name&quot; value=&quot;&#123;&#123; current_name &#125;&#125;&quot;&gt;</div><div class="line">    &lt;input type=&quot;submit&quot; value=&quot;OK&quot;&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure>
+<p>这将告诉浏览器去返回一个数据表到URL，使用POST方法，如果模版中有变量，那将会填补your_name字段。你需要一个渲染模版表单的视图，根据需要提供current_name字段。提交表单时，POSt发送到服务器的请求将包含表单数据。<br>接下来需要制作相应的视图，该视图要在请求中找到响应的键值对，然后处理他们。</p>
+<p>表单可能包含数十或者上百的字段，其中许多字段可能需要预先填充，我们可能希望用户化在完成操作之前多次使用编辑提交循环。</p>
+<h3 id="在Django中创建一个表单"><a href="#在Django中创建一个表单" class="headerlink" title="在Django中创建一个表单"></a>在Django中创建一个表单</h3><blockquote>
+<p>forms.py</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from django import forms</div><div class="line"></div><div class="line">class NameForm(forms.Form):</div><div class="line">    your_name = forms.CharField(label=&apos;Your name&apos;, max_length=100)</div></pre></td></tr></table></figure>
+<p>在这个Form类中，只有一个字段就是your_name。max_length是熟悉的参数了。</p>
+<p>Form实例有一个is_valid()方法，它运行其所有字段的验证历程，调用次方法，如果所有的数据都有效，那么他将会返回Ture，然后将表单数据放在其cleaned_data中。<br>表单在第一次呈现时如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt; label  for = “your_name” &gt;您的姓名：&lt;/ label &gt; </div><div class="line">&lt; input  id = “your_name”  type = “text”  name = “your_name”  maxlength = “100”  required  /</div></pre></td></tr></table></figure>
+<p>它不包括<form>标签，需要我们在模版中自己提供。</form></p>
+<h3 id="编写view"><a href="#编写view" class="headerlink" title="编写view"></a>编写view</h3><p>发送到Django网站的表单数据由视图处理。</p>
+<blockquote>
+<p>views.py</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">from django.shortcuts import render</div><div class="line">from django.http import HttpResponseRedirect</div><div class="line"></div><div class="line">from .forms import NameForm</div><div class="line"></div><div class="line">def get_name(request):</div><div class="line">    # if this is a POST request we need to process the form data</div><div class="line">    if request.method == &apos;POST&apos;:</div><div class="line">        # create a form instance and populate it with data from the request:</div><div class="line">        form = NameForm(request.POST)</div><div class="line">        # check whether it&apos;s valid:</div><div class="line">        if form.is_valid():</div><div class="line">            # process the data in form.cleaned_data as required</div><div class="line">            # ...</div><div class="line">            # redirect to a new URL:</div><div class="line">            return HttpResponseRedirect(&apos;/thanks/&apos;)</div><div class="line"></div><div class="line">    # if a GET (or any other method) we&apos;ll create a blank form</div><div class="line">    else:</div><div class="line">        form = NameForm()</div><div class="line"></div><div class="line">    return render(request, &apos;name.html&apos;, &#123;&apos;form&apos;: form&#125;)</div></pre></td></tr></table></figure>
+<p>当我们使用get请求访问的时候，它将会创建一个空的实例渲染在模版上，这正是我们期望的。<br>如果表单中提交了post请求，视图将会再次创建一个表单实例，并使用来自请求的数据进行天后从，这称为“将数据绑定到表单”form=NameForm(request.POST)</p>
+<p>我们还调用了表单的is_valid()方法，如果返回值不是Ture，我们将会返回模版的表单，这时表单将不会为空，直到用户书写正确的内容。</p>
+<p>如果is_valid()返回了Ture，那么我们可以在其cleaned_data属性中找到所有验证表单数据。再将HTTP重定向发送到浏览器之前，我们可以使用这些数据更新数据库或进行其他处理，告诉他下一步如何做</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Django/" rel="tag"># Django</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/25/Django-upload部分翻译/" rel="next" title="Django-upload部分翻译">
+                <i class="fa fa-chevron-left"></i> Django-upload部分翻译
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/30/搭建blog教程/" rel="prev" title="搭建个人博客">
+                搭建个人博客 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Moshiwei" />
+          <p class="site-author-name" itemprop="name">Moshiwei</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Django-Form"><span class="nav-number">1.</span> <span class="nav-text">Django-Form</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Working-with-forms"><span class="nav-number">1.1.</span> <span class="nav-text">Working with forms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML表单"><span class="nav-number">1.2.</span> <span class="nav-text">HTML表单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Django’s-role-in-forms"><span class="nav-number">1.3.</span> <span class="nav-text">Django’s role in forms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instantiating-processing-and-redering-forms-实例化，处理，渲染"><span class="nav-number">1.4.</span> <span class="nav-text">Instantiating, processing, and redering forms(实例化，处理，渲染)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Building-a-form"><span class="nav-number">1.5.</span> <span class="nav-text">Building a form</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#就像这样做"><span class="nav-number">1.5.1.</span> <span class="nav-text">就像这样做</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在Django中创建一个表单"><span class="nav-number">1.5.2.</span> <span class="nav-text">在Django中创建一个表单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写view"><span class="nav-number">1.5.3.</span> <span class="nav-text">编写view</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Moshiwei</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
