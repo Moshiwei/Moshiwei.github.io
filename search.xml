@@ -369,17 +369,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[django梗概]]></title>
-    <url>%2F2017%2F07%2F24%2FDjango00%2F</url>
-    <content type="text"><![CDATA[Djangooverview在Django官网的Overview中，第一句话就写了：Django was invented to meet fast-moving newsroom deadlines,while satisfying the tough requirements of experienced Web developers.翻译一下就是：Django的诞生呢是为了满足飞速变化的新闻编辑室的最后期限而发明的，同时满足了经验丰富的Web开发人员的严格要求。大概想表达Django效率高，功能强大。 为什么使用Django呢？Django封装的非常好，可以让你专注于对app开发代码的书写，而不必重复去造轮子；Django在安全问题讲道到它本身的安全性很高，会帮助开发者避免犯一些常规的安全错误，比如SQL资料隐码攻击，跨站脚本攻击，跨站点请求伪造和点击，我认为吸引我的就是以上两点，当然Django还有别的优点我现在还不知道，留着以后更新。 DOWNLOAD一个最新的官方版本，也就是稳定版，另一个就是最新的开发版了，你可以在开发板中使用它的新特性，发现bug并且相互交流。只需在git中修改它。此处体现了Django的开源。当你得到Django之后，你可以查询安装指南去进一步了解如何正确的安装Django。然后你可以登录django-users mailing list。那里有Django使用者和开发者可以帮助你解决问题。首先你得英语好。 Django文档Everything you need to know about Django大体有四篇文档提供给我们参考。Tutorials教程部分，教程中一步步教你如何制作一个网站。Toptic guides的内容大概是Django中的key words介绍他们的作用。Reference guide中写了Django的拓展功能，和一些API的使用方法。How-to中写了Django是如何工作的。 然后就开始我们的Django学习啦]]></content>
-      <categories>
-        <category>python框架</category>
-      </categories>
-      <tags>
-        <tag>Django</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[python学习笔记]]></title>
     <url>%2F2017%2F07%2F24%2Fpython%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.07.26%2F</url>
     <content type="text"><![CDATA[属性 学习这一章内容的时候，有几个名次我觉得很有用：访问器方法，和隐藏属性。 以前总是用到get方法，比如get_url(), get_img(),这类的（这里统称get方法），访问器是一个简单的方法，它能使用上面那类名字去得到或绑定一些特性，如果在访问给定的特性是必须要采取一些行动，那么像这样的封装状态变量（特性）就很重要。 property函数property可以将访问器方法隐藏。]]></content>
@@ -388,11 +377,11 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Django_part1]]></title>
-    <url>%2F2017%2F07%2F23%2FDjango01%2F</url>
-    <content type="text"><![CDATA[Writing your first Django app part1如何开始 通过一个例子来学习如何使用Django该例子有两个部分组成 一个公共的网站可以查看民意调查和投票 一个管理网站可以让你增添，更改，删除数据该例子是由python3.4以上版本写的，Django1.11版本以上 Creating a project从命令行中cd进入L你想管理你代码的目录然后运行以下代码 1$ django-admin startproject mysite 这将会创建一个工程在你的目录中startproject命令将会创建以下目录结构 1234567mysite/ manage.py mysite/ __init__.py settings.py urls.py wsgi.py 这些文件是： mysite这个文件是你项目的根目录 manage.py是一个命令行实用程序，你可以阅读更多的细节在https://docs.djangoproject.com/en/1.11/ref/django-admin/ 内部的mysite目录是一个python包，你可以引用它 init.py是一个空文件，它告诉python这个目录是一个python的包 settings.py内可以对项目进行相关设置 urls.py你的每一张网页都对应一个地址，地址要在这里设置 wsgi.py是Django提供的一个WSGI服务 接下来让我们证实它确实工作了 在命令行中运行下面的代码（请确定你在项目目录中也就是在mysite中） 1$ python manage.py runserver 然后你将会看到: 1234June 09, 2017 - 15:50:53Django version 1.11, using settings &apos;mysite.settings&apos;Starting development server at http://127.0.0.1:8000/Quit the server with CONTROL-C. 你已经打开了一个完全由python写的轻量级服务器，也就是说我们可以低成本甚至没有成本的快速开发测试我们的网站，无需去配置大型服务器，直到我们完成开发决定去运行 现在服务器跑起来了，你可以浏览http：//127.0.0.8000/在你的浏览器上你将会看到它开始工作了！ 你还可以在上述命令中后面加一个参数 1$ python manage.py runserver 8080 这样你的服务器就会运行在8080端口 自动重新加载runserver 当你在开发的时候，不必每一次改动就去重启服务器，服务器会自动重新加载，当你的代码逻辑有错误时，服务器会报告错误。但有些动作是不会触发重载服务器的。你需要记住这些情况记得重启服务器。 创建投票app 运行命令前请确认你在含有manage.py的目录下，也就是mysite下 1$ python manage.py startapp polls Django自带实用程序自动生成，所以你不必自己创建app的目录 在运行完命令后会创建一个polls的目录 123456789polls/ __init__.py admin.py apps.py migrations/ __init__.py models.py tests.py views.py 写下第一个view 打开polls下的views.py写下python代码 123from django.http import HttpResponsedef index(request): return HttpResponse(&quot;Hello, world. You&apos;re at the polls index.&quot;) 这是最简单的Django视图，要调用它我们需要将它映射到一个url上，所以我们需要创建一个urls.py的文件。在创建完成后你的目录会变成这样 12345678910polls/ __init__.py admin.py apps.py migrations/ __init__.py models.py tests.py urls.py views.py 然后在polls下的urls.py中写下代码 123456789101112from django.conf.urls import urlfrom . import viewsurlpatterns = [ url(r&apos;^$&apos;, views.index, name=&apos;index&apos;),]下一步在根目录下的urls.py中from django.conf.urls import include, urlfrom django.contrib import adminurlpatterns = [ url(r&apos;^polls/&apos;, include(&apos;polls.urls&apos;)), url(r&apos;^admin/&apos;, admin.site.urls),] 为什么使用include()以后在补充 在命令行中使用python manage.py runserver 进入 http://localhost:8000/polls/你就可以看到他们了 url()这个方法有四个传递参数，两个请求参数（regex，view），两个可选参数（kwargs，name） regex：正则表达式，这里不介绍正则表达式是什么。Django使用正则表达式去匹配列表里的url，直到找到匹配的为止。 view：当Django使用正则表达式匹配的时候，Django会调用指定的view方法 kwargs（key word arguments ）：关键字参数可以通过字典传递到目标视图 name：命名url可以让你其它地方明确的找到它 总结 如果想让页面显示内容，首先你需要写下view是，然后在urls.py中写下urlpattern叫做url通配符的东西，然后在根目录的urls.py中配置地址，]]></content>
+    <title><![CDATA[django梗概]]></title>
+    <url>%2F2017%2F07%2F24%2FDjango00%2F</url>
+    <content type="text"><![CDATA[Djangooverview在Django官网的Overview中，第一句话就写了：Django was invented to meet fast-moving newsroom deadlines,while satisfying the tough requirements of experienced Web developers.翻译一下就是：Django的诞生呢是为了满足飞速变化的新闻编辑室的最后期限而发明的，同时满足了经验丰富的Web开发人员的严格要求。大概想表达Django效率高，功能强大。 为什么使用Django呢？Django封装的非常好，可以让你专注于对app开发代码的书写，而不必重复去造轮子；Django在安全问题讲道到它本身的安全性很高，会帮助开发者避免犯一些常规的安全错误，比如SQL资料隐码攻击，跨站脚本攻击，跨站点请求伪造和点击，我认为吸引我的就是以上两点，当然Django还有别的优点我现在还不知道，留着以后更新。 DOWNLOAD一个最新的官方版本，也就是稳定版，另一个就是最新的开发版了，你可以在开发板中使用它的新特性，发现bug并且相互交流。只需在git中修改它。此处体现了Django的开源。当你得到Django之后，你可以查询安装指南去进一步了解如何正确的安装Django。然后你可以登录django-users mailing list。那里有Django使用者和开发者可以帮助你解决问题。首先你得英语好。 Django文档Everything you need to know about Django大体有四篇文档提供给我们参考。Tutorials教程部分，教程中一步步教你如何制作一个网站。Toptic guides的内容大概是Django中的key words介绍他们的作用。Reference guide中写了Django的拓展功能，和一些API的使用方法。How-to中写了Django是如何工作的。 然后就开始我们的Django学习啦]]></content>
       <categories>
-        <category>Django官方文档</category>
+        <category>python框架</category>
       </categories>
       <tags>
         <tag>Django</tag>
@@ -407,6 +396,17 @@
       </categories>
       <tags>
         <tag>python(%)</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Django_part1]]></title>
+    <url>%2F2017%2F07%2F23%2FDjango01%2F</url>
+    <content type="text"><![CDATA[Writing your first Django app part1如何开始 通过一个例子来学习如何使用Django该例子有两个部分组成 一个公共的网站可以查看民意调查和投票 一个管理网站可以让你增添，更改，删除数据该例子是由python3.4以上版本写的，Django1.11版本以上 Creating a project从命令行中cd进入L你想管理你代码的目录然后运行以下代码 1$ django-admin startproject mysite 这将会创建一个工程在你的目录中startproject命令将会创建以下目录结构 1234567mysite/ manage.py mysite/ __init__.py settings.py urls.py wsgi.py 这些文件是： mysite这个文件是你项目的根目录 manage.py是一个命令行实用程序，你可以阅读更多的细节在https://docs.djangoproject.com/en/1.11/ref/django-admin/ 内部的mysite目录是一个python包，你可以引用它 init.py是一个空文件，它告诉python这个目录是一个python的包 settings.py内可以对项目进行相关设置 urls.py你的每一张网页都对应一个地址，地址要在这里设置 wsgi.py是Django提供的一个WSGI服务 接下来让我们证实它确实工作了 在命令行中运行下面的代码（请确定你在项目目录中也就是在mysite中） 1$ python manage.py runserver 然后你将会看到: 1234June 09, 2017 - 15:50:53Django version 1.11, using settings &apos;mysite.settings&apos;Starting development server at http://127.0.0.1:8000/Quit the server with CONTROL-C. 你已经打开了一个完全由python写的轻量级服务器，也就是说我们可以低成本甚至没有成本的快速开发测试我们的网站，无需去配置大型服务器，直到我们完成开发决定去运行 现在服务器跑起来了，你可以浏览http：//127.0.0.8000/在你的浏览器上你将会看到它开始工作了！ 你还可以在上述命令中后面加一个参数 1$ python manage.py runserver 8080 这样你的服务器就会运行在8080端口 自动重新加载runserver 当你在开发的时候，不必每一次改动就去重启服务器，服务器会自动重新加载，当你的代码逻辑有错误时，服务器会报告错误。但有些动作是不会触发重载服务器的。你需要记住这些情况记得重启服务器。 创建投票app 运行命令前请确认你在含有manage.py的目录下，也就是mysite下 1$ python manage.py startapp polls Django自带实用程序自动生成，所以你不必自己创建app的目录 在运行完命令后会创建一个polls的目录 123456789polls/ __init__.py admin.py apps.py migrations/ __init__.py models.py tests.py views.py 写下第一个view 打开polls下的views.py写下python代码 123from django.http import HttpResponsedef index(request): return HttpResponse(&quot;Hello, world. You&apos;re at the polls index.&quot;) 这是最简单的Django视图，要调用它我们需要将它映射到一个url上，所以我们需要创建一个urls.py的文件。在创建完成后你的目录会变成这样 12345678910polls/ __init__.py admin.py apps.py migrations/ __init__.py models.py tests.py urls.py views.py 然后在polls下的urls.py中写下代码 123456789101112from django.conf.urls import urlfrom . import viewsurlpatterns = [ url(r&apos;^$&apos;, views.index, name=&apos;index&apos;),]下一步在根目录下的urls.py中from django.conf.urls import include, urlfrom django.contrib import adminurlpatterns = [ url(r&apos;^polls/&apos;, include(&apos;polls.urls&apos;)), url(r&apos;^admin/&apos;, admin.site.urls),] 为什么使用include()以后在补充 在命令行中使用python manage.py runserver 进入 http://localhost:8000/polls/你就可以看到他们了 url()这个方法有四个传递参数，两个请求参数（regex，view），两个可选参数（kwargs，name） regex：正则表达式，这里不介绍正则表达式是什么。Django使用正则表达式去匹配列表里的url，直到找到匹配的为止。 view：当Django使用正则表达式匹配的时候，Django会调用指定的view方法 kwargs（key word arguments ）：关键字参数可以通过字典传递到目标视图 name：命名url可以让你其它地方明确的找到它 总结 如果想让页面显示内容，首先你需要写下view是，然后在urls.py中写下urlpattern叫做url通配符的东西，然后在根目录的urls.py中配置地址，]]></content>
+      <categories>
+        <category>Django官方文档</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
       </tags>
   </entry>
   <entry>
