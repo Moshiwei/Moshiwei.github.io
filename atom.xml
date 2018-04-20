@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>纸镜</title>
+  
+  <subtitle>La Dolce Vita</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://Moshiwei.github.io/"/>
+  <updated>2018-03-06T15:01:57.034Z</updated>
+  <id>http://Moshiwei.github.io/</id>
+  
+  <author>
+    <name>Mirror</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Django-xadmin</title>
+    <link href="http://Moshiwei.github.io/2018/03/06/Django-xadmin/"/>
+    <id>http://Moshiwei.github.io/2018/03/06/Django-xadmin/</id>
+    <published>2018-03-06T15:01:00.000Z</published>
+    <updated>2018-03-06T15:01:57.034Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="安装xadmin"><a href="#安装xadmin" class="headerlink" title="安装xadmin"></a>安装xadmin</h2><p>初次使用Django的xadmin，直接使用pip安装，虽然能安装上，但是缺少一些东西影响使用，推荐去github上面安装：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install git+git://github.com/sshwsfc/xadmin.git</div></pre></td></tr></table></figure><h3 id="使用及设置"><a href="#使用及设置" class="headerlink" title="使用及设置"></a>使用及设置</h3><p>以下是一些近期使用xadmin的配置方法和一些经常会用到的设置。</p><h4 id="注册你的model"><a href="#注册你的model" class="headerlink" title="注册你的model"></a>注册你的model</h4><blockquote><p>使用xadmin的时候首先需要向后台注册你的app的models。他需要写一个与models相对应的类，类的名字为models类后加Admin。例如</p></blockquote><p>app/models.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">class UserProfile(models.Model):</div><div class="line">    name = models.CharField(max_length=50)</div><div class="line">    ....</div></pre></td></tr></table></figure></p><blockquote><p>那与之对应的，向xadmin注册的时候</p></blockquote><p>adminx.py（需要在app中创建）</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class UserProfileAdmin(object):</div><div class="line">    pass</div></pre></td></tr></table></figure><blockquote><p>可以添加几个参数，丰富后台的内容，或是添加搜索功能</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">list_display = []</div></pre></td></tr></table></figure><blockquote><p>该参数可以是一个元组，也可以是一个列表，一般推荐列表<br>models下的字段可以以字符串的形式添加到里面，这样在后台就会显示该models所有的字段</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">serach_fields = []</div></pre></td></tr></table></figure><blockquote><p>该参数也是一个列表，添加的参数同上，但是不推荐添加时间类型的字段。添加后在后台会显示一个检索框</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">list_filter = []</div></pre></td></tr></table></figure><blockquote><p>同上，赋值方法也相同，在后台会多出一个过滤器，将时间字段添加后就能通过时间段来检索</p><h4 id="优化显示内容"><a href="#优化显示内容" class="headerlink" title="优化显示内容"></a>优化显示内容</h4><p>xadmin更改后台管理名称以及底部信息<br>xadmin在创建完成后，左上角显示的内容为Django-xadmin，底部显示的内容为我的公司，我们希望定制自己需要的内容,xadmin提供了一下的方法。</p></blockquote><p>adminx.py</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class GlobalSettings(object):</div><div class="line">    site_title = &apos;后台名称&apos;</div><div class="line">    site_footer = &apos;底部信息&apos;</div><div class="line">    # 使左侧导航栏缩进</div><div class="line">    menu_style = &apos;accordion&apos;</div><div class="line">    </div><div class="line">class BaseSetting(object):</div><div class="line">    # 开启主题</div><div class="line">    enable_themes = True</div><div class="line">    use_booswatch = True</div></pre></td></tr></table></figure><blockquote><p>最初注册进xadmin的model会显示在对应的app下，我们希望平时不用的时候，他是收回对应app的，当我们需要的时候再打开。</p><p>补充一个后台显示内容优化的内容<br>在后台内，最初app的显示是英文的，如何更改为中文呢，我们在app对应目录下，有一个apps.py的文件，在其中添加一个verbose_name参数就可更改，同时要在同目录下的<strong>init</strong>.py文件下，添加一段话</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">app/__init__.py</div><div class="line"></div><div class="line">default_app_config = &apos;users.apps.UsersConfig&apos;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;安装xadmin&quot;&gt;&lt;a href=&quot;#安装xadmin&quot; class=&quot;headerlink&quot; title=&quot;安装xadmin&quot;&gt;&lt;/a&gt;安装xadmin&lt;/h2&gt;&lt;p&gt;初次使用Django的xadmin，直接使用pip安装，虽然能安装上，但是缺少一些东西影响使
+      
+    
+    </summary>
+    
+      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Django" scheme="http://Moshiwei.github.io/tags/Django/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Django-基于类的视图部分翻译</title>
+    <link href="http://Moshiwei.github.io/2017/10/27/Django-%E5%9F%BA%E4%BA%8E%E7%B1%BB%E7%9A%84%E8%A7%86%E5%9B%BE%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91/"/>
+    <id>http://Moshiwei.github.io/2017/10/27/Django-基于类的视图部分翻译/</id>
+    <published>2017-10-27T14:52:00.000Z</published>
+    <updated>2017-10-27T14:53:36.417Z</updated>
+    
+    <content type="html"><![CDATA[<p>可调用的视图层需要接受一个请求并返回一个响应，他的功能不仅仅是一个方法这么简单，Django提供了一些列类可以被用与创建视图。它们可以使你规划你的视图结构，通过harnessing，inheritance，和mixins减少你的代码。接下来会看到一些普通的例子，但你可能更需要去设计适合你个人项目的视图结构，并且能重复使用它们。<a href="https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。" target="_blank" rel="external">https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。</a><br><a id="more"></a></p><h3 id="Basic-examples"><a href="#Basic-examples" class="headerlink" title="Basic examples"></a>Basic examples</h3><p>Django提供了基本视图类，适配了广泛的应用，所有的视图都继承自视图类。这些类处理了视图与URLs的关系，HTTP方法的发送，或其他。RedirectView为了用来做简单的HTTP重定向，TemplateView拓展自基类使他也能进行模版渲染</p><h2 id="Generic-display-veiws（通用显示视图）"><a href="#Generic-display-veiws（通用显示视图）" class="headerlink" title="Generic display veiws（通用显示视图）"></a>Generic display veiws（通用显示视图）</h2><p>下面有两个基于类的通用视图。在很多项目中，他们是典型的也是最常用的视图函数。</p><h3 id="DetailViews"><a href="#DetailViews" class="headerlink" title="DetailViews"></a>DetailViews</h3><p>该视图继承了下面这些类的属性和方法</p><ul><li>django.views.generic.detail.SingleObjectTemplateResponseMixin</li><li>django.views.generic.base.TemplateResponseMixin</li><li>django.views.generic.detail.BaseDetailView</li><li>django.views.generic.detail.SingleObjectMixin</li><li>django.views.generic.base.View</li></ul><p>可用的方法（MRO列表）</p><ol><li>dispatch()</li><li>http_method_not_allowed()</li><li>get_template_names()</li><li>get_slug_field()</li><li>get_queryset()</li><li>get_object()</li><li>get_context_object_name()</li><li>get_context_data()</li><li>get()<br>10 render_to_response()</li></ol><p><strong>一个例子</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">from django.views.generic.detail import DetailView</div><div class="line">from django.utils import timezone</div><div class="line"></div><div class="line">from articles.models import Article</div><div class="line"></div><div class="line">class ArticleDetailView(DetailView):</div><div class="line"></div><div class="line">    model = Article</div><div class="line"></div><div class="line">    def get_context_data(self, **kwargs):</div><div class="line">        context = super(ArticleDetailView, self).get_context_data(**kwargs)</div><div class="line">        context[&apos;now&apos;] = timezone.now()</div><div class="line">        return context</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;可调用的视图层需要接受一个请求并返回一个响应，他的功能不仅仅是一个方法这么简单，Django提供了一些列类可以被用与创建视图。它们可以使你规划你的视图结构，通过harnessing，inheritance，和mixins减少你的代码。接下来会看到一些普通的例子，但你可能更需要去设计适合你个人项目的视图结构，并且能重复使用它们。&lt;a href=&quot;https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。&quot;&gt;https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。&lt;/a&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Django" scheme="http://Moshiwei.github.io/tags/Django/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Flask路由问题</title>
+    <link href="http://Moshiwei.github.io/2017/10/27/Flask%E8%B7%AF%E7%94%B1%E9%97%AE%E9%A2%98/"/>
+    <id>http://Moshiwei.github.io/2017/10/27/Flask路由问题/</id>
+    <published>2017-10-27T14:52:00.000Z</published>
+    <updated>2017-10-30T13:38:46.203Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><p>一个优秀的web应用有一套好的URL系统，不仅能帮助浏览者更容易记住你的连接，同时还增加了他们会再次来访问你的网站的几率。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/projects/&apos;&apos;) </div><div class="line">def projects():</div><div class="line">return  The project page </div><div class="line">@app.route(&apos;/about&apos;) </div><div class="line">def about():</div><div class="line">return  The about page</div></pre></td></tr></table></figure></p><a id="more"></a><blockquote><p>上面看似相同的例子，不同点在于它们在定义URL时候，是否使用了末尾的斜线。在第一个例子中，url是有下划线的，这意味着它更像一个文件夹的目录结构。不使用下划线去访问会使Flask去重定向到确切的有下划线的URL。</p><p>上句话很绕。一开始我也不明白，我回到项目里测试了一下会发现。比如在访问后台页面127.0.0.1：8000/admin的时候，访问的过程是不加斜线的，但页面加载时其实是访到了/admin/这个目录。</p><p>在第二个例子中，他的URL定义在末尾没有斜线。像一个UNIX-LIKE系统中一个文件的路径。（注意：第一个例子像一个目录路径）。如果访问该URL时你加入了下划线的话，就会导致404 NOT FOUND的错误。</p><p>这种行为可以是这种有关联的URL保持工作，即使你省略了末尾的下划线，与Apache的工作方式一致。同时，还能保持独一无二的URLs结构，避免搜索引擎检索一个页面两次。<br>（这段翻译完还不是很理解，也许翻译有误。日后问题解决再来更新）</p><p>如果可以匹配到URLs，那么Flask能生成它们么？当然可以，具体可以使用url_for()方法去创建一个URL，该方法接受方法名作为第一个参数，还接受一些关键字参数，匹配你制定的URL规则。未知的变量部分将会作为查询参数添加到URL中。</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from flask import Flask, url_for &gt;&gt;&gt; app = Flask(__name__)</div><div class="line">&gt;&gt;&gt; @app.route(&apos;/&apos;)</div><div class="line">... def index(): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; @app.route(&apos;/login&apos;)</div><div class="line">... def login(): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; @app.route(&apos;/user/&lt;username&gt;&apos;)</div><div class="line">... def profile(username): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; with app.test_request_context():</div><div class="line">... print url_for(&apos;index&apos;)</div><div class="line">... print url_for(&apos;login&apos;)</div><div class="line">... print url_for(&apos;login&apos;, next=&apos;/&apos;)</div><div class="line">... print url_for( &apos;profile , username= &apos;John Doe&apos; ) ...</div><div class="line">/</div><div class="line">/login</div><div class="line">/login?next=/</div><div class="line">/user/John%20Doe</div></pre></td></tr></table></figure><blockquote><p>上述例子还使用了test_request_context()方法，下面解释该方法。它告诉Flask去模拟处理一次请求，即使我们在和python shell交流。<br>（之后的内容我实在不知道怎么翻译，只能说大体我认为有用的内容）它讲了为什么要使用url_for()这个方法。</p><ol><li>之后如果需要修改url只需更改一次，而不用记住所有使用url的位置。</li><li>URL building 会造成一些特殊的字符或者Unicode数据，会造成一些麻烦，使用url_for()可以避免这些麻烦。</li><li>url_for会帮你正确的找出路径。</li></ol></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;路由&quot;&gt;&lt;a href=&quot;#路由&quot; class=&quot;headerlink&quot; title=&quot;路由&quot;&gt;&lt;/a&gt;路由&lt;/h2&gt;&lt;p&gt;一个优秀的web应用有一套好的URL系统，不仅能帮助浏览者更容易记住你的连接，同时还增加了他们会再次来访问你的网站的几率。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;@app.route(&amp;apos;/projects/&amp;apos;&amp;apos;) &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;def projects():&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;return  The project page &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;@app.route(&amp;apos;/about&amp;apos;) &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;def about():&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;return  The about page&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Flask" scheme="http://Moshiwei.github.io/tags/Flask/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Django-Sending email部分翻译</title>
+    <link href="http://Moshiwei.github.io/2017/10/24/Django-Sending%20email%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91/"/>
+    <id>http://Moshiwei.github.io/2017/10/24/Django-Sending email部分翻译/</id>
+    <published>2017-10-24T13:00:00.000Z</published>
+    <updated>2017-10-24T13:16:49.429Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>尽管Python可以使用smtplib包使发送email相对的简单化。但是Django提供了一些列轻量化封装去代替它。也能提供非常快捷的发送email功能，是你在开发的时候更加简单的测试email功能，这些代码存储在django.core.mail模块<br>一个简单的例子<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from django.core.mail import send_mail</div><div class="line"></div><div class="line">send_mail(</div><div class="line">    &apos;subject here&apos;,</div><div class="line">    &apos;here is the message&apos;,</div><div class="line">    &apos;form@example.com&apos;,</div><div class="line">    [&apos;to@example.com&apos;],</div><div class="line">    fail_silently = False,</div><div class="line">)</div></pre></td></tr></table></figure></p><p>发送邮件使用SMTP协议还需要在settings中的EMAIL_HOST,EMAIL_PORT指定host和port。EMAIL_HOST_USER和EMAIL_HOST_PASSWORD设置用来与SMTP服务进行身份验证。还有两个重要参数EMAIL_USE_TLS和EMAIL_USE_SSL设置是否启用这些安全连接协议。</p></blockquote><h3 id="send-mail-方法"><a href="#send-mail-方法" class="headerlink" title="send_mail()方法"></a>send_mail()方法</h3><blockquote><p>最简单的发送email方式就是使用django.core.mail.send_mail()</p></blockquote><ol><li>subject,message,form_email,recipient_list是必要参数。</li><li>subject,message,rom_email是string类型。</li><li>recipient_list是一个列表，列表内的对象是string类型，这些对象就是接收者，每一个接收的对象都能在邮件内容中看到其他接收者。 </li><li>fail_silently是一个布尔类型的值，如果为False，send_mail方法会产生一个smtplib.SMTPException.你需要查看smtplib的文档去查看一系列可能的异常。</li><li>auth_password可选参数进行服务认证，如果你没有提供该参数，那么django会查找并且使用在settings中的EMAIL_HOST_PASSWORD设置<br>auth_user该参数配合auth_password使用，方法同上</li></ol><h3 id="send-mass-mail-方法"><a href="#send-mass-mail-方法" class="headerlink" title="send_mass_mail()方法"></a>send_mass_mail()方法</h3><blockquote><p>django.core.mail.send_mass_mail()的目的是处理大量的邮件业务。<br>datatuple是一个元组，格式如下<br>(subject, message, form_email, recipient_list)</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from django.core.mail import send_mass_mail</div><div class="line"></div><div class="line">message1 = (&apos;Subject here&apos;, &apos;Here is the message&apos;, &apos;from@example.com&apos;,[&apos;first@example&apos;, &apos;other@example.com&apos;])</div><div class="line">message2 = (&apos;Another Subject&apos;, &apos;Here is another message&apos;, &apos;from@example.com&apos;, [&apos;second@test.com&apos;])</div><div class="line">send_mass_mail((message1, message2), fail_silently=False)</div></pre></td></tr></table></figure><p>返回值就是大量成功投递的信息（最好是这样）</p><h3 id="send-mass-mail-VS-send-mail"><a href="#send-mass-mail-VS-send-mail" class="headerlink" title="send_mass_mail() VS send_mail()"></a>send_mass_mail() VS send_mail()</h3><blockquote><p>send_mass_mail()和send_mail()的主要区别在于，send_mail()在每次执行时都会打开到邮件服务器的连接，而send_mass_mail()则使用单个连接来处理所有消息。这使得send_mass_mail()稍微高效一些。</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;尽管Python可以使用smtplib包使发送email相对的简单化。但是Django提供了一些列轻量化封装去代替它。也能提供非常快捷的发送email功能，是你在开发的时候更加简单的测试email功能，这些代码存储在django.core.mail模块&lt;br&gt;一个简单的例子&lt;br&gt;
+    
+    </summary>
+    
+      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Django" scheme="http://Moshiwei.github.io/tags/Django/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>成功使用Nginx和Gunicorn部署Django博客总结</title>
+    <link href="http://Moshiwei.github.io/2017/10/21/%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E6%80%BB%E7%BB%93/"/>
+    <id>http://Moshiwei.github.io/2017/10/21/使用nginx部署总结/</id>
+    <published>2017-10-21T15:31:00.000Z</published>
+    <updated>2017-10-21T15:32:09.159Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote><p>早在上周我就写完了Django博客，在本地调试好之后，开始向服务器上部署，我使用Nginx代理静态文件，服务器的系统是CentOS6.8。Ubuntu的Nginx配置和centos的不同。这里就不提了。本文记下了我这一周踩的所有坑</p><h3 id="没有0bug的系统，只有前仆后继的程序员"><a href="#没有0bug的系统，只有前仆后继的程序员" class="headerlink" title="没有0bug的系统，只有前仆后继的程序员"></a>没有0bug的系统，只有前仆后继的程序员</h3><p>说实话这是我第一次向线上部署我的博客，跟hexo的不同，Hexo完全帮你完成了生成框架，自动化部署这些问题，而你只需要向github提交你的ssh。这样就能托管在github上了。可是我还想要一个自己域名的博客。<br> <a id="more"></a></p><h3 id="400Bad-Request"><a href="#400Bad-Request" class="headerlink" title="400Bad Request"></a>400Bad Request</h3><p>满怀着激动的心情，我从周一开始学着部署，前两天真的是毫无进展，我甚至没法在服务器上跑一个runserver，更别提部署了，400错误一直显示在我的显示器上。<br>周一周二我一直因为这个问题在一个一个网页之间跳转，熬夜，直到周三我头疼身体发冷，恶心想吐。说实话真的很沮丧。写完代码，不会部署，一切都是零。</p><p>下面开始讲我之后如何解决400问题的：</p><p>首先，我在本地测试好后，才上传到github上面的。在服务器上面从github上面拽下代码后，先要进行的两个步骤是：</p></blockquote><ol><li>更改数据库连接设置</li><li>进行数据迁移。</li></ol><blockquote><p>我使用的Mysql数据库，确认数据库连接没问题之后，我做了数据迁移（migrate）。之后访问地址后，出现了400错误，Django有一个Debug模式，开启它发现有几张表找不到，这是导致400错误的直接原因。</p><p>之后我反复检查python manage.py migrate这条命令的结果，发现我自己写的app根本就没有进行迁移。甚至Django自身的几个app都没有迁移进去，我才知道了Django还有这条命令</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python manage.py migrate app_name</div></pre></td></tr></table></figure><p>使用该命令对未迁移的app进行单独迁移，别问我为什么。<br>400错误到此结束。</p><h3 id="500Server-Error"><a href="#500Server-Error" class="headerlink" title="500Server Error"></a>500Server Error</h3><blockquote><p>从这里就要开始讲Nginx的部署问题了。开始我提到了我使用的是CentOS系统，而不是Ubuntu，因为这两个系统的Nginx目录结构，和配置文件放置的位置都不相同。在Nginx的根目录有一个Nginx.conf文件里面写着在conf.d这个目录想的所有conf文件他都会进行处理。所以一开始我的配置文件根本不知道放在哪里。这里真要感谢爱写备注的程序员们。<br>这里贴上我的nginx配置文件</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    charset      utf-8;</div><div class="line">    listen       80;</div><div class="line">    server_name  mirrorgo.top;</div><div class="line"></div><div class="line">    #charset koi8-r;</div><div class="line">    #access_log  /var/log/nginx/host.access.log  main;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        proxy_set_header Host $host;</div><div class="line">        proxy_pass http://unix:/tmp/mirrorgo.top.socket;</div><div class="line">        client_max_body_size    1000m;</div><div class="line">    &#125;</div><div class="line">    location /static &#123;</div><div class="line">        alias /home/mirror/my-blog/static; </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    client_max_body_size 75M;</div><div class="line"></div><div class="line">    #error_page  404              /404.html;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure><p>明白了如何写配置文件和文件放置的位置500的问题就解决了。呼真的累。噩梦才开始</p><h3 id="403Forbidden"><a href="#403Forbidden" class="headerlink" title="403Forbidden"></a>403Forbidden</h3><blockquote><p>每一次开启服务都是一次期待，其实看到403的时候我是很开心的，因为我知道这是个权限问题，我的项目和nginx配置应该是没有问题了。因为我使用Nginx的目的是代理静态文件，别的高级功能什么负载均衡我还不会用。所以我把需要代理静态文件目录路径里的所有目录的权限都改成了755。</p><p>这个问题被很快的解决了。如果有同学对这个步骤的安全性有疑问的话请联系我。</p><h3 id="404Not-Found"><a href="#404Not-Found" class="headerlink" title="404Not Found"></a>404Not Found</h3><p>呵呵呵呵哇哈哈哈哈哈，没错我已经疯了，这些状态码我早就学过了。没想到我还要亲身经历一遍。虽然有内容了，但是没有样式，根本没法看。</p><p>这个问题我怎么解决的说出来你可能不信，我看了推理小说，然后周六的早上玩推理游戏玩的我头疼。突然灵机一动，直接找到了我可爱的静态文件夹为什么找不到的问题。<br>注意在nginx配置文件，指向你目标静态文件夹的路径是你的项目根目录。这是因为在进行了</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python manage.py collectstatic</div></pre></td></tr></table></figure><blockquote><p>之后会在你的项目根目录生成一个static文件夹。<br>而且在Django官文中说，如果要部署要在settings.py文件夹中静态文件目录要加一条</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">STATIC_ROOT = os.path.join(BASE_DIR, &apos;/static/&apos;)</div></pre></td></tr></table></figure><blockquote><p>他所指的静态目录正是上层目录，也就是项目根目录。<br>一切问题解决后我可爱的页面就出来了。</p><h3 id="200"><a href="#200" class="headerlink" title="200"></a>200</h3><p>200没什么好说的。我爱绿色<br><img src="https://github.com/Moshiwei/test/blob/master/images/Djanogblog.png?raw=true" alt="image"><br>由于我现在主要还用这个博客，那边没什么文章。就没再挂着了。等我学会自动化部署在开放吧</p><p>转载请注明出处</p><p>这是我一周的心血，侵删谢谢。</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;早在上周我就写完了Django博客，在本地调试好之后，开始向服务器上部署，我使用Nginx代理静态文件，服务器的系统是CentOS6.8。Ubuntu的Nginx配置和centos的不同。这里就不提了。本文记下了我这一周踩的所有坑&lt;/p&gt;
+&lt;h3 id=&quot;没有0bug的系统，只有前仆后继的程序员&quot;&gt;&lt;a href=&quot;#没有0bug的系统，只有前仆后继的程序员&quot; class=&quot;headerlink&quot; title=&quot;没有0bug的系统，只有前仆后继的程序员&quot;&gt;&lt;/a&gt;没有0bug的系统，只有前仆后继的程序员&lt;/h3&gt;&lt;p&gt;说实话这是我第一次向线上部署我的博客，跟hexo的不同，Hexo完全帮你完成了生成框架，自动化部署这些问题，而你只需要向github提交你的ssh。这样就能托管在github上了。可是我还想要一个自己域名的博客。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://Moshiwei.github.io/categories/Linux/"/>
+    
+    
+      <category term="Nginx" scheme="http://Moshiwei.github.io/tags/Nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何在CentOS6.8上安装Python3.6</title>
+    <link href="http://Moshiwei.github.io/2017/10/20/%E5%AE%89%E8%A3%85python/"/>
+    <id>http://Moshiwei.github.io/2017/10/20/安装python/</id>
+    <published>2017-10-20T14:17:00.000Z</published>
+    <updated>2017-10-20T14:18:01.750Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="如何在CentOS6-8上安装Python3-6"><a href="#如何在CentOS6-8上安装Python3-6" class="headerlink" title="如何在CentOS6.8上安装Python3.6"></a>如何在CentOS6.8上安装Python3.6</h1><blockquote><p>最近向服务器安装了两次环境，每次都很麻烦，这次写一个总结。<br>在Centos上安装python3.6</p></blockquote><p>1.第一步<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget http://www.python.org/ftp/python/3.6.3/Python-3.6.3.tgz</div></pre></td></tr></table></figure></p><blockquote><p>centos会自动下载python3.6<br> <a id="more"></a><br>2.第二步</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tar -xzvf Python-3.6.3.tgz</div></pre></td></tr></table></figure><blockquote><p>解压Python3.6.3.tgz，这里是tgz文件，格式的不同会有不同的参数</p></blockquote><p>3.第三步</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure —prefix=/user/local/python3.6</div></pre></td></tr></table></figure><blockquote><p>首先要cd进入解压好的python3.6.3目录中，此命令的目的是设置安装目录</p></blockquote><p>4.第四步<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make</div></pre></td></tr></table></figure></p><blockquote><p>编译命令</p></blockquote><p>5.第五步<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make install</div></pre></td></tr></table></figure></p><blockquote><p>安装命令</p><h2 id="需要注意"><a href="#需要注意" class="headerlink" title="需要注意"></a>需要注意</h2><p>之后的步骤是设置默认的python版本，我们把python3.6中/bin/python3复制到/usr/bin/中重命名为python，之后python的，默认版本就变成了python3.</p><p>由于系统的yum是基于python老版本的，所以更改默认版本后，yum无法使用了。</p></blockquote><p>6.第六步<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /usr/bin/yum</div></pre></td></tr></table></figure></p><p>然后将头部文件</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/python更改为#!/usr/bin/python2.6</div></pre></td></tr></table></figure><p>最后一步，要将/python3.6/bin文件添加进入环境变量，这样我们pip安装的包才能在命令行中使用。</p><p>以上，python安装完毕</p><h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><blockquote><p>做pythonweb经常要安装sqlclient这个包,首先我们要安装几个依赖</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y mysql-devel python-devel python-setuptools</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;如何在CentOS6-8上安装Python3-6&quot;&gt;&lt;a href=&quot;#如何在CentOS6-8上安装Python3-6&quot; class=&quot;headerlink&quot; title=&quot;如何在CentOS6.8上安装Python3.6&quot;&gt;&lt;/a&gt;如何在CentOS6.8上安装Python3.6&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;最近向服务器安装了两次环境，每次都很麻烦，这次写一个总结。&lt;br&gt;在Centos上安装python3.6&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;1.第一步&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;wget http://www.python.org/ftp/python/3.6.3/Python-3.6.3.tgz&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;centos会自动下载python3.6&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://Moshiwei.github.io/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="http://Moshiwei.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux实用手册</title>
+    <link href="http://Moshiwei.github.io/2017/10/09/Linux%E5%AE%9E%E7%94%A8%E6%89%8B%E5%86%8C/"/>
+    <id>http://Moshiwei.github.io/2017/10/09/Linux实用手册/</id>
+    <published>2017-10-09T14:04:00.000Z</published>
+    <updated>2017-10-09T14:04:47.591Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Linux实用手册"><a href="#Linux实用手册" class="headerlink" title="Linux实用手册"></a>Linux实用手册</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>说起来我可能是太懒惰了，linux其实在大一就接触过了，并且我知道它的重要，在此之前一直在学习，不能算是学习吧。想起来了看两眼。如今我完成了自己的博客系统准备让它上线的时候。直到我买了学习用的服务器，一个崭新的centos安装在我的服务器上的时候。惊喜，兴奋，但是措手不及。这一系列文章，边学边采坑。</p><h3 id="创建用户，设置密码，删除用户"><a href="#创建用户，设置密码，删除用户" class="headerlink" title="创建用户，设置密码，删除用户"></a>创建用户，设置密码，删除用户</h3><p>在刚进入linux系统的时候，你可能是一个root用户，但是考虑到实际应用，以及权限的问题，我们需要创建一个个人用户，用来做日程的处理。<br><a id="more"></a><br>创建用户</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">useradd 用户名</div></pre></td></tr></table></figure><p>创建好后，你的用户文件会被创建在/home中，我们要为我们的用户创建一个密码</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">passwd 用户名</div></pre></td></tr></table></figure><p>之后你会看到输入密码的提醒。</p><h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h4><p>如果在ubuntu下，可能你安装了系统后，没有设置root密码这一步所以需要</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo passwd root</div></pre></td></tr></table></figure><p>可以设置root密码</p><p>用户切换使用</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">su 用户名</div></pre></td></tr></table></figure><p>然后输入密码即可完成切换</p><p>我们可以创建一个用来测试的用户，然后学习如何删除他</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">userdel 用户名</div></pre></td></tr></table></figure><p>删除该用户后，使用su切换到该用户就会显示，该用户已经不存在了。但是别忘了你在创建用户的时候，还在/home目录下面有一个你的用户文件夹。你需要删除掉他</p><p>切换到/home目录下</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm -rf 你的用户名</div></pre></td></tr></table></figure><p>其中，-r代表了向下递归删除，-f代表了强制删除，不作任何提醒</p><p>今天为了部署nginx踩了不少的坑，先写这么多吧。下一章内容，我会讲在centos系统下，使用sudo命令出错的问题。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Linux实用手册&quot;&gt;&lt;a href=&quot;#Linux实用手册&quot; class=&quot;headerlink&quot; title=&quot;Linux实用手册&quot;&gt;&lt;/a&gt;Linux实用手册&lt;/h2&gt;&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;说起来我可能是太懒惰了，linux其实在大一就接触过了，并且我知道它的重要，在此之前一直在学习，不能算是学习吧。想起来了看两眼。如今我完成了自己的博客系统准备让它上线的时候。直到我买了学习用的服务器，一个崭新的centos安装在我的服务器上的时候。惊喜，兴奋，但是措手不及。这一系列文章，边学边采坑。&lt;/p&gt;
+&lt;h3 id=&quot;创建用户，设置密码，删除用户&quot;&gt;&lt;a href=&quot;#创建用户，设置密码，删除用户&quot; class=&quot;headerlink&quot; title=&quot;创建用户，设置密码，删除用户&quot;&gt;&lt;/a&gt;创建用户，设置密码，删除用户&lt;/h3&gt;&lt;p&gt;在刚进入linux系统的时候，你可能是一个root用户，但是考虑到实际应用，以及权限的问题，我们需要创建一个个人用户，用来做日程的处理。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://Moshiwei.github.io/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="http://Moshiwei.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>搭建个人博客</title>
+    <link href="http://Moshiwei.github.io/2017/09/30/%E6%90%AD%E5%BB%BAblog%E6%95%99%E7%A8%8B/"/>
+    <id>http://Moshiwei.github.io/2017/09/30/搭建blog教程/</id>
+    <published>2017-09-30T13:38:00.000Z</published>
+    <updated>2017-10-07T14:21:07.785Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote><p>我不想说这篇教程有多简单或者多难，也并不承诺你会在几个小时内完成它。因为在你做的过程中总会遇到问题，只是看你会不会克服它并且继续走下去。</p><p>从我刚搭建好，注册了github账号开始到现在已经半年多了。我满怀激动写下这篇教程，一是为了有一个更为全面细致的教程帮助有兴趣的同学踩更少的坑，二是因为这个好玩的blog并不是我发现的，我借助了各式各样的教程完成了它，好的东西应该分享出去。</p><p>以后可能会有人写出更佳细致简单的教程，这只是一个不断更新的过程。<br> 除了本篇教程，你最好阅读一些hexo的文档<a href="https://hexo.io" target="_blank" rel="external">https://hexo.io</a><br> <a id="more"></a></p><h2 id="环境安装部分"><a href="#环境安装部分" class="headerlink" title="环境安装部分"></a>环境安装部分</h2><p>我们需要node.js和git的支持</p><p>在这里省略node.js和git的安装过程，一步一步截图会导致篇幅过长，这算是第一个小关卡吧，如果对你来说很简单那就继续往下进行。<br>有一点要强调的是，在我们安装完成后我们需要在环境变量里面检查是否有git和node.js的环境<br><img src="https://github.com/Moshiwei/test/blob/master/images/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F.png?raw=true" alt="image"></p><p>完成了上面两部之后需要我们注册的github账号<br>Username最好使用你名字的拼音，请务必记住你的username<br>创建完成后登录github，点击绿色按钮创建一个新的仓库<br>仓库名字的格式为你的Username.github,io,这将是你的blog地址<br><img src="https://github.com/Moshiwei/test/blob/master/images/%E4%BB%93%E5%BA%93%E5%90%8D%E7%A7%B0.png?raw=true" alt="image"></p><p>创建仓库的时候下面有一个是否添加README文件的选项，请不要勾选（就是不添加）</p></blockquote><p>&gt;<br>教程到现在请确认你已经拥有了：<br>git，node.js的环境<br>github账号<br>接下来进入gitbash输入下面三个命令(进入gitbash的方法，在桌面或者任何目录下右键会有一个gitbash选项打开是一个黑色的命令行界面)</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config --global user.name &apos;你的用户名&apos;</div><div class="line">git config --global user.email &apos;你的注册邮箱&apos;</div></pre></td></tr></table></figure><p>第三个命令是</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa</div></pre></td></tr></table></figure><blockquote><p>这个命令会在你的本地生成一个公钥(id_rsa.pub)，一个密钥(id_rsa)<br>请在你C盘的用户目录下查找id_rsa.pub文件使用记事本打开</p><p>复制内容（我使用sublime打开的，并且我的公钥已经认证过了）然后从浏览器进入github,在settings里面找到SSHKeys点击New SSH Key,标题可以写blog，Key里面粘贴你的公钥。然后点击Add SSH Key</p><p>公钥添加成功之后，在gitbash里面输入ssh -T git@github.com                </p></blockquote><p>如果通知你成功认证了，那么你真是一个幸运的boy，如果没成功出现了ip认证失败的问题也不用担心<br>直接输入 ssh git@github.com会为你本地多添加一个文件，一直回车就ok，然后再输入一次<br>ssh -T git@github.com。成功后，我当初走过的第一个坑已经结束了<br>下面我们开始操作hexo<br>在你的E盘，没有E盘的同学在D盘内，右键打开gitbash输入</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo init blog</div></pre></td></tr></table></figure><blockquote><p>hexo会生成一个blog文件，<strong>下面一定要先进入该目录</strong>。<br>命令行中输入</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd blog</div></pre></td></tr></table></figure><p>进入刚生成的blog目录，不然你接下来的hexo命令会无效。<br>在blog目录下有一个_config.yml这是一个配置文件，建议使用sublime打开<br>这里只讲最关键的配置部分，在该文件的最下面</p><blockquote><p>请参照我的配置方法，自行配置。</p></blockquote><p><img src="https://github.com/Moshiwei/test/blob/master/images/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.png?raw=true" alt="image"></p><blockquote><p>配置完成之后还是在命令行内<br>输入hexo generate（或者hexo g）会生成向github上面部署的文件，<br>上传文章的办法，官方文档使用的方法是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new &apos;文章标题&apos;</div></pre></td></tr></table></figure></p><p>但是我建议是</p><ol><li>直接在本地使用markdown语法编辑好你的文章</li><li>复制进入blog目录下的source中的post文件夹（E:\博客\blog\source\_posts）</li><li>在命令行中输入hexo g</li><li>hexo deploy</li></ol><p>你可以在generate之后通过hexo server在本地提前浏览页面情况，避免尴尬问题发生</p></blockquote><p>接着在浏览器内输入连接就可以浏览你的博客了</p><h3 id="插曲"><a href="#插曲" class="headerlink" title="插曲"></a>插曲</h3><blockquote><p>这之间因为感冒头晕中断了两三天，趁着周末好不容易清醒一点，立刻背包去同学宿舍帮他完整的做完了整个的配置，手感火热，有些可能会遇到的问题都遇到了。这是好事，回来之后立马记录下来。<br>我写这个插曲并不想说带病写这个很辛苦，而是想表达做什么事要要埋头向前，坚持努力。</p></blockquote><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><blockquote><p>在文章的最初我为每一步都添加了图片，导致图片太多了，我只保留了一些需要命令操作的部分，和一些容易犯错的部分。如果你在某个点不太明白欢迎你baidu或者发邮件给我。我的教程中，只完成了博客的搭建部分，一个好的环境还需要你自己去装饰配置，hexo提供的插件非常多，很多主题提供的插件也不少，既然你想要一个纯粹的写作环境。那我希望你不要把你的博客环境做得像Qzone一样。</p><p>我的blog地址moshiwei.github.io</p><p>我的email：1194317170@qq,com,<br>            Mirrorpy@outlook.com</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;我不想说这篇教程有多简单或者多难，也并不承诺你会在几个小时内完成它。因为在你做的过程中总会遇到问题，只是看你会不会克服它并且继续走下去。&lt;/p&gt;
+&lt;p&gt;从我刚搭建好，注册了github账号开始到现在已经半年多了。我满怀激动写下这篇教程，一是为了有一个更为全面细致的教程帮助有兴趣的同学踩更少的坑，二是因为这个好玩的blog并不是我发现的，我借助了各式各样的教程完成了它，好的东西应该分享出去。&lt;/p&gt;
+&lt;p&gt;以后可能会有人写出更佳细致简单的教程，这只是一个不断更新的过程。&lt;br&gt; 除了本篇教程，你最好阅读一些hexo的文档&lt;a href=&quot;https://hexo.io&quot;&gt;https://hexo.io&lt;/a&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="感想" scheme="http://Moshiwei.github.io/categories/%E6%84%9F%E6%83%B3/"/>
+    
+    
+      <category term="Hexo" scheme="http://Moshiwei.github.io/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Django-Form</title>
+    <link href="http://Moshiwei.github.io/2017/09/29/Django-Form/"/>
+    <id>http://Moshiwei.github.io/2017/09/29/Django-Form/</id>
+    <published>2017-09-29T13:38:00.000Z</published>
+    <updated>2017-09-29T13:39:28.338Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Django-Form"><a href="#Django-Form" class="headerlink" title="Django-Form"></a>Django-Form</h1><blockquote><p>Django provides a rich framework to facilitate the creation of forms and the manipulation of form data.</p></blockquote><p>Django提供了强大的框架使得创建表格或是更改表格更加容易</p><h2 id="Working-with-forms"><a href="#Working-with-forms" class="headerlink" title="Working with forms"></a>Working with forms</h2><p>如果你想构建一个功能强大的网站不仅仅是发布文章的话，你就需要理解如何使用forms，去接受用户的提交内容。<br>Django提供了一系列的工具和方法去帮助你构建forms。获取你用户的提交内容做出处理和应答。<br><a id="more"></a></p><h2 id="HTML表单"><a href="#HTML表单" class="headerlink" title="HTML表单"></a>HTML表单</h2><p>在HTML中，表单是内部的元素集合<form>…</form>，允许访问者执行输入文本，选择选项，操纵对象或控件等操作，然后将该信息发送回服务器。</p><p>例如，Django管理员的登录表单包含几个 <input>元素：一个type=”text”用于用户名，一个 type=”password”用于密码，另一个type=”submit”用于“登录”按钮。它还包含用户看不到的一些隐藏的文本字段，Django用于确定接下来要做什么。</p><p>它还告诉浏览器，表单数据应该发送到<form>“ action属性”中指定的URL /admin/- 并且应该使用method属性 指定的HTTP机制发送post。</form></p><h2 id="Django’s-role-in-forms"><a href="#Django’s-role-in-forms" class="headerlink" title="Django’s role in forms"></a>Django’s role in forms</h2><p>处理表格是一项复杂的业务，管理员需要准备不同类型的数据，以HTML的形式显示，使用方便的界面编辑，返回到服务器，验证和清理，然后保存或传递进一步处理。</p><ul><li>准备和重组数据，并且渲染他们</li><li>创建HTML表单</li><li>从客户接收和处理提交的表单和数据</li></ul><h2 id="Instantiating-processing-and-redering-forms-实例化，处理，渲染"><a href="#Instantiating-processing-and-redering-forms-实例化，处理，渲染" class="headerlink" title="Instantiating, processing, and redering forms(实例化，处理，渲染)"></a>Instantiating, processing, and redering forms(实例化，处理，渲染)</h2><p>当渲染一个Django对象时，我们通常会</p><ol><li>从视图中获取它</li><li>将它传递到模版页面</li><li>使用模版变量将其拓展为HTML标记</li></ol><p>在模版中渲染表单，和渲染任何其它类型的对象几乎工作是相同的，但有一些关键的区别。<br>当我们实例化表单时，我们可以选择将其留空或预先填充它。</p><p>下面我们做一个实例。</p><h2 id="Building-a-form"><a href="#Building-a-form" class="headerlink" title="Building a form"></a>Building a form</h2><h3 id="就像这样做"><a href="#就像这样做" class="headerlink" title="就像这样做"></a>就像这样做</h3><p>假设您想在您的网站上创建一个简单的表单，以获得用户名。您在模板中需要类似这样的东西</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;form action=&quot;/your-name/&quot; method=&quot;post&quot;&gt;</div><div class="line">    &lt;label for=&quot;your_name&quot;&gt;Your name: &lt;/label&gt;</div><div class="line">    &lt;input id=&quot;your_name&quot; type=&quot;text&quot; name=&quot;your_name&quot; value=&quot;&#123;&#123; current_name &#125;&#125;&quot;&gt;</div><div class="line">    &lt;input type=&quot;submit&quot; value=&quot;OK&quot;&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure><p>这将告诉浏览器去返回一个数据表到URL，使用POST方法，如果模版中有变量，那将会填补your_name字段。你需要一个渲染模版表单的视图，根据需要提供current_name字段。提交表单时，POSt发送到服务器的请求将包含表单数据。<br>接下来需要制作相应的视图，该视图要在请求中找到响应的键值对，然后处理他们。</p><p>表单可能包含数十或者上百的字段，其中许多字段可能需要预先填充，我们可能希望用户化在完成操作之前多次使用编辑提交循环。</p><h3 id="在Django中创建一个表单"><a href="#在Django中创建一个表单" class="headerlink" title="在Django中创建一个表单"></a>在Django中创建一个表单</h3><blockquote><p>forms.py</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from django import forms</div><div class="line"></div><div class="line">class NameForm(forms.Form):</div><div class="line">    your_name = forms.CharField(label=&apos;Your name&apos;, max_length=100)</div></pre></td></tr></table></figure><p>在这个Form类中，只有一个字段就是your_name。max_length是熟悉的参数了。</p><p>Form实例有一个is_valid()方法，它运行其所有字段的验证历程，调用次方法，如果所有的数据都有效，那么他将会返回Ture，然后将表单数据放在其cleaned_data中。<br>表单在第一次呈现时如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt; label  for = “your_name” &gt;您的姓名：&lt;/ label &gt; </div><div class="line">&lt; input  id = “your_name”  type = “text”  name = “your_name”  maxlength = “100”  required  /</div></pre></td></tr></table></figure><p>它不包括<form>标签，需要我们在模版中自己提供。</form></p><h3 id="编写view"><a href="#编写view" class="headerlink" title="编写view"></a>编写view</h3><p>发送到Django网站的表单数据由视图处理。</p><blockquote><p>views.py</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">from django.shortcuts import render</div><div class="line">from django.http import HttpResponseRedirect</div><div class="line"></div><div class="line">from .forms import NameForm</div><div class="line"></div><div class="line">def get_name(request):</div><div class="line">    # if this is a POST request we need to process the form data</div><div class="line">    if request.method == &apos;POST&apos;:</div><div class="line">        # create a form instance and populate it with data from the request:</div><div class="line">        form = NameForm(request.POST)</div><div class="line">        # check whether it&apos;s valid:</div><div class="line">        if form.is_valid():</div><div class="line">            # process the data in form.cleaned_data as required</div><div class="line">            # ...</div><div class="line">            # redirect to a new URL:</div><div class="line">            return HttpResponseRedirect(&apos;/thanks/&apos;)</div><div class="line"></div><div class="line">    # if a GET (or any other method) we&apos;ll create a blank form</div><div class="line">    else:</div><div class="line">        form = NameForm()</div><div class="line"></div><div class="line">    return render(request, &apos;name.html&apos;, &#123;&apos;form&apos;: form&#125;)</div></pre></td></tr></table></figure><p>当我们使用get请求访问的时候，它将会创建一个空的实例渲染在模版上，这正是我们期望的。<br>如果表单中提交了post请求，视图将会再次创建一个表单实例，并使用来自请求的数据进行天后从，这称为“将数据绑定到表单”form=NameForm(request.POST)</p><p>我们还调用了表单的is_valid()方法，如果返回值不是Ture，我们将会返回模版的表单，这时表单将不会为空，直到用户书写正确的内容。</p><p>如果is_valid()返回了Ture，那么我们可以在其cleaned_data属性中找到所有验证表单数据。再将HTTP重定向发送到浏览器之前，我们可以使用这些数据更新数据库或进行其他处理，告诉他下一步如何做</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Django-Form&quot;&gt;&lt;a href=&quot;#Django-Form&quot; class=&quot;headerlink&quot; title=&quot;Django-Form&quot;&gt;&lt;/a&gt;Django-Form&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;Django provides a rich framework to facilitate the creation of forms and the manipulation of form data.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Django提供了强大的框架使得创建表格或是更改表格更加容易&lt;/p&gt;
+&lt;h2 id=&quot;Working-with-forms&quot;&gt;&lt;a href=&quot;#Working-with-forms&quot; class=&quot;headerlink&quot; title=&quot;Working with forms&quot;&gt;&lt;/a&gt;Working with forms&lt;/h2&gt;&lt;p&gt;如果你想构建一个功能强大的网站不仅仅是发布文章的话，你就需要理解如何使用forms，去接受用户的提交内容。&lt;br&gt;Django提供了一系列的工具和方法去帮助你构建forms。获取你用户的提交内容做出处理和应答。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Django" scheme="http://Moshiwei.github.io/tags/Django/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Django-upload部分翻译</title>
+    <link href="http://Moshiwei.github.io/2017/09/25/Django-upload%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91/"/>
+    <id>http://Moshiwei.github.io/2017/09/25/Django-upload部分翻译/</id>
+    <published>2017-09-25T08:39:00.000Z</published>
+    <updated>2017-10-07T14:21:11.686Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>当Django在处理文件上传的时候，文件数据最后储存在request.FILES.这篇文档解释了文件是如何存储在硬盘和内存当中，和如何定制我们自己想要的存储方式</p></blockquote><p><strong>警告</strong></p><blockquote><p>如果你接受到来自未知的不可信赖的用户发送的数据，将会有一定的安全风险，请查看安全手册中的数据迁移细节<br>基本文件上传<br>创建一个包括FileField的简单表格<br><a id="more"></a><br>forms.py</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from django import forms</div><div class="line"></div><div class="line">class UploadFileForm(forms.Form):</div><div class="line">    title = forms.CharField(max_length=50)</div><div class="line">    file = forms.FileField()</div></pre></td></tr></table></figure><blockquote><p>一个视图将会处理这个从request.FILES接受文件数据的表格，该表格好比一个目录包括了键和每一个文件字段或是图片文件，所以上述数据表可用request.FILES[’file’]</p><p>注意request.FILES方法只包含数据，如果请求方法是POST，然后请求方法中带有参数，enctype=“multipart/form-data”。否则，request.FILES将会为空</p><p>大多数情况，你可以简单的从request中找到方法访问文件流在表格内。</p></blockquote><p>view.py</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">from django.http import HttpResponseRedirect</div><div class="line">from django.shortcuts import render</div><div class="line">from .forms import UploadFileForm</div><div class="line"></div><div class="line"># Imaginary function to handle an uploaded file.</div><div class="line">from somewhere import handle_uploaded_file</div><div class="line"></div><div class="line">def upload_file(request):</div><div class="line">    if request.method == &apos;POST&apos;:</div><div class="line">        form = UploadFileForm(request.POST, request.FILES)</div><div class="line">        if form.is_valid():</div><div class="line">            handle_uploaded_file(request.FILES[&apos;file&apos;])</div><div class="line">            return HttpResponseRedirect(&apos;/success/url/&apos;)</div><div class="line">    else:</div><div class="line">        form = UploadFileForm()</div><div class="line">    return render(request, &apos;upload.html&apos;, &#123;&apos;form&apos;: form&#125;)</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;当Django在处理文件上传的时候，文件数据最后储存在request.FILES.这篇文档解释了文件是如何存储在硬盘和内存当中，和如何定制我们自己想要的存储方式&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;警告&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果你接受到来自未知的不可信赖的用户发送的数据，将会有一定的安全风险，请查看安全手册中的数据迁移细节&lt;br&gt;基本文件上传&lt;br&gt;创建一个包括FileField的简单表格&lt;br&gt;
+    
+    </summary>
+    
+      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Django" scheme="http://Moshiwei.github.io/tags/Django/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Django-models部分翻译</title>
+    <link href="http://Moshiwei.github.io/2017/09/24/Django-models%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91/"/>
+    <id>http://Moshiwei.github.io/2017/09/24/Django-models部分翻译/</id>
+    <published>2017-09-24T01:52:00.000Z</published>
+    <updated>2017-10-07T14:21:10.919Z</updated>
+    
+    <content type="html"><![CDATA[<p>每一个model映射了一个独立的数据库表<br>model是django.db.models.Model的子类<br>每一个model的属性对应着一个database的field<br>model内的类属性代表了每一个字段<br>每一个属性映射除了数据表的列<br>也就是说：类代表了数据表，类的属性代表了数据表中的列，表名可更改，主键可更改<br><a id="more"></a></p><h2 id="使用models"><a href="#使用models" class="headerlink" title="使用models"></a>使用models</h2><p>当你定义好了你的models，你需要去告诉Django你将要使用这些models，首先你需要在设置文件中（settings file）在INSTALLED_APPS中添加你的app，<br>当你添加了新的app在INSTALLED_APPS中时，需要确认你运行了manage.py migrate去进行数据迁移。之后还要运行一遍manage.py makemigrations</p><h2 id="Fields"><a href="#Fields" class="headerlink" title="Fields"></a>Fields</h2><p>Fields是model中最重要的部分，是models唯一需要的部分，类的属性指定了Fields，为了防治冲突请不要使用models的API来命名Field</p><h2 id="Field-types"><a href="#Field-types" class="headerlink" title="Field types"></a>Field types</h2><p>你model中的每一个fields都应该时一个合适的例子<br>Django使用这些field class类别去确认这几件事<br>  ● 列的类型将会告诉数据库去储存什么格式的数据（e.g. INTEGER, VARCHAR, TEXT）<br>  ● 默认的HTML控件会参考它去渲染页面<br>  ● 还有一个关于提供管理认证的东西<br>Django战舰有很多内置的Field类型，你可以在别处找到完成整的对照表。你甚至可以轻松的写下你自己需要的field类型。</p><h2 id="Field-options"><a href="#Field-options" class="headerlink" title="Field options"></a>Field options</h2><p>field中有一些特定的参数，例如，CharField（和他的子类）需要max_length曲具体限定VARCHAR类型的数据field的储存长度</p><p>还有一系列常用的参数给所有的field使用，它们都是可选的。下面有一些快速的摘要关于一些常用的参数</p><h3 id="null"><a href="#null" class="headerlink" title="null"></a>null</h3><p>if Ture，Django会储存一个空值在数据库中，此参数默认为False</p><h3 id="blank"><a href="#blank" class="headerlink" title="blank"></a>blank</h3><p>if Ture，field将会允许内容为空，默认为False<br>这里要注意blank和null是不同的，但null=Ture时，field仅仅只储存了一个NULL的空值，但是blank设计到了一个认证的问题，当blank设置为False时，该field是不允许为空格的，也就是不能没有内容</p><h3 id="choices"><a href="#choices" class="headerlink" title="choices"></a>choices</h3><p>一个可迭代的列表或是元组，下面有一个使用二维元组作为参数的例子，当有此参数时，默认的表格空间会选择盒子内的选项代表标准的field内容，并且会限制你给予的可选项<br>一个可选列表就像这样</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">YEAR_IN_SCHOOL_CHOICES = (</div><div class="line">    (&apos;FR&apos;, &apos;Freshman&apos;),</div><div class="line">    (&apos;SO&apos;, &apos;Sophomore&apos;),</div><div class="line">    (&apos;JR&apos;, &apos;Junior&apos;),</div><div class="line">    (&apos;SR&apos;, &apos;Senior&apos;),</div><div class="line">    (&apos;GR&apos;, &apos;Graduate&apos;),</div><div class="line">)</div></pre></td></tr></table></figure><p>每一个元组中的第一个元素将会被储存在数据库中，第二个元素将会被显示在默认表格或在ModelChoiceField中，下面个给一个model的模型。可以通过get_Foo_display()方法来显示属性</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">from django.db import models</div><div class="line"></div><div class="line">class Person(models.Model):</div><div class="line">    SHIRT_SIZES = (</div><div class="line">        (&apos;S&apos;, &apos;Small&apos;),</div><div class="line">        (&apos;M&apos;, &apos;Medium&apos;),</div><div class="line">        (&apos;L&apos;, &apos;Large&apos;),</div><div class="line">    )</div><div class="line">    name = models.CharField(max_length=60)</div><div class="line">    shirt_size = models.CharField(max_length=1, choices=SHIRT_SIZES)</div></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; p = Person(name=&quot;Fred Flintstone&quot;, shirt_size=&quot;L&quot;)</div><div class="line">&gt;&gt;&gt; p.save()</div><div class="line">&gt;&gt;&gt; p.shirt_size</div><div class="line">&apos;L&apos;</div><div class="line">&gt;&gt;&gt; p.get_shirt_size_display()</div><div class="line">&apos;Large&apos;</div></pre></td></tr></table></figure><h3 id="deafult"><a href="#deafult" class="headerlink" title="deafult"></a>deafult</h3><p>如果设置了默认值，默认值可以是一个确定的值也可以是一个可调用的对象，如果是可调用的对象那么该对象会在新项目生成时再次调用。</p><h3 id="help-text"><a href="#help-text" class="headerlink" title="help_text"></a>help_text</h3><p>额外的“帮助”文本显示与表单小部件。即使你的字段不是在表单上使用，它也很有用</p><h3 id="primary-key"><a href="#primary-key" class="headerlink" title="primary_key"></a>primary_key</h3><p>Django会自动创建一个IntegerField去包含主键（primary key），所以你不必特别的写primary_key = Ture如果你不需要，可以重写此方法</p><h3 id="Automatic-primary-key-fields"><a href="#Automatic-primary-key-fields" class="headerlink" title="Automatic primary key fields"></a>Automatic primary key fields</h3><p>默认情况下，Django给与了每一个model一个字段：<br>id = models.AutoField(primary_key=Ture)<br>这是一个自增的主键<br>如果你想要指定一个自定义的主键，只需指定primary_key=Ture在你的字段中，如果Django看到了你明确的设置了字段的主键，他将不会增加一个自动增加的id列</p><h3 id="Verbose-field-names（详细的字段名称）"><a href="#Verbose-field-names（详细的字段名称）" class="headerlink" title="Verbose field names（详细的字段名称）"></a>Verbose field names（详细的字段名称）</h3><p>每一个字段类型，除了ForeignKey.ManyToManyField,OneToOneField,需要一个可选择的位置参数，都有详细的字段名称，如果它没有被给与，Django将会使用字段的属性名字自动创建一个。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;每一个model映射了一个独立的数据库表&lt;br&gt;model是django.db.models.Model的子类&lt;br&gt;每一个model的属性对应着一个database的field&lt;br&gt;model内的类属性代表了每一个字段&lt;br&gt;每一个属性映射除了数据表的列&lt;br&gt;也就是说：类代表了数据表，类的属性代表了数据表中的列，表名可更改，主键可更改&lt;br&gt;
+    
+    </summary>
+    
+      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Django" scheme="http://Moshiwei.github.io/tags/Django/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python多线程编程</title>
+    <link href="http://Moshiwei.github.io/2017/09/09/python%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/"/>
+    <id>http://Moshiwei.github.io/2017/09/09/python多线程编程/</id>
+    <published>2017-09-09T09:54:00.000Z</published>
+    <updated>2017-10-07T14:21:09.144Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><blockquote><p>先说一个有意思的例子，在我上高中的时候迷恋做饭，一心想着要当米其林大厨来着，我就开始看着方面的书。其中有一篇是讲了厨房效率，从做饭的步骤联系到了工具台的位置该如何部署。</p><p>那我们把做一道菜的过程比喻成为进程，如果客人要吃米饭，那么这种做米饭的且不影响菜肴烹饪的行为就是线程，我们不可能等着米饭做好了再去炒菜，两个应该同时进行，保证客人吃上热饭热菜。这就是并行，假设完成这道菜肴我们需要烤制一份牛肉作为辅助，电饭煲和烤箱不能同时进行，但牛肉是完成这道菜的必备步骤，这时要触发中断，做米饭要让他先行就是让步了。<br><a id="more"></a></p><h1 id="多线程编程"><a href="#多线程编程" class="headerlink" title="多线程编程"></a>多线程编程</h1><p>无论是任务本身需要按照步骤顺序执行，还是整个程序实际上包含多个子任务，都需要按照这种顺序方式执行。那么，假如这些子任务相互独立，都没因果关系（也就是说，各个子任务的结果并不影响其他子任务的结果），这样的做法是不是很不合理呢？</p><p>要是让这些独立的任务同时运行，会怎么样呢？很明显，这种并行处理方式可以显著的提高整个任务的性能，这就是多线程编程。</p></blockquote><h1 id="线程和进程"><a href="#线程和进程" class="headerlink" title="线程和进程"></a>线程和进程</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><blockquote><p>计算机程序只是储存在磁盘上的可执行二进制（或其他类型）的文件。只有把他们加载到内存中并被操作系统调用，才拥有其生命期。<br>进程（有时称为重量级进程）就是一个执行中的程序，每个进程都有自己的地址空间，内存，数据栈以及其他用于跟踪执行的辅助数据。</p><h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程（有时候称为轻量级进程）与进程类似，不过他们是在同一个进程下执行的，并共享相同的上下文，可以将它们认为是一个主进程或“主线程”中并行运行的一些“迷你进程”。</p><p>线程包括开始，执行顺序和结束三部分，他有一个指令指针，用于记录当前运行的上下文，但其他线程运行时，他可以被抢占（中断）和临时挂起（也称为睡眠）——这种做法叫做让步（yielding）。<br><img src="https://github.com/Moshiwei/test/blob/master/images/black.jpg?raw=true" alt="image"></p></blockquote><h1 id="使用代码来举例"><a href="#使用代码来举例" class="headerlink" title="使用代码来举例"></a>使用代码来举例</h1><h2 id="不使用线程的情况"><a href="#不使用线程的情况" class="headerlink" title="不使用线程的情况"></a>不使用线程的情况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">from time import sleep, ctime</div><div class="line"></div><div class="line">def loop0():</div><div class="line">    print &apos;start loop 0 at:&apos;, ctime()</div><div class="line">    sleep(4)</div><div class="line">    print &apos;loop0 done at:&apos;, ctime()</div><div class="line"></div><div class="line">def loop1():</div><div class="line">    print &apos;start loop 1 at:&apos;, ctime()</div><div class="line">    sleep(2)</div><div class="line">    print &apos;loop1 done at:&apos;, ctime()</div><div class="line"></div><div class="line">def main():</div><div class="line">    print &apos;starting at:&apos;, ctime()</div><div class="line">    loop0()</div><div class="line">    loop1()</div><div class="line">    print &apos;all DONE at:&apos;, ctime()</div><div class="line">    </div><div class="line">if __name__ ==&apos;__main__&apos;:</div><div class="line">    main()</div></pre></td></tr></table></figure><p>结果：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">starting at: Sat Sep 09 13:08:34 2017</div><div class="line">start loop 0 at: Sat Sep 09 13:08:34 2017</div><div class="line">loop0 done at: Sat Sep 09 13:08:38 2017</div><div class="line">start loop 1 at: Sat Sep 09 13:08:38 2017</div><div class="line">loop1 done at: Sat Sep 09 13:08:40 2017</div><div class="line">all DONE at: Sat Sep 09 13:08:40 2017</div></pre></td></tr></table></figure><p>整个运行时间至少会有6s，而在启动时可能有1s多的开销。使整个时间多达7s</p><h2 id="使用线程和锁"><a href="#使用线程和锁" class="headerlink" title="使用线程和锁"></a>使用线程和锁</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">import thread</div><div class="line">from time import sleep, ctime</div><div class="line"></div><div class="line">loops = [4, 2]</div><div class="line"></div><div class="line">def loop(nloop, nsec, lock):</div><div class="line">    print &apos;start loop&apos;, nloop, &apos;at:&apos;, ctime()</div><div class="line">    sleep(nsec)</div><div class="line">    print &apos;loop&apos;, nloop, &apos;done at:&apos;, ctime()</div><div class="line">    lock.release(0)</div><div class="line"></div><div class="line">    def main():</div><div class="line">        print &apos;starting at:&apos;, ctime()</div><div class="line">        locks = []</div><div class="line">        nloops = range(len(loops))</div><div class="line">        </div><div class="line">    for i in nloops:</div><div class="line">        lock = thread.allocate_lock()</div><div class="line">        lock.acquire()</div><div class="line">        locks.append(lock)</div><div class="line"></div><div class="line">for i in nloops:</div><div class="line">    thread.start_new_thread(loop, (i, loops[i], locks[i]))</div><div class="line">    </div><div class="line">    for i in nloops:</div><div class="line">        while locks[i].locked():pass</div><div class="line">        </div><div class="line">    print &apos;all DONE at:&apos;, ctime()</div><div class="line"></div><div class="line">if __name__ ==&apos;__main__&apos;:</div><div class="line">    main()</div></pre></td></tr></table></figure><p>结果</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">starting at: Sat Sep 09 13:20:41 2017</div><div class="line">start loop 0 at: Sat Sep 09 13:20:41 2017</div><div class="line">start loop 1 at: Sat Sep 09 13:20:41 2017</div><div class="line">loop0 done at: Sat Sep 09 13:20:43 2017</div><div class="line">loop1 done at: Sat Sep 09 13:20:45 2017</div><div class="line">all DONE at: Sat Sep 09 13:20:45 2017</div></pre></td></tr></table></figure><p>使他们并行从开始到完成只需要4s</p><p>代码中的loop模拟的是一次运行过程，loop0运行一次需要4s，loop1运行一次需要2s，这样串行需要6秒多完成，并行只需要4s</p><p>这篇写完好长好累…..</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;引入&quot;&gt;&lt;a href=&quot;#引入&quot; class=&quot;headerlink&quot; title=&quot;引入&quot;&gt;&lt;/a&gt;引入&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;先说一个有意思的例子，在我上高中的时候迷恋做饭，一心想着要当米其林大厨来着，我就开始看着方面的书。其中有一篇是讲了厨房效率，从做饭的步骤联系到了工具台的位置该如何部署。&lt;/p&gt;
+&lt;p&gt;那我们把做一道菜的过程比喻成为进程，如果客人要吃米饭，那么这种做米饭的且不影响菜肴烹饪的行为就是线程，我们不可能等着米饭做好了再去炒菜，两个应该同时进行，保证客人吃上热饭热菜。这就是并行，假设完成这道菜肴我们需要烤制一份牛肉作为辅助，电饭煲和烤箱不能同时进行，但牛肉是完成这道菜的必备步骤，这时要触发中断，做米饭要让他先行就是让步了。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="python进阶" scheme="http://Moshiwei.github.io/categories/python%E8%BF%9B%E9%98%B6/"/>
+    
+    
+      <category term="python" scheme="http://Moshiwei.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>开学想说的话</title>
+    <link href="http://Moshiwei.github.io/2017/09/04/2017.09.04%E5%BC%80%E5%AD%A6%E6%88%91%E6%83%B3%E8%AF%B4/"/>
+    <id>http://Moshiwei.github.io/2017/09/04/2017.09.04开学我想说/</id>
+    <published>2017-09-04T09:10:00.000Z</published>
+    <updated>2017-10-07T14:21:12.531Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="大三刚开学我想说什么"><a href="#大三刚开学我想说什么" class="headerlink" title="大三刚开学我想说什么"></a>大三刚开学我想说什么</h1><blockquote><p>我好像还是不适合课堂内学习，对我自己来讲，如果有兴趣的话，自学的效率会更高。</p><footer><strong>开学第一天</strong></footer></blockquote><h2 id="暑假"><a href="#暑假" class="headerlink" title="暑假"></a>暑假</h2><blockquote><p>这个假期我第一次留校学习，新鲜感十足，每天早上能在七点之前起床洗漱好，然后开始学习自己喜欢的东西，说实话，那时学习带给我的满足感和成就感，远远大于我会做一道课堂中学的题，这也许是兴趣的问题吧。自我结束更新blog快一周了。其实说罢了就是在偷懒而已。<br><a id="more"></a></p></blockquote><h2 id="关于为什么开始写日记"><a href="#关于为什么开始写日记" class="headerlink" title="关于为什么开始写日记"></a>关于为什么开始写日记</h2><blockquote><p>更新blog，我坚持了一个暑假了。简单，且开心。</p><p>我有一个软件叫格志，它就像小学的时候刚开始玩qq空间，流行在里面写日志的时候，qq空间在里面推出了一个格子日志，不知道有没有同学记得，就是一个九宫格，里面会有他为你提供的一点话题，为了让你有东西可写，可是坚持在上面写的话，会有一种拘束感，我把它保留下来了，因为他提供了一些话题还是不错的。</p><p>我本身是希望能够每天都更新一点笔记在上面的，这样可以证明你没有浪费这一天的时光，能够看到自己的进步，我觉得最重要的一点就是有些新出现的毛病的解决方法可以记录在上面方便以后查看，因为baidu出来的很多问题都很老旧，开发环境也很旧，所以新的问题解决方法基本都在官方的论坛或者私人的blog里面。说实话，自己寻找答案并且记录，会有一种满足的喜悦感。</p><p>最后，好的话题和点子会因为你偷懒没有立即记录下来而残忍的离开你。</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;大三刚开学我想说什么&quot;&gt;&lt;a href=&quot;#大三刚开学我想说什么&quot; class=&quot;headerlink&quot; title=&quot;大三刚开学我想说什么&quot;&gt;&lt;/a&gt;大三刚开学我想说什么&lt;/h1&gt;&lt;blockquote&gt;&lt;p&gt;我好像还是不适合课堂内学习，对我自己来讲，如果有兴趣的话，自学的效率会更高。&lt;/p&gt;
+&lt;footer&gt;&lt;strong&gt;开学第一天&lt;/strong&gt;&lt;/footer&gt;&lt;/blockquote&gt;
+&lt;h2 id=&quot;暑假&quot;&gt;&lt;a href=&quot;#暑假&quot; class=&quot;headerlink&quot; title=&quot;暑假&quot;&gt;&lt;/a&gt;暑假&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;这个假期我第一次留校学习，新鲜感十足，每天早上能在七点之前起床洗漱好，然后开始学习自己喜欢的东西，说实话，那时学习带给我的满足感和成就感，远远大于我会做一道课堂中学的题，这也许是兴趣的问题吧。自我结束更新blog快一周了。其实说罢了就是在偷懒而已。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="感想" scheme="http://Moshiwei.github.io/categories/%E6%84%9F%E6%83%B3/"/>
+    
+    
+      <category term="思考" scheme="http://Moshiwei.github.io/tags/%E6%80%9D%E8%80%83/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python数据结构之链表</title>
+    <link href="http://Moshiwei.github.io/2017/09/02/python%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E9%93%BE%E8%A1%A8/"/>
+    <id>http://Moshiwei.github.io/2017/09/02/python数据结构之链表/</id>
+    <published>2017-09-02T14:51:00.000Z</published>
+    <updated>2017-09-02T14:52:06.055Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="python数据结构"><a href="#python数据结构" class="headerlink" title="python数据结构"></a>python数据结构</h1><h2 id="单链表的实现"><a href="#单链表的实现" class="headerlink" title="单链表的实现"></a>单链表的实现</h2><blockquote><p>链表中的元素可以储存在内存的任何地方，连标的每个元素都储存了下一个元素的地址，从而使一系列随机的内存地址串在一起，这就好比一个寻宝游戏，你前往第一个地址，那里有一张纸条写着，下一个元素的地址为123，因此，你要前往123，然后又有一张<br>纸条，写着下一个元素的地址。</p><p>下面这段代码是python2.7实现的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">class Node(object):</div><div class="line">    def __init__(self,val,p=0):</div><div class="line">        self.data = val</div><div class="line">        self.next = p</div><div class="line"></div><div class="line">class LinkList(object):</div><div class="line">    def __init__(self):</div><div class="line">        self.head = 0</div><div class="line"></div><div class="line">    def __getitem__(self, key):</div><div class="line"></div><div class="line">        if self.is_empty():</div><div class="line">            print &apos;linklist is empty.&apos;</div><div class="line">            return</div><div class="line"></div><div class="line">        elif key &lt;0  or key &gt; self.getlength():</div><div class="line">            print &apos;the given key is error&apos;</div><div class="line">            return</div><div class="line"></div><div class="line">        else:</div><div class="line">            return self.getitem(key)</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    def __setitem__(self, key, value):</div><div class="line"></div><div class="line">        if self.is_empty():</div><div class="line">            print &apos;linklist is empty.&apos;</div><div class="line">            return</div><div class="line"></div><div class="line">        elif key &lt;0  or key &gt; self.getlength():</div><div class="line">            print &apos;the given key is error&apos;</div><div class="line">            return</div><div class="line"></div><div class="line">        else:</div><div class="line">            self.delete(key)</div><div class="line">            return self.insert(key)</div><div class="line"></div><div class="line">    def initlist(self,data):</div><div class="line"></div><div class="line">        self.head = Node(data[0])</div><div class="line"></div><div class="line">        p = self.head</div><div class="line"></div><div class="line">        for i in data[1:]:</div><div class="line">            node = Node(i)</div><div class="line">            p.next = node</div><div class="line">            p = p.next</div><div class="line"></div><div class="line">    def getlength(self):</div><div class="line"></div><div class="line">        p =  self.head</div><div class="line">        length = 0</div><div class="line">        while p!=0:</div><div class="line">            length+=1</div><div class="line">            p = p.next</div><div class="line"></div><div class="line">        return length</div><div class="line"></div><div class="line">    def is_empty(self):</div><div class="line"></div><div class="line">        if self.getlength() ==0:</div><div class="line">            return True</div><div class="line">        else:</div><div class="line">            return False</div><div class="line"></div><div class="line">    def clear(self):</div><div class="line"></div><div class="line">        self.head = 0</div><div class="line"></div><div class="line"></div><div class="line">    def append(self,item):</div><div class="line"></div><div class="line">        q = Node(item)</div><div class="line">        if self.head ==0:</div><div class="line">            self.head = q</div><div class="line">        else:</div><div class="line">            p = self.head</div><div class="line">            while p.next!=0:</div><div class="line">                p = p.next</div><div class="line">            p.next = q</div><div class="line"></div><div class="line"></div><div class="line">    def getitem(self,index):</div><div class="line"></div><div class="line">        if self.is_empty():</div><div class="line">            print &apos;Linklist is empty.&apos;</div><div class="line">            return</div><div class="line">        j = 0</div><div class="line">        p = self.head</div><div class="line"></div><div class="line">        while p.next!=0 and j &lt;index:</div><div class="line">            p = p.next</div><div class="line">            j+=1</div><div class="line"></div><div class="line">        if j ==index:</div><div class="line">            return p.data</div><div class="line"></div><div class="line">        else:</div><div class="line"></div><div class="line">            print &apos;target is not exist!&apos;</div><div class="line"></div><div class="line">    def insert(self,index,item):</div><div class="line"></div><div class="line">        if self.is_empty() or index&lt;0 or index &gt;self.getlength():</div><div class="line">            print &apos;Linklist is empty.&apos;</div><div class="line">            return</div><div class="line"></div><div class="line">        if index ==0:</div><div class="line">            q = Node(item,self.head)</div><div class="line"></div><div class="line">            self.head = q</div><div class="line"></div><div class="line">        p = self.head</div><div class="line">        post  = self.head</div><div class="line">        j = 0</div><div class="line">        while p.next!=0 and j&lt;index:</div><div class="line">            post = p</div><div class="line">            p = p.next</div><div class="line">            j+=1</div><div class="line"></div><div class="line">        if index ==j:</div><div class="line">            q = Node(item,p)</div><div class="line">            post.next = q</div><div class="line">            q.next = p</div><div class="line"></div><div class="line"></div><div class="line">    def delete(self,index):</div><div class="line"></div><div class="line">        if self.is_empty() or index&lt;0 or index &gt;self.getlength():</div><div class="line">            print &apos;Linklist is empty.&apos;</div><div class="line">            return</div><div class="line"></div><div class="line">        if index ==0:</div><div class="line">            q = Node(item,self.head)</div><div class="line"></div><div class="line">            self.head = q</div><div class="line"></div><div class="line">        p = self.head</div><div class="line">        post  = self.head</div><div class="line">        j = 0</div><div class="line">        while p.next!=0 and j&lt;index:</div><div class="line">            post = p</div><div class="line">            p = p.next</div><div class="line">            j+=1</div><div class="line"></div><div class="line">        if index ==j:</div><div class="line">            post.next = p.next</div><div class="line"></div><div class="line">    def index(self,value):</div><div class="line"></div><div class="line">        if self.is_empty():</div><div class="line">            print &apos;Linklist is empty.&apos;</div><div class="line">            return</div><div class="line"></div><div class="line">        p = self.head</div><div class="line">        i = 0</div><div class="line">        while p.next!=0 and not p.data ==value:</div><div class="line">            p = p.next</div><div class="line">            i+=1</div><div class="line"></div><div class="line">        if p.data == value:</div><div class="line">            return i</div><div class="line">        else:</div><div class="line">            return -1</div><div class="line"></div><div class="line"></div><div class="line">l = LinkList()</div><div class="line">l.initlist([1,2,3,4,5])</div><div class="line">print l.getitem(4)</div><div class="line">l.append(6)</div><div class="line">print l.getitem(5)</div><div class="line"></div><div class="line">l.insert(4,40)</div><div class="line">print l.getitem(3)</div><div class="line">print l.getitem(4)</div><div class="line">print l.getitem(5)</div><div class="line"></div><div class="line">l.delete(5)</div><div class="line">print l.getitem(5)</div><div class="line"></div><div class="line">l.index(5)</div></pre></td></tr></table></figure></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;python数据结构&quot;&gt;&lt;a href=&quot;#python数据结构&quot; class=&quot;headerlink&quot; title=&quot;python数据结构&quot;&gt;&lt;/a&gt;python数据结构&lt;/h1&gt;&lt;h2 id=&quot;单链表的实现&quot;&gt;&lt;a href=&quot;#单链表的实现&quot; class=&quot;
+      
+    
+    </summary>
+    
+      <category term="python数据结构" scheme="http://Moshiwei.github.io/categories/python%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+    
+      <category term="python链表" scheme="http://Moshiwei.github.io/tags/python%E9%93%BE%E8%A1%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python解决实际问题04</title>
+    <link href="http://Moshiwei.github.io/2017/08/27/python%E5%AE%9E%E6%88%982017.08.27/"/>
+    <id>http://Moshiwei.github.io/2017/08/27/python实战2017.08.27/</id>
+    <published>2017-08-27T14:15:00.000Z</published>
+    <updated>2017-08-27T14:15:39.351Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h1><p>比如要写一个爬虫爬取各个城市的气温信息，如果一次抓取所有的城市天气再显示，这样我们得到信息的时间就是最后一条信息爬取完的时间，这样有很高的延时，并且浪费储存空间，我们希望以“用时访问”的策略，也就是说，爬一条显示一条，还要把所有城市气温封装到一个对象里，可用for语句进行迭代。</p><h1 id="可迭代对象和迭代器对象"><a href="#可迭代对象和迭代器对象" class="headerlink" title="可迭代对象和迭代器对象"></a>可迭代对象和迭代器对象</h1><p>list1 = [1, 2, 3, 4]<br>str1 = ‘abcdef’<br>我们知道python中列表和字符串都是可以迭代的，所以他们都是一个可迭代对象；list1有两个接口，一个<strong>iter</strong>(),<strong>getiterm</strong>()。而str1只有一个<strong>getitem</strong>()。通过调用接口</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;list1.__iter__()</div><div class="line">&lt;list_iterator object at 0x000001BB9D637358&gt;</div></pre></td></tr></table></figure><p>发现它会变成一个迭代器对象。</p><h1 id="iter"><a href="#iter" class="headerlink" title="iter()"></a>iter()</h1><p>python3中的iter()有两个参数，这里只介绍iter(object)。<br>object必须是一个集合对象，并且支持迭代协议（iteration protocol）或者支持序列协议（sequence protocol）。也就是说它会找你的接口里面是否有<strong>iter</strong>(),没有就找<strong>getiterm</strong>()<br>iter创建了一个迭代器对象，每次调用这个迭代器对象的<strong>next</strong>()方法时，都会调用object，如果<strong>next</strong>的返回值等于sentinel，则抛出StopIteration的异常，否则返回下一个值，<strong>这也就是for循环的工作流程</strong>  </p><h1 id="实现迭代器对象"><a href="#实现迭代器对象" class="headerlink" title="实现迭代器对象"></a>实现迭代器对象</h1><p>其实方法就是写两个类，一个继承iterator，一个继承iterable，可迭代对象的类使用<strong>iter</strong>方法返回一个迭代器对象，迭代器对象使用next方法，每次返回一组数据。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;实际案例&quot;&gt;&lt;a href=&quot;#实际案例&quot; class=&quot;headerlink&quot; title=&quot;实际案例&quot;&gt;&lt;/a&gt;实际案例&lt;/h1&gt;&lt;p&gt;比如要写一个爬虫爬取各个城市的气温信息，如果一次抓取所有的城市天气再显示，这样我们得到信息的时间就是最后一条信息爬取完的时间
+      
+    
+    </summary>
+    
+      <category term="python实际问题" scheme="http://Moshiwei.github.io/categories/python%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/"/>
+    
+    
+      <category term="python" scheme="http://Moshiwei.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python解决实际问题03</title>
+    <link href="http://Moshiwei.github.io/2017/08/23/python%E5%AE%9E%E6%88%982017.08.23/"/>
+    <id>http://Moshiwei.github.io/2017/08/23/python实战2017.08.23/</id>
+    <published>2017-08-23T14:19:00.000Z</published>
+    <updated>2017-08-23T14:19:08.130Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h1><ol><li>某随机序列[12, 5, 6, 4, 6, 5, 5, 7, …]中，找到出现次数最高的三个元素，他们出现次数是多少？</li><li>对某英文文章的单词，进行词频统计，找到出现次数最高的10个单词，他们出现次数是多少？<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1>问题1<br>生成一个随机数列表。</li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from random import randint</div><div class="line"># 第一步：生成一个随机数列表。</div><div class="line">list1 = [randin(0, 20) for x in range(30)]</div><div class="line"># 第二步：将列表的元素化为字典中的键，默认的值为0，创建一个字典</div><div class="line">dict1 = dict.fromkeys(list1, 0)</div><div class="line"># 第三步：如果x出现在了列表当中，那么他的值加1</div><div class="line">for x in list1:</div><div class="line">    c[x] += 1</div><div class="line">print(dict1)</div></pre></td></tr></table></figure><p>问题2</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from collections import Counter</div><div class="line">import re</div><div class="line">txt = open(&quot;TEXT&quot;).read()</div><div class="line">words = Counter(re.split(&apos;\w+&apos;,txt))</div><div class="line">words.most_common(10)</div></pre></td></tr></table></figure><h1 id="代码补充"><a href="#代码补充" class="headerlink" title="代码补充"></a>代码补充</h1><p>dict.fromkeys(list1, None)<br>dict的fromkeys方法可以将给定的键生成一个新的字典，每一个键都有一个默认的值None，这个值也可以自己给定。<br>fromkeys方法接收两个参数，一个列表作为新字典中的键，一个默认值</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;实际案例&quot;&gt;&lt;a href=&quot;#实际案例&quot; class=&quot;headerlink&quot; title=&quot;实际案例&quot;&gt;&lt;/a&gt;实际案例&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;某随机序列[12, 5, 6, 4, 6, 5, 5, 7, …]中，找到出现次数最高的三个元素，他们出现次数是
+      
+    
+    </summary>
+    
+      <category term="python实际问题" scheme="http://Moshiwei.github.io/categories/python%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/"/>
+    
+    
+      <category term="python" scheme="http://Moshiwei.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python解决实际问题02</title>
+    <link href="http://Moshiwei.github.io/2017/08/22/python%E5%AE%9E%E6%88%982017.08.22(1)/"/>
+    <id>http://Moshiwei.github.io/2017/08/22/python实战2017.08.22(1)/</id>
+    <published>2017-08-22T08:58:00.000Z</published>
+    <updated>2017-08-22T08:58:09.007Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h1><blockquote><p>学生信息系统中数据位固定格式：</p><p>（名字, 年龄, 性别,  邮箱地址,  …）</p><p>学生数量很大为了减少储存开销，对每个学生信息用元组表示：</p><p>(‘Jim’, 16, ‘male’, ‘jim8721#gmail.com’)<br>…</p><p>访问时，我们使用索引访问，大量索引降低程序可读性，如何解决这个问题？</p><h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">NAME, AGE, SEX, EMAIL = range(4)</div><div class="line">student = (&apos;Jim&apos;, 16, &apos;male&apos;, &apos;jim8721#gmail.com&apos;)</div><div class="line"># NAME </div><div class="line">print(student[NAME])</div><div class="line"># AGE</div><div class="line">print(student[AGE])</div><div class="line"># SEX</div><div class="line">pritn(student[SEX])</div><div class="line"># EMAIL</div><div class="line">print(student[EMAIL])</div></pre></td></tr></table></figure></blockquote><h2 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h2><p>使用标准库中的collections.namedtuple替代内置tuple</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">form collections import namedtuple</div><div class="line">Student = namedtuple(&apos;Student&apos;, [&apos;name&apos;,&apos;age&apos;, &apos;sex&apos;, &apos;email&apos;])</div><div class="line">s1 = Student(&apos;Jim&apos;, 16, &apos;male&apos;, &apos;jim8721#gmail.com&apos;)</div><div class="line"># name</div><div class="line">s1.name</div><div class="line"># age</div><div class="line">s1.age</div><div class="line"># sex</div><div class="line">s1.sex</div><div class="line"># email</div><div class="line">s1.email</div></pre></td></tr></table></figure><p>这是一种通过类建立对象然后访问属性的方法。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;实际案例&quot;&gt;&lt;a href=&quot;#实际案例&quot; class=&quot;headerlink&quot; title=&quot;实际案例&quot;&gt;&lt;/a&gt;实际案例&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;学生信息系统中数据位固定格式：&lt;/p&gt;
+&lt;p&gt;（名字, 年龄, 性别,  邮箱地址,  …）&lt;/p
+      
+    
+    </summary>
+    
+      <category term="python实际问题" scheme="http://Moshiwei.github.io/categories/python%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/"/>
+    
+    
+      <category term="python" scheme="http://Moshiwei.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python解决实际问题01</title>
+    <link href="http://Moshiwei.github.io/2017/08/22/python%E5%AE%9E%E6%88%982017.08.22/"/>
+    <id>http://Moshiwei.github.io/2017/08/22/python实战2017.08.22/</id>
+    <published>2017-08-22T08:27:00.000Z</published>
+    <updated>2017-08-22T08:27:43.430Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h1><ul><li>过滤掉列表[3, 9, -1, 10, -2, 20, …]中的负数</li><li>筛选出字典{‘LiLei’:79, ‘Jim’:88, ‘Lucy’:92, …}中值高于90的项</li><li>筛选出集合{77, 89, 32, 20, …}中能被3整除的元素</li></ul><h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><blockquote><p><strong>filter函数</strong></p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">filter（lambda x:x&gt;0, data）</div></pre></td></tr></table></figure><blockquote><p><strong>列表解析</strong></p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[x for x in data if x&gt;=0]</div></pre></td></tr></table></figure><h2 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h2><blockquote><p><strong>字典解析</strong></p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;k:v for k, v in d.iteritems() if v&gt;90&#125;</div></pre></td></tr></table></figure><h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><blockquote><p><strong>集合解析</strong></p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;x for x in s if x%3 == 0&#125;</div></pre></td></tr></table></figure><p>以上解决方法对应上述问题</p><h2 id="补充代码"><a href="#补充代码" class="headerlink" title="补充代码"></a>补充代码</h2><blockquote><p>生成一个范围随机数列表</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from random import randint</div><div class="line">list1 = [randint(-10,10) for x in range(10)]</div></pre></td></tr></table></figure><blockquote><p>使用timeit对第一个问题的两种解决方法做一个运行时间对比，发现列表解析的方法是要优于filter函数的。并且这两种方式，都要优于通过普通迭代的方法。</p><p>生成一个范围随机数字典</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dict1 = &#123;k:radint(60, 100) for k in range(1, 21)&#125;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;实际案例&quot;&gt;&lt;a href=&quot;#实际案例&quot; class=&quot;headerlink&quot; title=&quot;实际案例&quot;&gt;&lt;/a&gt;实际案例&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;过滤掉列表[3, 9, -1, 10, -2, 20, …]中的负数&lt;/li&gt;
+&lt;li&gt;筛选出字典{‘LiLei
+      
+    
+    </summary>
+    
+      <category term="python实际问题" scheme="http://Moshiwei.github.io/categories/python%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/"/>
+    
+    
+      <category term="python" scheme="http://Moshiwei.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python面向对象</title>
+    <link href="http://Moshiwei.github.io/2017/08/19/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.19/"/>
+    <id>http://Moshiwei.github.io/2017/08/19/python学习笔记2017.08.19/</id>
+    <published>2017-08-19T14:52:00.000Z</published>
+    <updated>2017-08-19T14:52:56.447Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="定义一个类方法"><a href="#定义一个类方法" class="headerlink" title="定义一个类方法"></a>定义一个类方法</h2><blockquote><p>写一个类的时候，类名首字母要以大写开头</p><p>在类中定义的全部是实方法，实例方法第一个参数self是实例本身</p><p>通过标记一个@classmethod，该方法将绑定到类上，而非类的实例。类方法的第一个参数将传入类本身，通常将参数名命名为cls。</p><h2 id="创建实例属性"><a href="#创建实例属性" class="headerlink" title="创建实例属性"></a>创建实例属性</h2><p>python是一门动态语言，对于每一个实例，都可以直接给他们的属性赋值。</p><h2 id="初始化实例属性"><a href="#初始化实例属性" class="headerlink" title="初始化实例属性"></a>初始化实例属性</h2><p>一种类型的实例应该自带一些属性，比如人应该有名字，性别，生日，或者书籍应该有书名，作者，出版日期等，有一个特殊的<strong>init</strong>方法，当实例被创建时，该方法会被自动调用，将属性赋值给实例。</p><p><strong>init</strong>方法的第一个参数必须是self，后续的参数可以自由制定，和定义函数没有任何区别。</p><p>相应的，创建实例时，就必须要提供self以外的参数。</p><h2 id="访问限制"><a href="#访问限制" class="headerlink" title="访问限制"></a>访问限制</h2><p>python对属性权限的控制是通过属性名来实现的，如果一个属性由双下划线开头，该属性就无法被外部访问。</p><h2 id="类属性"><a href="#类属性" class="headerlink" title="类属性"></a>类属性</h2><p>我们知道实例的属性是互相不影响的，如果在类上绑定一个属性，则所有的实例都可以访问到这个属性，总结来讲，实例的属性都是各自拥有的，相互独立，但是类属性有且只有一份，类属性是可以动态添加和修改的。</p><p>有一个例子很好的解释了这一点</p><p>实现一个功能，创建一个实例，就计数一次</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">class Person():</div><div class="line">count = 0</div><div class="line">def __init__(self, name):</div><div class="line">self.name = name </div><div class="line">Person.count += 1</div><div class="line">p1 = Person(&apos;Bob&apos;)</div><div class="line">print Person.count,</div><div class="line"></div><div class="line">p2 = Person(&apos;Alice&apos;)</div><div class="line">print Person.count,</div><div class="line"></div><div class="line">p3 = Person(&apos;Tim&apos;)</div><div class="line">print Person.count</div></pre></td></tr></table></figure><h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><blockquote><p>先看例子</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">class Person(object):</div><div class="line">    address = &apos;Earth&apos;</div><div class="line">    def __init__(self, name):</div><div class="line">        self.name = name</div><div class="line">p1 = Person(&apos;Bob&apos;)</div><div class="line">p2 = Person(&apos;Alice&apos;)</div><div class="line">print &apos;Person.address = &apos; + Person.address</div><div class="line">p1.address = &apos;China&apos;</div><div class="line">print &apos;p1.address = &apos; + p1.address</div><div class="line">print &apos;Person.address = &apos; + Person.address</div><div class="line">print &apos;p2.address = &apos; + p2.address</div></pre></td></tr></table></figure><p>结果</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Person.address = Earth</div><div class="line">p1.address = China</div><div class="line">Person.address = Earth</div><div class="line">p2.address = Earth</div></pre></td></tr></table></figure><blockquote><p>可以看到，实例访问了类属性，并且做了更改。或者说这个实例访问的并不是类属性，而是它自身创建了一个实例属性和类属性同名了，因为可以看到我们输出了类属性后，发现类属性没有变化。那么下次我们输出实例的时候，访问address属性的时候是访问的哪一个属性呢。</p><p>这里就涉及到了优先级的问题。当类属性和实例属性重名的时候，实例会优先检查实例属性，如果没有再去访问类属性。换句话说，在实例上修改类属性，他实际并没有修改类属性，而是绑定了一个新的实例属性。</p><h2 id="定义实例方法"><a href="#定义实例方法" class="headerlink" title="定义实例方法"></a>定义实例方法</h2><p>一个实例的私有属性就是以__开头的属性，无法被外部访问，那这些属性定义有什么用？虽然私有属性无法从外部访问，但是从类的内部是可以访问的，除了可以定义实例的属性外，还可以定义实例的方法。</p><p>实例的方法就是在类中定义的函数，她的第一个参数永远是self，指向调用该方法的实例本身。</p><p>在实例方法的内部，可以访问所有实例属性，这样，如果外部需要访问私有属性，可以通过方法调用获得，这种数据封装的形式除了能保护内部数据一致性外，还可以简化外部调用的难度。</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;定义一个类方法&quot;&gt;&lt;a href=&quot;#定义一个类方法&quot; class=&quot;headerlink&quot; title=&quot;定义一个类方法&quot;&gt;&lt;/a&gt;定义一个类方法&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;写一个类的时候，类名首字母要以大写开头&lt;/p&gt;
+&lt;p&gt;在类中定义的全部是实
+      
+    
+    </summary>
+    
+      <category term="python学习笔记" scheme="http://Moshiwei.github.io/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="python" scheme="http://Moshiwei.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>装饰器的理解</title>
+    <link href="http://Moshiwei.github.io/2017/08/17/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.17/"/>
+    <id>http://Moshiwei.github.io/2017/08/17/python学习笔记2017.08.17/</id>
+    <published>2017-08-17T13:50:00.000Z</published>
+    <updated>2017-08-19T14:52:46.886Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h1><blockquote><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>学了一周的python函数式编程了，觉得好玩的两个点就是匿名函数，和装饰器了。因为他们都能让我觉得写代码可以更加优雅。</p><p>如果你想给一个函数增加一些功能，但是你又不想在原函数中改，那么你就可以使用装饰器，这样的话，假如有很多函数都需要这个功能，装饰器就会显示出它作用，可以减少不少重复的代码。</p><p>按照我自己的理解，我们自己制作的装饰器就像一个提供给函数的小插件，想要谁拥有新功能我们给谁安插件就好了。</p><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def log(func):</div><div class="line">    def wrapper(*args, **kwargs):</div><div class="line">        logging.warn(&quot;%s is running&quot; %func.\_\_name\_\_)</div><div class="line">        return func(*args)</div><div class="line">    return wrapper</div><div class="line"></div><div class="line">def foo():</div><div class="line">    print(&quot;call foo()&quot;)</div><div class="line">    </div><div class="line">foo = log(foo)</div><div class="line">foo()</div></pre></td></tr></table></figure><blockquote><p>如果不理解函数式编程，请看前几节python学习笔记。</p><p>装饰器有一个语法糖,那就是使用@，@装饰器是不是很可爱</p><p>于是代码可以变成这样</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@log</div><div class="line">def foo():</div><div class="line">    print(&quot;call foo()&quot;)</div></pre></td></tr></table></figure><blockquote><p>@装饰器可以省略下面的代码，但是函数使用时，还需要自己调用。</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">foo = log(foo)</div></pre></td></tr></table></figure><blockquote><p>这样以来，如果我们有其他需要打印日志的函数，就可以直接调用装饰器来修饰函数，而不用重复修改函数，或者增加新的封装。这样我们就提高了程序的可重复利用性，并且增加了程序的可读性。</p></blockquote><h2 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h2><blockquote><p>刚开始还是比较绕的，但是遇到事情多想想是吧。首先我们把上面的log(func)函数叫做装饰器，然后它的内层函数返回了我们想装饰的函数，保证我们的原函数顺利执行，我们想装饰的内容也写在了内层函数里，这样应该就比较好理解了。</p><p>当我们阅读代码的时候，被装饰器装饰的函数还是会被顺利执行，我们只需查询装饰器做了什么修改。</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;装饰器&quot;&gt;&lt;a href=&quot;#装饰器&quot; class=&quot;headerlink&quot; title=&quot;装饰器&quot;&gt;&lt;/a&gt;装饰器&lt;/h1&gt;&lt;blockquote&gt;
+&lt;h2 id=&quot;引入&quot;&gt;&lt;a href=&quot;#引入&quot; class=&quot;headerlink&quot; title=&quot;引入&quot;&gt;
+      
+    
+    </summary>
+    
+      <category term="python学习笔记" scheme="http://Moshiwei.github.io/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="python" scheme="http://Moshiwei.github.io/tags/python/"/>
+    
+  </entry>
+  
+</feed>

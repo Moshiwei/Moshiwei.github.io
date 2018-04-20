@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -77,6 +77,8 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="纸镜" type="application/atom+xml" />
+
 
 
 
@@ -87,12 +89,15 @@
 
 
 
+<meta name="description" content="欢迎来到我的blog">
 <meta property="og:type" content="website">
 <meta property="og:title" content="纸镜">
 <meta property="og:url" content="http://Moshiwei.github.io/page/5/index.html">
 <meta property="og:site_name" content="纸镜">
+<meta property="og:description" content="欢迎来到我的blog">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="纸镜">
+<meta name="twitter:description" content="欢迎来到我的blog">
 
 
 
@@ -106,7 +111,7 @@
     motion: true,
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -129,7 +134,7 @@
   <title> 纸镜 </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -169,7 +174,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle"></p>
+        <p class="site-subtitle">La Dolce Vita</p>
       
   </div>
 
@@ -194,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -204,7 +209,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -214,7 +219,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -247,10 +252,10 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/16/python学习笔记2017.08.15/">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/19/python学习笔记2017.07.19/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Moshiwei">
+      <meta itemprop="name" content="Mirror">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
@@ -269,470 +274,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/16/python学习笔记2017.08.15/" itemprop="url">
-                  匿名函数的理解
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-16T21:50:00+08:00">
-                2017-08-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">in</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python学习笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">python学习笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h1><blockquote>
-<p>首先Lambda在很多编程语言中都可以使用、</p>
-<p>对于很多只用到一次的简单函数，简单到它叫什么名字都无关紧要，使用lambda对它们进行精简是最好不过的了</p>
-<p>Explicit is better than implicit(明了胜于晦涩)</p>
-<p>高阶函数可以接收函数做参数，有些时候，我们不需要显示的定义函数，直接传入匿名函数跟方便，在python中，对匿名函数提供了有限的支持。</p>
-<p><strong>关键字lambda表示匿名函数，冒号前面的变量表示函数参数</strong></p>
-<p>匿名函数有个限制，就是只能有一个表达式，不写return，返回值就是该表达式的结果。</p>
-<h2 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h2><blockquote><p>lambda表达式在函数式编程理论里，和Python、C++这样语言的实践中意义略有不同。对于Python和C++这样的语言来说，Lambda表达式就是：能嵌入到其他表达式当中的匿名函数（闭包）。它的第一个重要意义是可以在表达式当中直接定义一个函数，而不需要将定义函数和表达式分开，这样有助于将逻辑用更紧凑的方式表达出来。它的第二个重要意义是引入了闭包。基本上来说常见的支持lambda表达式的语言里，不存在不支持闭包的lambda表达式；从函数式编程的角度来说，支持闭包也是很重要的。闭包是指将当前作用域中的变量通过值或者引用的方式封装到lambda表达式当中，成为表达式的一部分，它使你的lambda表达式从一个普通的函数变成了一个带隐藏参数的函数。它的第三个重要意义（如果有的话）是允许函数作为一个对象来进行传递。某些语言由于历史原因，只有匿名函数可以作为对象传递，而具名函数不可以，比如PHP。</p>
-<footer><strong>灵剑 知乎</strong><cite><a href="https://www.zhihu.com/question/20125256/answer/141817632" target="_blank" rel="external">www.zhihu.com/question/20125256/answer/141817632</a></cite></footer></blockquote>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/15/无标题Markdown/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Moshiwei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="纸镜">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/15/无标题Markdown/" itemprop="url">
-                  新生
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-15T13:14:00+08:00">
-                2017-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote class="blockquote-center">new life：）</blockquote>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/14/python学习笔记2017.08.14/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Moshiwei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="纸镜">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/14/python学习笔记2017.08.14/" itemprop="url">
-                  闭包问题的理解和样例分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-14T17:39:00+08:00">
-                2017-08-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">in</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python学习笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">python学习笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="python中的闭包"><a href="#python中的闭包" class="headerlink" title="python中的闭包"></a>python中的闭包</h1><blockquote>
-<p>在学完python中的返回函数的时候，下一节就是学python闭包，感觉上一节的学习完全懵了，这里总结一下，写出思考过程，方便未来更改查看。</p>
-</blockquote>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>首先，内层函数引用了外层函数的变量（参数也算变量），然后返回内层函数的情况下，称为闭包（Closure）</p>
-<p>闭包的特点是返回的函数还引用了外层函数的局部变量，所以要<strong>正确</strong>使用闭包，就要确保<strong>引用的局部变量在函数返回后不能变</strong>。</p>
-</blockquote>
-<h2 id="返回函数"><a href="#返回函数" class="headerlink" title="返回函数"></a>返回函数</h2><blockquote>
-<p>python的函数不但可以返回，int，str，list，dict等数据类型，还可以返回函数。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def f():</div><div class="line">    print(&quot;call f()&quot;)</div><div class="line">    def g():</div><div class="line">        print(&quot;call g()&quot;)</div><div class="line">    return g</div></pre></td></tr></table></figure>
-<blockquote>
-<p>我们在定义了一个函数f()之后，在其内部又定义了一个函数g()。注意函数f返回的是g而不是g()。这会产生什么影响呢，调用函数f()之后返回的函数还需要通过指向内层函数，因此可以调用内层函数，返回函数可以把一些计算延迟执行。</p>
-<p>先看看它怎么运作</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; x = f()  #调用f()</div><div class="line">call f()...</div><div class="line"># 变量x是f()返回的函数</div><div class="line">&gt;&gt;&gt; x()   # x指向函数，因此可以调用</div><div class="line">call g()...</div></pre></td></tr></table></figure>
-<blockquote>
-<p>阅读此处的时候最后写下里对比上面的代码，画线找一下对应关系</p>
-<h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><p><strong>编写一个函数calc_prod(lst)，它接收一个list，返回一个函数，返回函数可以计算参数的乘积。</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def calc_prod(lst):</div><div class="line">    def a():</div><div class="line">        return reduce((lambda x,y: x*y),lst)</div><div class="line">    return a</div><div class="line">f = calc_prod([1, 2, 3, 4])</div><div class="line">print f()</div></pre></td></tr></table></figure>
-<h2 id="引入闭包"><a href="#引入闭包" class="headerlink" title="引入闭包"></a>引入闭包</h2><blockquote>
-<p>开始学习闭包的时候，直接进入例子，发现特别懵，扣了很长时间，对比上一个例子，还看了一些别人的笔记，有了一个初步的了解，现在分享出来。</p>
-<p><strong>希望一次返回3个函数，分别计算1x1,2x2,3x3:</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def count():</div><div class="line">    fs = []</div><div class="line">    for i in range(1, 4):</div><div class="line">        def f():</div><div class="line">             return i*i</div><div class="line">        fs.append(f)</div><div class="line">    return fs</div><div class="line"></div><div class="line">f1, f2, f3 = count()</div><div class="line">print(f1(), f2(), f3())</div></pre></td></tr></table></figure>
-<blockquote>
-<p>这段代码并不能实现输出1x1,2x2,3x3，原因是并没有正确的使用闭包。</p>
-<h2 id="新的赋值语句"><a href="#新的赋值语句" class="headerlink" title="新的赋值语句"></a>新的赋值语句</h2><p>说实话一开始不是很能理解最后一行的赋值方法，找了一下笔记，得知它是这样赋值的。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f1, f2, f3 = count()</div></pre></td></tr></table></figure>
-<blockquote>
-<p>等同于</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">f1 = count()[1]</div><div class="line">f2 = count()[2]</div><div class="line">f3 = count()[3]</div></pre></td></tr></table></figure>
-<blockquote>
-<p>注意，就因为这句代码，使得count()这个函数被调用了三次，此时的i已经变成3了<br>返回的fs列表里应该是三个返回函数</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fs = [f1, f2, f3]</div></pre></td></tr></table></figure>
-<blockquote>
-<p>由于返回函数的性质，f1不同于f1(),也就是说f1()函数还没有调用</p>
-<p>在print(f1(), f2(), f3())在这里才调用了内层函数，但是i已经是3了，所以输出的是9，9，9</p>
-<p>读到这里应该返回去看一下闭包的概念，<strong>引用的局部变量在函数返回后不能变</strong>，f()函数引用了循环参量i，但是i在调用上层函数的时候会改变。这是我理解的问题所在。</p>
-</blockquote>
-<h2 id="如何实现正确闭包"><a href="#如何实现正确闭包" class="headerlink" title="如何实现正确闭包"></a>如何实现正确闭包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def count():</div><div class="line">    fs = []</div><div class="line">    for i in range(1, 4):</div><div class="line">        def f(m = i):</div><div class="line">            return m * m</div><div class="line">        fs.append(f)</div><div class="line">    return fs</div><div class="line"></div><div class="line">f1, f2, f3 = count()</div><div class="line">print f1(), f2(), f3()</div></pre></td></tr></table></figure>
-<blockquote>
-<p>函数在只有在执行时才回去获取外层参数i，如果函数在定义时就可以获取储存到i，（这里使用m储存到了i），问题就可以解决了。所以使用默认参数，正好可以完成定义时获取i值且运行函数时无需参数输入的功能，所以在函数f()定义中改为f(m = i),函数f返回值改为m*m即可</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>返回函数，不要引用任何循环变量，或者后续会发生变化的变量。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/12/python学习笔记2017.08.12/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Moshiwei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="纸镜">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/12/python学习笔记2017.08.12/" itemprop="url">
+                <a class="post-title-link" href="/2017/07/19/python学习笔记2017.07.19/" itemprop="url">
                   python学习笔记
                 </a>
               
@@ -747,10 +289,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-12T23:34:00+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-19T23:05:00+08:00">
+                2017-07-19
               </time>
             
 
@@ -768,7 +310,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -808,24 +350,778 @@
 
       
         
+          <blockquote>
+<p>2017/7/19 21：08</p>
+</blockquote>
+<h1 id="学习日记"><a href="#学习日记" class="headerlink" title="学习日记"></a>学习日记</h1><blockquote>
+<h2 id="生成器yield"><a href="#生成器yield" class="headerlink" title="生成器yield"></a>生成器yield</h2><p>书上说：“生成器可以帮助读者写出非常优雅的代码，当然，便携任何程序时不使用生成器也是可以的”。ok，我喜欢优雅，所以今天来学习一下。</p>
+<p>首先任何包含yield语句的函数称为生成器，注意一定是函数内有yield，而且我测试了一下，打印了一个带有yield语句的函数的type。得到的是</p>
+<class 'generator'>
+
+<p>其实关于理解生成器的想法我想了很多，这不是一个教程，这只是我的一个学习思路。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/19/python学习笔记2017.07.19/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/19/python学习笔记2017.07.18/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/19/python学习笔记2017.07.18/" itemprop="url">
+                  python学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-19T21:05:00+08:00">
+                2017-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-            <h1 id="储存数据到PyMySql"><a href="#储存数据到PyMySql" class="headerlink" title="储存数据到PyMySql"></a>储存数据到PyMySql</h1><h3 id="引入开发包"><a href="#引入开发包" class="headerlink" title="引入开发包"></a>引入开发包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import pymysql.cursors</div></pre></td></tr></table></figure>
-<h3 id="获取数据库连接"><a href="#获取数据库连接" class="headerlink" title="获取数据库连接"></a>获取数据库连接</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">connection = pymysql.connect(host = &apos;localhost&apos;,</div><div class="line">						 user = &apos;root&apos;,</div><div class="line">						 password = &apos;&apos;,</div><div class="line">						 db = &apos;&apos;</div><div class="line">						 charset = &apos;uf8mb4&apos;)</div></pre></td></tr></table></figure>
-<h3 id="执行SQL语句"><a href="#执行SQL语句" class="headerlink" title="执行SQL语句"></a>执行SQL语句</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cursor.execute(sql，(参数1， 参数n))</div></pre></td></tr></table></figure>
-<h3 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">connection.commit()</div></pre></td></tr></table></figure>
-<h3 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">connection.close()</div></pre></td></tr></table></figure>
-<h3 id="创建数据库使用Navicat-for-MySQL"><a href="#创建数据库使用Navicat-for-MySQL" class="headerlink" title="创建数据库使用Navicat for MySQL"></a>创建数据库使用Navicat for MySQL</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">new database</div><div class="line">Character set : uf8mb4 -- UTF-8Unicode</div><div class="line">Collation : uf8mb4_general_ci</div></pre></td></tr></table></figure>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="获取数据库连接-1"><a href="#获取数据库连接-1" class="headerlink" title="获取数据库连接"></a>获取数据库连接</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">connection = pymysql.connect(host = &apos;localhost&apos;,</div><div class="line">						 user = &apos;root&apos;,</div><div class="line">						 password = &apos;123456&apos;,</div><div class="line">						 db = &apos;url&apos;</div><div class="line">						 charset = &apos;uf8mb4&apos;)</div><div class="line">try:</div><div class="line">	# 获取会话指针</div><div class="line">	with connection.cursor() as cursor:</div><div class="line">		#创建sql语句</div><div class="line">		sql = &quot;insert into &apos;urls&apos; (&apos;urlname&apos;, &apos;urlhref&apos;) values(%s, %s)&quot;\</div><div class="line">		</div><div class="line">		#执行sql语句</div><div class="line">		cursor.excute(sql, (url.get_text,&quot;url&quot;))#此处的url对应上方urlhref字段，也就是说这里的url对象是抓取到的url集合</div><div class="line">		</div><div class="line">		#提交</div><div class="line">		connection.commit()</div><div class="line">finally:</div><div class="line">	connection.close()</div></pre></td></tr></table></figure>
-<h3 id="数据库查询"><a href="#数据库查询" class="headerlink" title="数据库查询"></a>数据库查询</h3><h3 id="引入开发包-1"><a href="#引入开发包-1" class="headerlink" title="引入开发包"></a>引入开发包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import pymysql.cursors</div></pre></td></tr></table></figure>
-<h3 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">connection = pymysql.connect(host = &apos;localhost&apos;,</div><div class="line">						 user = &apos;root&apos;,</div><div class="line">						 password = &apos;123456&apos;,</div><div class="line">						 db = &apos;url&apos;</div><div class="line">						 charset = &apos;uf8mb4&apos;)</div></pre></td></tr></table></figure>
-<h3 id="获取会话链接"><a href="#获取会话链接" class="headerlink" title="获取会话链接"></a>获取会话链接</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sql = connection.cursor()</div></pre></td></tr></table></figure>
-<h3 id="执行SQL语句-1"><a href="#执行SQL语句-1" class="headerlink" title="执行SQL语句"></a>执行SQL语句</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cursor.execute(sql, (参数1， 参数n))</div></pre></td></tr></table></figure>
-<h3 id="得到总记录数，返回一个int型的数值"><a href="#得到总记录数，返回一个int型的数值" class="headerlink" title="得到总记录数，返回一个int型的数值"></a>得到总记录数，返回一个int型的数值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cursor.execute()</div></pre></td></tr></table></figure>
-<h3 id="查询下一行"><a href="#查询下一行" class="headerlink" title="查询下一行"></a>查询下一行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cursor.fetchone()</div></pre></td></tr></table></figure>
-<h3 id="得到指定大小"><a href="#得到指定大小" class="headerlink" title="得到指定大小"></a>得到指定大小</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cursor.fetchmany(size = None)</div></pre></td></tr></table></figure>
-<h3 id="得到全部"><a href="#得到全部" class="headerlink" title="得到全部"></a>得到全部</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cursor.fetchall()</div></pre></td></tr></table></figure>
-<h3 id="关闭-1"><a href="#关闭-1" class="headerlink" title="关闭"></a>关闭</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">connection.close()</div></pre></td></tr></table></figure>
-<h2 id="范例"><a href="#范例" class="headerlink" title="范例"></a>范例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">try:</div><div class="line">	with connection.cursor() as cursor:</div><div class="line">	#查询语句</div><div class="line">		sql = “select &apos;urlname&apos;, &apos;urlhref&apos; from &apos;urls&apos; where &apos;id&apos; is not null&quot;</div><div class="line">		count = cursor.execute(sql)</div><div class="line">		 print(count)</div><div class="line">		</div><div class="line">	#查询数据</div><div class="line">		result = cursor.fetchall()</div><div class="line">		print(result)</div><div class="line">finally:</div><div class="line">	connection.close()</div></pre></td></tr></table></figure>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">python学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>2017/7/18 21：50</p>
+</blockquote>
+<h1 id="学习日记"><a href="#学习日记" class="headerlink" title="学习日记"></a>学习日记</h1><blockquote>
+<h2 id="爬取信息的细节处理"><a href="#爬取信息的细节处理" class="headerlink" title="爬取信息的细节处理"></a>爬取信息的细节处理</h2><h3 id="去除空格与换行符"><a href="#去除空格与换行符" class="headerlink" title="去除空格与换行符"></a>去除空格与换行符</h3><p>今天在写一个文章爬虫策略的时候我想get到出版时间（pub_time），使用的是xpath，代码如下：</p>
+<p>首先是抓取时间的代码</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pub_time=response.xpath(&quot;//div[@class=&apos;entry-meta&apos;]/p/text()&quot;).extract()</div></pre></td></tr></table></figure>
+<blockquote>
+<p>然后得到了如下信息</p>
+<p>[‘\r\n\r\n            2017/07/18 ·  ‘, ‘\r\n            \r\n            \r\n\r\n            \r\n             ·  ‘, ‘, ‘, ‘\r\n            \r\n’]</p>
+<p>可以看到时间已经被我找到了，可是有很多的换行符，那么如何去掉他们的。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/19/python学习笔记2017.07.18/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/18/python学习笔记2017.07.17/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/18/python学习笔记2017.07.17/" itemprop="url">
+                  python学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-18T16:07:00+08:00">
+                2017-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">python学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>2017/7/17 22：09</p>
+</blockquote>
+<h1 id="学习日记"><a href="#学习日记" class="headerlink" title="学习日记"></a>学习日记</h1><blockquote>
+<h2 id="python脚本（控制命令行）"><a href="#python脚本（控制命令行）" class="headerlink" title="python脚本（控制命令行）"></a>python脚本（控制命令行）</h2><p>如何实现通过脚本控制命令行也就是终端。</p>
+<p>python有两个内置的模块，一个是os一个是sys，通过协作来实现控制命令行。我们知道如果要在终端里面运行python，首先，系统的环境变量里面要有python的路径。所以我们使用sys模块的方法，将脚本的路径添加到系统环境里面<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/18/python学习笔记2017.07.17/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/17/谈谈写文章/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/17/谈谈写文章/" itemprop="url">
+                  谈谈写文章
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-17T16:07:00+08:00">
+                2017-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/感想/" itemprop="url" rel="index">
+                    <span itemprop="name">感想</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="谈谈写文章1-0"><a href="#谈谈写文章1-0" class="headerlink" title="谈谈写文章1.0"></a>谈谈写文章1.0</h1><h2 id="启发"><a href="#启发" class="headerlink" title="启发"></a>启发</h2><blockquote>
+<p>今年三四月份逛知乎的时候，偶然发现了一篇写关于如何使用hexo搭建轻量级的静态博客的文章，正好自己也注册了github账号，就当即玩了起来。我花了一周的时间各种坑里跳出来，搭建好了这个你正在阅读的页面。并且更新了几篇文章，在最初的计划里，我的博客的面向人群很小，我没有公布我的blog地址，甚至没有说我拥有它。只是给很小的一部分同学私信给他们看。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/17/谈谈写文章/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/15/git命令怎么用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/15/git命令怎么用/" itemprop="url">
+                  git指令的使用与个人理解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-15T19:30:00+08:00">
+                2017-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="我居然有了一家物流公司？（git教程）"><a href="#我居然有了一家物流公司？（git教程）" class="headerlink" title="我居然有了一家物流公司？（git教程）"></a>我居然有了一家物流公司？（git教程）</h1><blockquote>
+<p>从最早我们学习的时候，当我们引用公式，名言或是别的什么的时候，都会连带着出处一同记忆。Git是Linux的发明者Linus开发的一款新时代的版本控制系统。这个消息真是太好了。因为我们知道了原来这个厉害的家伙发明了两个厉害的东西。</p>
+<p>上面我们提到了一个名词，版本控制系统。只要理解了版本控制系统就好了吧。</p>
+<p>拿框架来说吧。Django是我学习的第一个python框架。那么Django发布了多少个版本呢</p>
+<p><img src="https://github.com/Moshiwei/test/blob/master/images/django-v.png?raw=true" alt="image"></p>
+<p>我们看到了早期Django已经发布了几个版本了，这里记录了早期版本的发布时间，还有每一个版本的变更内容，我们可以下载到早期的稳定版本，也可以下载最细的版本去测试其中的新功能。<br>又比如刚发布的Django1.11出现了一个严重的bug导致不得不紧急恢复到上一个稳定版本时，git也会有重大的作用。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/15/git命令怎么用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/04/15/自己住的地方怎么能不自己设计？？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/15/自己住的地方怎么能不自己设计？？/" itemprop="url">
+                  设计自己的家
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T22:00:00+08:00">
+                2017-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计/" itemprop="url" rel="index">
+                    <span itemprop="name">设计</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="自己的房子当然要由自己设计"><a href="#自己的房子当然要由自己设计" class="headerlink" title="自己的房子当然要由自己设计"></a>自己的房子当然要由自己设计</h1><h2 id="从哪里开始呢"><a href="#从哪里开始呢" class="headerlink" title="从哪里开始呢"></a>从哪里开始呢</h2><p>无聊不知道干什么的的时候做什么呢，我会看看知乎。<br>你都这么大的人了，还是不要选择纯文字的吧，当然要看图文并茂生动活泼的文章了。最符合上述选项的就是装修板块了，自己也梦想着是不是能画些手稿什么的（这个时候好像有人能教我画画），手残就手残，那就开始吧。我的漫漫设计之路从此开始了</p>
+<h2 id="问题真的很多"><a href="#问题真的很多" class="headerlink" title="问题真的很多"></a>问题真的很多</h2><p>起初我对装修只是觉得自己去选择喜欢的家具，然后把他们放在合适的地方，这样我的家就组装好啦。事实证明我太天真了，真是一入豪门深似海，我越想越要考虑的东西多。</p>
+<h2 id="你需要准备什么呢"><a href="#你需要准备什么呢" class="headerlink" title="你需要准备什么呢"></a>你需要准备什么呢</h2><p>自从发现了家居体验店这种东西之后，就完全挡不住我要进去逛的心情，我对给我做引导的人说，这个我想要，那个我也想要，这个一平米多少钱。最后得倒最多的就是一个笑容和一句话，我们需要您家里的<strong>各种</strong>尺寸哦。</p>
+<p>============================     分割线      ====================================</p>
+<h2 id="下面进入正文"><a href="#下面进入正文" class="headerlink" title="下面进入正文"></a>下面进入正文</h2><p>作为一个资深吃货，出去旅游只想着吃的同学，想装修的第一个位置当然是厨房了。吃货除了吃，还喜欢动手去做饭。想想自己做了好吃的给喜欢的人吃，也是很开心的嘛，只喜欢吃不愿意动手的同学当我没说过这句话…好了，工欲善其事，必先利其器，几乎每本介绍厨房用具的书都有这句话。那我想做的厨房是什么样的呢？当然是开放式厨房了啊。鉴于大多数家庭的厨房都是一间屋子，然后妈妈在里面辛苦的炒菜还要被油烟熏，这也太可怜了吧。就不能我做着你看着么？</p>
+<p>我第一个想到在厨房里加的东西是岛台，我第一次见到这种东西是在外国电影了，当时就算我年纪还小，也觉得这个东西实在是太酷了。光有灶台那么点地方肯定是不够用的啊。没有岛台我都不好意思说自己弄了个开放式的厨房</p>
 
           
         
@@ -869,10 +1165,10 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/09/Django02/">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/04/15/一直给自己充电吧/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Moshiwei">
+      <meta itemprop="name" content="Mirror">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
@@ -891,8 +1187,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/09/Django02/" itemprop="url">
-                  Django_part2
+                <a class="post-title-link" href="/2017/04/15/一直给自己充电吧/" itemprop="url">
+                  我不是不喜欢学习 我只是不喜欢学校
                 </a>
               
             
@@ -906,10 +1202,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-09T22:42:00+08:00">
-                2017-08-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T22:00:00+08:00">
+                2017-04-15
               </time>
             
 
@@ -927,12 +1223,12 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Django官方文档/" itemprop="url" rel="index">
-                    <span itemprop="name">Django官方文档</span>
+                  <a href="/categories/感想/" itemprop="url" rel="index">
+                    <span itemprop="name">感想</span>
                   </a>
                 </span>
 
@@ -967,22 +1263,411 @@
 
       
         
-          <h1 id="Writing-your-first-Django-app-part2"><a href="#Writing-your-first-Django-app-part2" class="headerlink" title="Writing your first Django app part2"></a>Writing your first Django app part2</h1><h2 id="go-on"><a href="#go-on" class="headerlink" title="go on"></a>go on</h2><blockquote>
-<p>第二节我们将会设置数据库，创建你的第一个model，然后快速了解Django自动生成的管理网站</p>
-<p>Django有自己默认的数据库</p>
-<p>如果你想使用自己的数据库，请自己安装，然后再settings中，设置你的数据库</p>
-<p>你需要一条命令进行数据迁移</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python manage.py migrate</div></pre></td></tr></table></figure>
-<blockquote>
-<p>迁移命令会查看INSTALLED_APPS设置，并根据mysite / settings中的数据库设置创建任何必要的数据库表。py文件和应用程序附带的数据库迁移。你将看到它应用的每个迁移的消息<br>
+          <h1 id="一直给自己充电吧"><a href="#一直给自己充电吧" class="headerlink" title="一直给自己充电吧"></a>一直给自己充电吧</h1><h2 id="如果你遇到了问题"><a href="#如果你遇到了问题" class="headerlink" title="如果你遇到了问题"></a>如果你遇到了问题</h2><p>学习的时候，不管你用什么方法，或者通过什么渠道（例如看视频去学习，下载电子书）。到你自己操作时的时候总会遇到一些问题。这些琐碎的小问题足以让你百度一会了（当然如果你能百度到的话），我在搭建这个博客的时候看了许多教程，他们取得名字我觉得很不负责任，例如什么白痴方法搭建博客啦，五分钟教你快速搭建一个博客。我搭建这个博客花了五个晚上的时间，大多都浪费得在百度各种琐碎的小问题上面了，你会问，为什么他操作是这样的，为什么我操作的时候它显示的这是什么玩意？不是说白痴方法搭建么，为什么我觉得一点也不简单。</p>
+<p>我说了这么多，只是想说千万不要放弃。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/09/Django02/#more" rel="contents">
-              Weiterlesen &raquo;
+            <a class="btn" href="/2017/04/15/一直给自己充电吧/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/03/30/纸镜的第一篇文章/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/30/纸镜的第一篇文章/" itemprop="url">
+                  纸镜的第一篇文章
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-30T13:15:08+08:00">
+                2017-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/关于博客/" itemprop="url" rel="index">
+                    <span itemprop="name">关于博客</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="欢迎参观我的博客"><a href="#欢迎参观我的博客" class="headerlink" title="欢迎参观我的博客"></a>欢迎参观我的博客</h1><h2 id="关于这博客"><a href="#关于这博客" class="headerlink" title="关于这博客"></a>关于这博客</h2><p>从开始有拥有一个自己的博客到想办法去做成这件事用了两天时间，感谢一个知乎作者和我的室友，我个人很喜欢尝试各种新鲜的事物，我的一个做前端的朋友告诉我这么好玩的事后，我立马想去尝试。创建这个博客的过程中遇到了非常多的困难，查了很多的解决方法，甚至睡不着的时候也会用手机打开baidu去查一查。做一件事，想赶紧把它做好，如今你看到的这篇博客。它大大的增加了我的成就感。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/30/纸镜的第一篇文章/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/03/29/test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/29/test/" itemprop="url">
+                  test
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-29T23:14:46+08:00">
+                2017-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/03/29/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/29/hello-world/" itemprop="url">
+                  Hello World
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-29T22:19:59+08:00">
+                2017-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+
+          
         
       
     </div>
@@ -1019,7 +1704,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
   </nav>
 
 
@@ -1053,10 +1738,10 @@
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
-               alt="Moshiwei" />
-          <p class="site-author-name" itemprop="name">Moshiwei</p>
+               alt="Mirror" />
+          <p class="site-author-name" itemprop="name">Mirror</p>
            
-              <p class="site-description motion-element" itemprop="description"></p>
+              <p class="site-description motion-element" itemprop="description">欢迎来到我的blog</p>
           
         </div>
         <nav class="site-state motion-element">
@@ -1065,7 +1750,7 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives">
                 <span class="site-state-item-count">50</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
@@ -1076,7 +1761,7 @@
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">13</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">分类</span>
               
             </div>
           
@@ -1087,13 +1772,20 @@
             <div class="site-state-item site-state-tags">
               
                 <span class="site-state-item-count">22</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">标签</span>
               
             </div>
           
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -1132,16 +1824,16 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Moshiwei</span>
+  <span class="author" itemprop="copyrightHolder">Mirror</span>
 </div>
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Muse
   </a>
@@ -1273,5 +1965,5 @@
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"live2d-widget-model-wanko"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/"});</script></body>
 </html>

@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -77,6 +77,8 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="纸镜" type="application/atom+xml" />
+
 
 
 
@@ -87,12 +89,15 @@
 
 
 
+<meta name="description" content="欢迎来到我的blog">
 <meta property="og:type" content="website">
 <meta property="og:title" content="纸镜">
 <meta property="og:url" content="http://Moshiwei.github.io/page/4/index.html">
 <meta property="og:site_name" content="纸镜">
+<meta property="og:description" content="欢迎来到我的blog">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="纸镜">
+<meta name="twitter:description" content="欢迎来到我的blog">
 
 
 
@@ -106,7 +111,7 @@
     motion: true,
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -129,7 +134,7 @@
   <title> 纸镜 </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -169,7 +174,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle"></p>
+        <p class="site-subtitle">La Dolce Vita</p>
       
   </div>
 
@@ -194,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -204,7 +209,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -214,7 +219,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -247,10 +252,10 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/23/python实战2017.08.23/">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/29/面向对象/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Moshiwei">
+      <meta itemprop="name" content="Mirror">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
@@ -269,483 +274,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/23/python实战2017.08.23/" itemprop="url">
-                  python解决实际问题03
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-23T22:19:00+08:00">
-                2017-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">in</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python实际问题/" itemprop="url" rel="index">
-                    <span itemprop="name">python实际问题</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h1><ol>
-<li>某随机序列[12, 5, 6, 4, 6, 5, 5, 7, …]中，找到出现次数最高的三个元素，他们出现次数是多少？</li>
-<li>对某英文文章的单词，进行词频统计，找到出现次数最高的10个单词，他们出现次数是多少？<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1>问题1<br>生成一个随机数列表。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from random import randint</div><div class="line"># 第一步：生成一个随机数列表。</div><div class="line">list1 = [randin(0, 20) for x in range(30)]</div><div class="line"># 第二步：将列表的元素化为字典中的键，默认的值为0，创建一个字典</div><div class="line">dict1 = dict.fromkeys(list1, 0)</div><div class="line"># 第三步：如果x出现在了列表当中，那么他的值加1</div><div class="line">for x in list1:</div><div class="line">    c[x] += 1</div><div class="line">print(dict1)</div></pre></td></tr></table></figure>
-<p>问题2</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from collections import Counter</div><div class="line">import re</div><div class="line">txt = open(&quot;TEXT&quot;).read()</div><div class="line">words = Counter(re.split(&apos;\w+&apos;,txt))</div><div class="line">words.most_common(10)</div></pre></td></tr></table></figure>
-<h1 id="代码补充"><a href="#代码补充" class="headerlink" title="代码补充"></a>代码补充</h1><p>dict.fromkeys(list1, None)<br>dict的fromkeys方法可以将给定的键生成一个新的字典，每一个键都有一个默认的值None，这个值也可以自己给定。<br>fromkeys方法接收两个参数，一个列表作为新字典中的键，一个默认值</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/22/python实战2017.08.22(1)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Moshiwei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="纸镜">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/22/python实战2017.08.22(1)/" itemprop="url">
-                  python解决实际问题02
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-22T16:58:00+08:00">
-                2017-08-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">in</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python实际问题/" itemprop="url" rel="index">
-                    <span itemprop="name">python实际问题</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h1><blockquote>
-<p>学生信息系统中数据位固定格式：</p>
-<p>（名字, 年龄, 性别,  邮箱地址,  …）</p>
-<p>学生数量很大为了减少储存开销，对每个学生信息用元组表示：</p>
-<p>(‘Jim’, 16, ‘male’, ‘jim8721#gmail.com’)<br>…</p>
-<p>访问时，我们使用索引访问，大量索引降低程序可读性，如何解决这个问题？</p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">NAME, AGE, SEX, EMAIL = range(4)</div><div class="line">student = (&apos;Jim&apos;, 16, &apos;male&apos;, &apos;jim8721#gmail.com&apos;)</div><div class="line"># NAME </div><div class="line">print(student[NAME])</div><div class="line"># AGE</div><div class="line">print(student[AGE])</div><div class="line"># SEX</div><div class="line">pritn(student[SEX])</div><div class="line"># EMAIL</div><div class="line">print(student[EMAIL])</div></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h2><p>使用标准库中的collections.namedtuple替代内置tuple</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">form collections import namedtuple</div><div class="line">Student = namedtuple(&apos;Student&apos;, [&apos;name&apos;,&apos;age&apos;, &apos;sex&apos;, &apos;email&apos;])</div><div class="line">s1 = Student(&apos;Jim&apos;, 16, &apos;male&apos;, &apos;jim8721#gmail.com&apos;)</div><div class="line"># name</div><div class="line">s1.name</div><div class="line"># age</div><div class="line">s1.age</div><div class="line"># sex</div><div class="line">s1.sex</div><div class="line"># email</div><div class="line">s1.email</div></pre></td></tr></table></figure>
-<p>这是一种通过类建立对象然后访问属性的方法。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/22/python实战2017.08.22/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Moshiwei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="纸镜">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/22/python实战2017.08.22/" itemprop="url">
-                  python解决实际问题01
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-22T16:27:00+08:00">
-                2017-08-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">in</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python实际问题/" itemprop="url" rel="index">
-                    <span itemprop="name">python实际问题</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h1><ul>
-<li>过滤掉列表[3, 9, -1, 10, -2, 20, …]中的负数</li>
-<li>筛选出字典{‘LiLei’:79, ‘Jim’:88, ‘Lucy’:92, …}中值高于90的项</li>
-<li>筛选出集合{77, 89, 32, 20, …}中能被3整除的元素</li>
-</ul>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><blockquote>
-<p><strong>filter函数</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">filter（lambda x:x&gt;0, data）</div></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>列表解析</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[x for x in data if x&gt;=0]</div></pre></td></tr></table></figure>
-<h2 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h2><blockquote>
-<p><strong>字典解析</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;k:v for k, v in d.iteritems() if v&gt;90&#125;</div></pre></td></tr></table></figure>
-<h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><blockquote>
-<p><strong>集合解析</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;x for x in s if x%3 == 0&#125;</div></pre></td></tr></table></figure>
-<p>以上解决方法对应上述问题</p>
-<h2 id="补充代码"><a href="#补充代码" class="headerlink" title="补充代码"></a>补充代码</h2><blockquote>
-<p>生成一个范围随机数列表</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from random import randint</div><div class="line">list1 = [randint(-10,10) for x in range(10)]</div></pre></td></tr></table></figure>
-<blockquote>
-<p>使用timeit对第一个问题的两种解决方法做一个运行时间对比，发现列表解析的方法是要优于filter函数的。并且这两种方式，都要优于通过普通迭代的方法。</p>
-<p>生成一个范围随机数字典</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dict1 = &#123;k:radint(60, 100) for k in range(1, 21)&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/19/python学习笔记2017.08.19/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Moshiwei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="纸镜">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/19/python学习笔记2017.08.19/" itemprop="url">
+                <a class="post-title-link" href="/2017/07/29/面向对象/" itemprop="url">
                   python面向对象
                 </a>
               
@@ -760,10 +289,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-19T22:52:00+08:00">
-                2017-08-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T22:40:00+08:00">
+                2017-07-29
               </time>
             
 
@@ -781,7 +310,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -822,32 +351,17 @@
       
         
           
-            <h2 id="定义一个类方法"><a href="#定义一个类方法" class="headerlink" title="定义一个类方法"></a>定义一个类方法</h2><blockquote>
-<p>写一个类的时候，类名首字母要以大写开头</p>
-<p>在类中定义的全部是实方法，实例方法第一个参数self是实例本身</p>
-<p>通过标记一个@classmethod，该方法将绑定到类上，而非类的实例。类方法的第一个参数将传入类本身，通常将参数名命名为cls。</p>
-<h2 id="创建实例属性"><a href="#创建实例属性" class="headerlink" title="创建实例属性"></a>创建实例属性</h2><p>python是一门动态语言，对于每一个实例，都可以直接给他们的属性赋值。</p>
-<h2 id="初始化实例属性"><a href="#初始化实例属性" class="headerlink" title="初始化实例属性"></a>初始化实例属性</h2><p>一种类型的实例应该自带一些属性，比如人应该有名字，性别，生日，或者书籍应该有书名，作者，出版日期等，有一个特殊的<strong>init</strong>方法，当实例被创建时，该方法会被自动调用，将属性赋值给实例。</p>
-<p><strong>init</strong>方法的第一个参数必须是self，后续的参数可以自由制定，和定义函数没有任何区别。</p>
-<p>相应的，创建实例时，就必须要提供self以外的参数。</p>
-<h2 id="访问限制"><a href="#访问限制" class="headerlink" title="访问限制"></a>访问限制</h2><p>python对属性权限的控制是通过属性名来实现的，如果一个属性由双下划线开头，该属性就无法被外部访问。</p>
-<h2 id="类属性"><a href="#类属性" class="headerlink" title="类属性"></a>类属性</h2><p>我们知道实例的属性是互相不影响的，如果在类上绑定一个属性，则所有的实例都可以访问到这个属性，总结来讲，实例的属性都是各自拥有的，相互独立，但是类属性有且只有一份，类属性是可以动态添加和修改的。</p>
-<p>有一个例子很好的解释了这一点</p>
-<p>实现一个功能，创建一个实例，就计数一次</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">class Person():</div><div class="line">	count = 0</div><div class="line">	def __init__(self, name):</div><div class="line">		self.name = name </div><div class="line">		Person.count += 1</div><div class="line">p1 = Person(&apos;Bob&apos;)</div><div class="line">print Person.count,</div><div class="line"></div><div class="line">p2 = Person(&apos;Alice&apos;)</div><div class="line">print Person.count,</div><div class="line"></div><div class="line">p3 = Person(&apos;Tim&apos;)</div><div class="line">print Person.count</div></pre></td></tr></table></figure>
-<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><blockquote>
-<p>先看例子</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">class Person(object):</div><div class="line">    address = &apos;Earth&apos;</div><div class="line">    def __init__(self, name):</div><div class="line">        self.name = name</div><div class="line">p1 = Person(&apos;Bob&apos;)</div><div class="line">p2 = Person(&apos;Alice&apos;)</div><div class="line">print &apos;Person.address = &apos; + Person.address</div><div class="line">p1.address = &apos;China&apos;</div><div class="line">print &apos;p1.address = &apos; + p1.address</div><div class="line">print &apos;Person.address = &apos; + Person.address</div><div class="line">print &apos;p2.address = &apos; + p2.address</div></pre></td></tr></table></figure>
-<p>结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Person.address = Earth</div><div class="line">p1.address = China</div><div class="line">Person.address = Earth</div><div class="line">p2.address = Earth</div></pre></td></tr></table></figure>
-<blockquote>
-<p>可以看到，实例访问了类属性，并且做了更改。或者说这个实例访问的并不是类属性，而是它自身创建了一个实例属性和类属性同名了，因为可以看到我们输出了类属性后，发现类属性没有变化。那么下次我们输出实例的时候，访问address属性的时候是访问的哪一个属性呢。</p>
-<p>这里就涉及到了优先级的问题。当类属性和实例属性重名的时候，实例会优先检查实例属性，如果没有再去访问类属性。换句话说，在实例上修改类属性，他实际并没有修改类属性，而是绑定了一个新的实例属性。</p>
-<h2 id="定义实例方法"><a href="#定义实例方法" class="headerlink" title="定义实例方法"></a>定义实例方法</h2><p>一个实例的私有属性就是以__开头的属性，无法被外部访问，那这些属性定义有什么用？虽然私有属性无法从外部访问，但是从类的内部是可以访问的，除了可以定义实例的属性外，还可以定义实例的方法。</p>
-<p>实例的方法就是在类中定义的函数，她的第一个参数永远是self，指向调用该方法的实例本身。</p>
-<p>在实例方法的内部，可以访问所有实例属性，这样，如果外部需要访问私有属性，可以通过方法调用获得，这种数据封装的形式除了能保护内部数据一致性外，还可以简化外部调用的难度。</p>
+            <h1 id="关于面向对象设计的思考"><a href="#关于面向对象设计的思考" class="headerlink" title="关于面向对象设计的思考"></a>关于面向对象设计的思考</h1><blockquote>
+<p>当考虑要什么类以及类要有什么方法时，应该尝试下面的办法。</p>
+<ol>
+<li>写下问题的描述（程序要做什么），把所有的名词，动词和形容词加下划线。</li>
+<li>对于所有的名词，用作可能的类。</li>
+<li>对于所有的动词，用作可能的方法。</li>
+<li>对于所有的形容词，用作可能的特性。</li>
+<li>把所有的方法和特性分配到类<br>现在已经有了面向对象的模型草图了。还可以考虑类和对象之间的关系（比如继承或协作）以及他们的作用，可以用一下步骤精炼模型。</li>
+<li>写下（或者想象）一系列的使用实例，也就是程序应用时的场景，试着包括所有的功能。</li>
+<li>一步步考虑每个使用实例，保证模型包括所有需要的东西。如果有些遗漏的话就添加进来，如果某处不太正确则改正。继续，直到满意为止。</li>
+</ol>
 </blockquote>
 
           
@@ -892,10 +406,10 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/08/17/python学习笔记2017.08.17/">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/28/正则表达式day1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Moshiwei">
+      <meta itemprop="name" content="Mirror">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
@@ -914,8 +428,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/08/17/python学习笔记2017.08.17/" itemprop="url">
-                  装饰器的理解
+                <a class="post-title-link" href="/2017/07/28/正则表达式day1/" itemprop="url">
+                  正则表达式day01
                 </a>
               
             
@@ -929,10 +443,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-17T21:50:00+08:00">
-                2017-08-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-28T22:18:00+08:00">
+                2017-07-28
               </time>
             
 
@@ -950,7 +464,1041 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">python学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><blockquote>
+<p>有些人面临一个问题时会想：“我知道，可以使用正则表达式来解决这个问题。”于是现在他们就有两个问题了        ——Jamie Zawinski<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/28/正则表达式day1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/27/HTTP响应/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/27/HTTP响应/" itemprop="url">
+                  HTTP响应解析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-27T23:43:00+08:00">
+                2017-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络/" itemprop="url" rel="index">
+                    <span itemprop="name">网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="HTTP响应"><a href="#HTTP响应" class="headerlink" title="HTTP响应"></a>HTTP响应</h1><blockquote>
+<p>在接受和解释请求消息后，服务器返回一个HTTP响应消息。</p>
+<p>HTTP响应也是由三个部分组成，分别是：状态行、消息报头、响应正文</p>
+<p>状态行格式如下：</p>
+<p>HTTP-Version、Status-Code、Reason-Phrase</p>
+<p>其中，HTTP-Version表示服务器HTTP协议的版本；Status-Code表示服务器发挥的响应状态代码；Reason-Phrase表示状态代码的文本描述。</p>
+<p>状态代码有三位数字组成，第一个数字定义了响应的类别，切有五种可能的取值：</p>
+<p>1xx：指示信息–表示请求已接收，继续处理</p>
+<p>2xx：成功–表示请求已被成功接收、理解、接受</p>
+<p>3xx：重定向–要完成请求必须进行更进一步的操作</p>
+<p>4xx：客户端错误–请求有语法错误或请求无法实现</p>
+<p>5xx：服务器端错误–服务器未能实现合法的请求</p>
+<h2 id="常见状态代码、状态描述、说明："><a href="#常见状态代码、状态描述、说明：" class="headerlink" title="常见状态代码、状态描述、说明："></a>常见状态代码、状态描述、说明：</h2><p>200 OK //客户端请求成功</p>
+<p>400 Bad Request//客户端请求有语法错误，不能被服务器所理解</p>
+<p>401 Unauthorized //请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用</p>
+<p>403 Forbidden //服务器收到请求，但是拒绝提供服务</p>
+<p>404 Not Found //请求资源不存在，eg：输入了错误的URL</p>
+<p>500 Internal Server Error //服务器发生不可预期的错误</p>
+<p>503 Server Unavailable//服务器当前不能处理客户端的请求，一段时间后可能恢复正常</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/25/pyecharts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/25/pyecharts/" itemprop="url">
+                  pyecharts
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-25T18:23:00+08:00">
+                2017-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python包/" itemprop="url" rel="index">
+                    <span itemprop="name">python包</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="pyecharts（数据可视化）"><a href="#pyecharts（数据可视化）" class="headerlink" title="pyecharts（数据可视化）"></a>pyecharts（数据可视化）</h1><blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果让我说写python的时候最幸福的感觉是什么，我会说我遇到了一个好用的包（package），而且方法真的太好用了。说起来还有一个笑话，遇到pyecharts的那天，我兴奋的说这个包（package）像玩具一样好玩。不一会几个妹子点赞了，很肯定我的说法….<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/25/pyecharts/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/24/python学习笔记2017.07.26/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/24/python学习笔记2017.07.26/" itemprop="url">
+                  python学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-24T23:05:00+08:00">
+                2017-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><blockquote>
+<p>学习这一章内容的时候，有几个名次我觉得很有用：访问器方法，和隐藏属性。</p>
+<p>以前总是用到get方法，比如get_url(), get_img(),这类的（这里统称get方法），访问器是一个简单的方法，它能使用上面那类名字去得到或绑定一些特性，如果在访问给定的特性是必须要采取一些行动，那么像这样的封装状态变量（特性）就很重要。</p>
+<h2 id="property函数"><a href="#property函数" class="headerlink" title="property函数"></a>property函数</h2><p>property可以将访问器方法隐藏。</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/24/Django00/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/24/Django00/" itemprop="url">
+                  django梗概
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-24T23:05:00+08:00">
+                2017-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python框架/" itemprop="url" rel="index">
+                    <span itemprop="name">python框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Django"><a href="#Django" class="headerlink" title="Django"></a>Django</h1><h2 id="overview"><a href="#overview" class="headerlink" title="overview"></a>overview</h2><p>在Django官网的Overview中，第一句话就写了：<br>Django was invented to meet fast-moving newsroom deadlines,while satisfying the tough requirements of experienced Web developers.翻译一下就是：Django的诞生呢是为了满足飞速变化的新闻编辑室的最后期限而发明的，同时满足了经验丰富的Web开发人员的严格要求。大概想表达Django效率高，功能强大。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/24/Django00/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/23/Django01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/23/Django01/" itemprop="url">
+                  Django_part1
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-23T22:54:00+08:00">
+                2017-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django官方文档/" itemprop="url" rel="index">
+                    <span itemprop="name">Django官方文档</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Writing-your-first-Django-app-part1"><a href="#Writing-your-first-Django-app-part1" class="headerlink" title="Writing your first Django app part1"></a>Writing your first Django app part1</h1><h2 id="如何开始"><a href="#如何开始" class="headerlink" title="如何开始"></a>如何开始</h2><blockquote>
+<p>通过一个例子来学习如何使用Django<br>该例子有两个部分组成</p>
+<ol>
+<li>一个公共的网站可以查看民意调查和投票</li>
+<li>一个管理网站可以让你增添，更改，删除数据<br>该例子是由python3.4以上版本写的，Django1.11版本以上
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/23/Django01/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/23/python学习笔记2017.07.23/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/23/python学习笔记2017.07.23/" itemprop="url">
+                  python学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-23T22:54:00+08:00">
+                2017-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">python学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="格式化操作符"><a href="#格式化操作符" class="headerlink" title="格式化操作符"></a>格式化操作符</h1><h2 id="格式化操作符教你怎么打印超市小票"><a href="#格式化操作符教你怎么打印超市小票" class="headerlink" title="格式化操作符教你怎么打印超市小票"></a>格式化操作符教你怎么打印超市小票</h2><blockquote>
+<p><strong>基本的转换说明符</strong></p>
+<p>1.：%字符 ：标记转换说明符的开始</p>
+</blockquote>
+<p>2.：转换标志（可选）：-表示左对齐；+表示不管是正数还是负数都标出符号；空格表示正数之前保留空格；0表示转换值若位数不够则用0填充。</p>
+<p>3.：最小字段宽度（可选）：转换后的字符串至少应该具有指定的宽度，如果是*，则宽度从元组中去找</p>
+<p>4.：点（.）后跟精度值（可选）：如果转换的是实数，精度值就表示出现在小数点后的位数。如果转换的是字符串，那么该数字就表示最大字段宽度。，如果是*方法同上。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/23/python学习笔记2017.07.23/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/22/python学习笔记2017.07.22/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/22/python学习笔记2017.07.22/" itemprop="url">
+                  python学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T23:34:00+08:00">
+                2017-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -991,28 +1539,354 @@
       
         
           
-            <h1 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h1><blockquote>
-<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>学了一周的python函数式编程了，觉得好玩的两个点就是匿名函数，和装饰器了。因为他们都能让我觉得写代码可以更加优雅。</p>
-<p>如果你想给一个函数增加一些功能，但是你又不想在原函数中改，那么你就可以使用装饰器，这样的话，假如有很多函数都需要这个功能，装饰器就会显示出它作用，可以减少不少重复的代码。</p>
-<p>按照我自己的理解，我们自己制作的装饰器就像一个提供给函数的小插件，想要谁拥有新功能我们给谁安插件就好了。</p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2></blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def log(func):</div><div class="line">    def wrapper(*args, **kwargs):</div><div class="line">        logging.warn(&quot;%s is running&quot; %func.\_\_name\_\_)</div><div class="line">        return func(*args)</div><div class="line">    return wrapper</div><div class="line"></div><div class="line">def foo():</div><div class="line">    print(&quot;call foo()&quot;)</div><div class="line">    </div><div class="line">foo = log(foo)</div><div class="line">foo()</div></pre></td></tr></table></figure>
-<blockquote>
-<p>如果不理解函数式编程，请看前几节python学习笔记。</p>
-<p>装饰器有一个语法糖,那就是使用@，@装饰器是不是很可爱</p>
-<p>于是代码可以变成这样</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@log</div><div class="line">def foo():</div><div class="line">    print(&quot;call foo()&quot;)</div></pre></td></tr></table></figure>
-<blockquote>
-<p>@装饰器可以省略下面的代码，但是函数使用时，还需要自己调用。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">foo = log(foo)</div></pre></td></tr></table></figure>
-<blockquote>
-<p>这样以来，如果我们有其他需要打印日志的函数，就可以直接调用装饰器来修饰函数，而不用重复修改函数，或者增加新的封装。这样我们就提高了程序的可重复利用性，并且增加了程序的可读性。</p>
-</blockquote>
-<h2 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h2><blockquote>
-<p>刚开始还是比较绕的，但是遇到事情多想想是吧。首先我们把上面的log(func)函数叫做装饰器，然后它的内层函数返回了我们想装饰的函数，保证我们的原函数顺利执行，我们想装饰的内容也写在了内层函数里，这样应该就比较好理解了。</p>
-<p>当我们阅读代码的时候，被装饰器装饰的函数还是会被顺利执行，我们只需查询装饰器做了什么修改。</p>
+            <h1 id="python异常处理"><a href="#python异常处理" class="headerlink" title="python异常处理"></a>python异常处理</h1><p>今天真的太累了，还有一个小时十二点，我不想断更，想坚持下去</p>
+<table>
+<thead>
+<tr>
+<th>异常名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BaseException</td>
+<td>所有异常的基类</td>
+</tr>
+<tr>
+<td>SystemExit</td>
+<td>解释器请求退出</td>
+</tr>
+<tr>
+<td>KeyboardInterrupt</td>
+<td>用户中断执行(通常是输入^C)</td>
+</tr>
+<tr>
+<td>Exception</td>
+<td>常规错误的基类</td>
+</tr>
+<tr>
+<td>StopIteration</td>
+<td>迭代器没有更多的值</td>
+</tr>
+<tr>
+<td>GeneratorExit</td>
+<td>生成器(generator)发生异常来通知退出</td>
+</tr>
+<tr>
+<td>StandardError</td>
+<td>所有的内建标准异常的基类</td>
+</tr>
+<tr>
+<td>ArithmeticError</td>
+<td>所有数值计算错误的基类</td>
+</tr>
+<tr>
+<td>FloatingPointError</td>
+<td>浮点计算错误</td>
+</tr>
+<tr>
+<td>OverflowError</td>
+<td>数值运算超出最大限制</td>
+</tr>
+<tr>
+<td>ZeroDivisionError</td>
+<td>除(或取模)零 (所有数据类型)</td>
+</tr>
+<tr>
+<td>AssertionError</td>
+<td>断言语句失败</td>
+</tr>
+<tr>
+<td>AttributeError</td>
+<td>对象没有这个属性</td>
+</tr>
+<tr>
+<td>EOFError</td>
+<td>没有内建输入,到达EOF 标记</td>
+</tr>
+<tr>
+<td>EnvironmentError</td>
+<td>操作系统错误的基类</td>
+</tr>
+<tr>
+<td>IOError</td>
+<td>输入/输出操作失败</td>
+</tr>
+<tr>
+<td>OSError</td>
+<td>操作系统错误</td>
+</tr>
+<tr>
+<td>WindowsError</td>
+<td>系统调用失败</td>
+</tr>
+<tr>
+<td>ImportError</td>
+<td>导入模块/对象失败</td>
+</tr>
+<tr>
+<td>LookupError</td>
+<td>无效数据查询的基类</td>
+</tr>
+<tr>
+<td>IndexError</td>
+<td>序列中没有此索引(index)</td>
+</tr>
+<tr>
+<td>KeyError</td>
+<td>映射中没有这个键</td>
+</tr>
+<tr>
+<td>MemoryError</td>
+<td>内存溢出错误(对于Python 解释器不是致命的)</td>
+</tr>
+<tr>
+<td>NameError</td>
+<td>未声明/初始化对象 (没有属性)</td>
+</tr>
+<tr>
+<td>UnboundLocalError</td>
+<td>访问未初始化的本地变量</td>
+</tr>
+<tr>
+<td>ReferenceError</td>
+<td>弱引用(Weak reference)试图访问已经垃圾回收了的对象</td>
+</tr>
+<tr>
+<td>RuntimeError</td>
+<td>一般的运行时错误</td>
+</tr>
+<tr>
+<td>NotImplementedError</td>
+<td>尚未实现的方法</td>
+</tr>
+<tr>
+<td>SyntaxError</td>
+<td>Python 语法错误</td>
+</tr>
+<tr>
+<td>IndentationError</td>
+<td>缩进错误</td>
+</tr>
+<tr>
+<td>TabError</td>
+<td>Tab 和空格混用</td>
+</tr>
+<tr>
+<td>SystemError</td>
+<td>一般的解释器系统错误</td>
+</tr>
+<tr>
+<td>TypeError</td>
+<td>对类型无效的操作</td>
+</tr>
+<tr>
+<td>ValueError</td>
+<td>传入无效的参数</td>
+</tr>
+<tr>
+<td>UnicodeError</td>
+<td>Unicode 相关的错误错误</td>
+</tr>
+<tr>
+<td>UnicodeDecodeError</td>
+<td>Unicode 解码时的错误</td>
+</tr>
+<tr>
+<td>UnicodeEncodeError</td>
+<td>Unicode 编码时错误</td>
+</tr>
+<tr>
+<td>UnicodeTranslateError</td>
+<td>Unicode 转换时错误</td>
+</tr>
+<tr>
+<td>Warning</td>
+<td>警告的基类</td>
+</tr>
+<tr>
+<td>DeprecationWarning</td>
+<td>关于被弃用的特征的警告</td>
+</tr>
+<tr>
+<td>FutureWarning</td>
+<td>关于构造将来语义会有改变的警告</td>
+</tr>
+<tr>
+<td>OverflowWarning</td>
+<td>旧的关于自动提升为长整型(long)的警告</td>
+</tr>
+<tr>
+<td>PendingDeprecationWarning</td>
+<td>关于特性将会被废弃的警告</td>
+</tr>
+<tr>
+<td>RuntimeWarning</td>
+<td>可疑的运行时行为(runtime behavior)的警告</td>
+</tr>
+<tr>
+<td>SyntaxWarning</td>
+<td>可疑的语法的警告</td>
+</tr>
+<tr>
+<td>UserWarning</td>
+<td>用户代码生成的警告</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/07/21/浮躁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/21/浮躁/" itemprop="url">
+                  戒骄戒躁
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-21T22:34:00+08:00">
+                2017-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/感想/" itemprop="url" rel="index">
+                    <span itemprop="name">感想</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="今天有点想法"><a href="#今天有点想法" class="headerlink" title="今天有点想法"></a>今天有点想法</h1><blockquote>
+<p>为什么今天没有更学习笔记呢，因为昨天晚上，我写完了爬虫（使用scrapy框架）的基本爬取功能，想要调试的时候，然后报错，然后改错，然后爬虫终于通了，然后<br>2017-07-20 22:53:53 [scrapy.core.engine] INFO: Spider opened</p>
+<p>2017-07-20 22:53:53 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)</p>
+<p>2017-07-20 22:53:53 [scrapy.extensions.telnet] DEBUG: Telnet console listening on 127.0.0.1:6023</p>
+<p>2017-07-20 22:53:53 [scrapy.core.engine] DEBUG: Crawled (200) <get http:="" blog.jobbole.com="" all-posts=""> (referer: None)</get></p>
+<p>2017-07-20 22:53:53 [scrapy.core.scraper] ERROR: Spider error processing <get http:="" blog.jobbole.com="" all-posts=""> (referer: None)</get></p>
+<p>反正没有爬到东西就对了，查了一下异常貌似是缩进的问题。</p>
+<p>晚上很沮丧，我在想是不是真的太浮躁了，像做数电实验一样，像刚做完的模拟洗衣机的课设一样，辛辛苦苦连完了线，然后测试，一脸轻松的告诉别人，ok果然不亮。</p>
+<p>我也问自己问什么自己coding的通过率这么低，其实立马能想到很多不足的，基础不足，没有异常处理，还会犯拼写错误，有时候想说为什么不一点一点的把他抠明白呢。</p>
+<p>不说了吧，我去看书了</p>
+<p>虚心学习，厚积薄发</p>
 </blockquote>
 
           
@@ -1052,7 +1926,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1086,10 +1960,10 @@
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
-               alt="Moshiwei" />
-          <p class="site-author-name" itemprop="name">Moshiwei</p>
+               alt="Mirror" />
+          <p class="site-author-name" itemprop="name">Mirror</p>
            
-              <p class="site-description motion-element" itemprop="description"></p>
+              <p class="site-description motion-element" itemprop="description">欢迎来到我的blog</p>
           
         </div>
         <nav class="site-state motion-element">
@@ -1098,7 +1972,7 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives">
                 <span class="site-state-item-count">50</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
@@ -1109,7 +1983,7 @@
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">13</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">分类</span>
               
             </div>
           
@@ -1120,13 +1994,20 @@
             <div class="site-state-item site-state-tags">
               
                 <span class="site-state-item-count">22</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">标签</span>
               
             </div>
           
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -1165,16 +2046,16 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Moshiwei</span>
+  <span class="author" itemprop="copyrightHolder">Mirror</span>
 </div>
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Muse
   </a>
@@ -1306,5 +2187,5 @@
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"live2d-widget-model-wanko"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/"});</script></body>
 </html>
