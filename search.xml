@@ -12,17 +12,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Flask路由问题]]></title>
-    <url>%2F2017%2F10%2F27%2FFlask%E8%B7%AF%E7%94%B1%E9%97%AE%E9%A2%98%2F</url>
-    <content type="text"><![CDATA[路由一个优秀的web应用有一套好的URL系统，不仅能帮助浏览者更容易记住你的连接，同时还增加了他们会再次来访问你的网站的几率。123456@app.route(&apos;/projects/&apos;&apos;) def projects():return The project page @app.route(&apos;/about&apos;) def about():return The about page 上面看似相同的例子，不同点在于它们在定义URL时候，是否使用了末尾的斜线。在第一个例子中，url是有下划线的，这意味着它更像一个文件夹的目录结构。不使用下划线去访问会使Flask去重定向到确切的有下划线的URL。 上句话很绕。一开始我也不明白，我回到项目里测试了一下会发现。比如在访问后台页面127.0.0.1：8000/admin的时候，访问的过程是不加斜线的，但页面加载时其实是访到了/admin/这个目录。 在第二个例子中，他的URL定义在末尾没有斜线。像一个UNIX-LIKE系统中一个文件的路径。（注意：第一个例子像一个目录路径）。如果访问该URL时你加入了下划线的话，就会导致404 NOT FOUND的错误。 这种行为可以是这种有关联的URL保持工作，即使你省略了末尾的下划线，与Apache的工作方式一致。同时，还能保持独一无二的URLs结构，避免搜索引擎检索一个页面两次。（这段翻译完还不是很理解，也许翻译有误。日后问题解决再来更新） 如果可以匹配到URLs，那么Flask能生成它们么？当然可以，具体可以使用url_for()方法去创建一个URL，该方法接受方法名作为第一个参数，还接受一些关键字参数，匹配你制定的URL规则。未知的变量部分将会作为查询参数添加到URL中。 12345678910111213141516171819&gt;&gt;&gt; from flask import Flask, url_for &gt;&gt;&gt; app = Flask(__name__)&gt;&gt;&gt; @app.route(&apos;/&apos;)... def index(): pass...&gt;&gt;&gt; @app.route(&apos;/login&apos;)... def login(): pass...&gt;&gt;&gt; @app.route(&apos;/user/&lt;username&gt;&apos;)... def profile(username): pass...&gt;&gt;&gt; with app.test_request_context():... print url_for(&apos;index&apos;)... print url_for(&apos;login&apos;)... print url_for(&apos;login&apos;, next=&apos;/&apos;)... print url_for( &apos;profile , username= &apos;John Doe&apos; ) ...//login/login?next=//user/John%20Doe 上述例子还使用了test_request_context()方法，下面解释该方法。它告诉Flask去模拟处理一次请求，即使我们在和python shell交流。（之后的内容我实在不知道怎么翻译，只能说大体我认为有用的内容）它讲了为什么要使用url_for()这个方法。 之后如果需要修改url只需更改一次，而不用记住所有使用url的位置。 URL building 会造成一些特殊的字符或者Unicode数据，会造成一些麻烦，使用url_for()可以避免这些麻烦。 url_for会帮你正确的找出路径。]]></content>
-      <categories>
-        <category>python框架</category>
-      </categories>
-      <tags>
-        <tag>Flask</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Django-基于类的视图部分翻译]]></title>
     <url>%2F2017%2F10%2F27%2FDjango-%E5%9F%BA%E4%BA%8E%E7%B1%BB%E7%9A%84%E8%A7%86%E5%9B%BE%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91%2F</url>
     <content type="text"><![CDATA[可调用的视图层需要接受一个请求并返回一个响应，他的功能不仅仅是一个方法这么简单，Django提供了一些列类可以被用与创建视图。它们可以使你规划你的视图结构，通过harnessing，inheritance，和mixins减少你的代码。接下来会看到一些普通的例子，但你可能更需要去设计适合你个人项目的视图结构，并且能重复使用它们。https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。 Basic examplesDjango提供了基本视图类，适配了广泛的应用，所有的视图都继承自视图类。这些类处理了视图与URLs的关系，HTTP方法的发送，或其他。RedirectView为了用来做简单的HTTP重定向，TemplateView拓展自基类使他也能进行模版渲染 Generic display veiws（通用显示视图）下面有两个基于类的通用视图。在很多项目中，他们是典型的也是最常用的视图函数。 DetailViews该视图继承了下面这些类的属性和方法 django.views.generic.detail.SingleObjectTemplateResponseMixin django.views.generic.base.TemplateResponseMixin django.views.generic.detail.BaseDetailView django.views.generic.detail.SingleObjectMixin django.views.generic.base.View 可用的方法（MRO列表） dispatch() http_method_not_allowed() get_template_names() get_slug_field() get_queryset() get_object() get_context_object_name() get_context_data() get()10 render_to_response() 一个例子 12345678910111213from django.views.generic.detail import DetailViewfrom django.utils import timezonefrom articles.models import Articleclass ArticleDetailView(DetailView): model = Article def get_context_data(self, **kwargs): context = super(ArticleDetailView, self).get_context_data(**kwargs) context[&apos;now&apos;] = timezone.now() return context]]></content>
@@ -31,6 +20,17 @@
       </categories>
       <tags>
         <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Flask路由问题]]></title>
+    <url>%2F2017%2F10%2F27%2FFlask%E8%B7%AF%E7%94%B1%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[路由一个优秀的web应用有一套好的URL系统，不仅能帮助浏览者更容易记住你的连接，同时还增加了他们会再次来访问你的网站的几率。123456@app.route(&apos;/projects/&apos;&apos;) def projects():return The project page @app.route(&apos;/about&apos;) def about():return The about page 上面看似相同的例子，不同点在于它们在定义URL时候，是否使用了末尾的斜线。在第一个例子中，url是有下划线的，这意味着它更像一个文件夹的目录结构。不使用下划线去访问会使Flask去重定向到确切的有下划线的URL。 上句话很绕。一开始我也不明白，我回到项目里测试了一下会发现。比如在访问后台页面127.0.0.1：8000/admin的时候，访问的过程是不加斜线的，但页面加载时其实是访到了/admin/这个目录。 在第二个例子中，他的URL定义在末尾没有斜线。像一个UNIX-LIKE系统中一个文件的路径。（注意：第一个例子像一个目录路径）。如果访问该URL时你加入了下划线的话，就会导致404 NOT FOUND的错误。 这种行为可以是这种有关联的URL保持工作，即使你省略了末尾的下划线，与Apache的工作方式一致。同时，还能保持独一无二的URLs结构，避免搜索引擎检索一个页面两次。（这段翻译完还不是很理解，也许翻译有误。日后问题解决再来更新） 如果可以匹配到URLs，那么Flask能生成它们么？当然可以，具体可以使用url_for()方法去创建一个URL，该方法接受方法名作为第一个参数，还接受一些关键字参数，匹配你制定的URL规则。未知的变量部分将会作为查询参数添加到URL中。 12345678910111213141516171819&gt;&gt;&gt; from flask import Flask, url_for &gt;&gt;&gt; app = Flask(__name__)&gt;&gt;&gt; @app.route(&apos;/&apos;)... def index(): pass...&gt;&gt;&gt; @app.route(&apos;/login&apos;)... def login(): pass...&gt;&gt;&gt; @app.route(&apos;/user/&lt;username&gt;&apos;)... def profile(username): pass...&gt;&gt;&gt; with app.test_request_context():... print url_for(&apos;index&apos;)... print url_for(&apos;login&apos;)... print url_for(&apos;login&apos;, next=&apos;/&apos;)... print url_for( &apos;profile , username= &apos;John Doe&apos; ) ...//login/login?next=//user/John%20Doe 上述例子还使用了test_request_context()方法，下面解释该方法。它告诉Flask去模拟处理一次请求，即使我们在和python shell交流。（之后的内容我实在不知道怎么翻译，只能说大体我认为有用的内容）它讲了为什么要使用url_for()这个方法。 之后如果需要修改url只需更改一次，而不用记住所有使用url的位置。 URL building 会造成一些特殊的字符或者Unicode数据，会造成一些麻烦，使用url_for()可以避免这些麻烦。 url_for会帮你正确的找出路径。]]></content>
+      <categories>
+        <category>python框架</category>
+      </categories>
+      <tags>
+        <tag>Flask</tag>
       </tags>
   </entry>
   <entry>
@@ -487,17 +487,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[我不是不喜欢学习 我只是不喜欢学校]]></title>
-    <url>%2F2017%2F04%2F15%2F%E4%B8%80%E7%9B%B4%E7%BB%99%E8%87%AA%E5%B7%B1%E5%85%85%E7%94%B5%E5%90%A7%2F</url>
-    <content type="text"><![CDATA[一直给自己充电吧如果你遇到了问题学习的时候，不管你用什么方法，或者通过什么渠道（例如看视频去学习，下载电子书）。到你自己操作时的时候总会遇到一些问题。这些琐碎的小问题足以让你百度一会了（当然如果你能百度到的话），我在搭建这个博客的时候看了许多教程，他们取得名字我觉得很不负责任，例如什么白痴方法搭建博客啦，五分钟教你快速搭建一个博客。我搭建这个博客花了五个晚上的时间，大多都浪费得在百度各种琐碎的小问题上面了，你会问，为什么他操作是这样的，为什么我操作的时候它显示的这是什么玩意？不是说白痴方法搭建么，为什么我觉得一点也不简单。 我说了这么多，只是想说千万不要放弃。我在做信号与系统试验的时候，一个看起来比我大没多少的女老师说：“如果你们自己没把想要的图形调试出来，千万别怀疑自己的能力什么的，可能是仪器有问题，多试几次”，我在想这个老师还这么照顾学生心理么。但这种做法确实是对的。别怀疑自己，别放弃，再试试，你才有解决问题的轻松与喜悦。 差距总是有的也许你现在刚学的技术，人家在一年前已经学会了 也许你现在会用的技术，人家在一年前已经熟练了 差距就是这样的，python这门语言还是我在迷茫的时候我的舍友告诉我的，IT这么多的方向，单学习一个是不够的，你得学好几门语言，但是会好几门语言就厉害了么，你得精通一两门语言。有了差距才有前进的动力。很多东西都是一个念头产生的，比如说我今晚写不出爬取花瓣网短发小姐姐的爬虫我就不睡觉了，也许一晚上的时间你就会把你与别人一年的差距成倍的缩短，写博客也一样吧。都要坚持]]></content>
-      <categories>
-        <category>感想</category>
-      </categories>
-      <tags>
-        <tag>思考</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[设计自己的家]]></title>
     <url>%2F2017%2F04%2F15%2F%E8%87%AA%E5%B7%B1%E4%BD%8F%E7%9A%84%E5%9C%B0%E6%96%B9%E6%80%8E%E4%B9%88%E8%83%BD%E4%B8%8D%E8%87%AA%E5%B7%B1%E8%AE%BE%E8%AE%A1%EF%BC%9F%EF%BC%9F%2F</url>
     <content type="text"><![CDATA[自己的房子当然要由自己设计从哪里开始呢无聊不知道干什么的的时候做什么呢，我会看看知乎。你都这么大的人了，还是不要选择纯文字的吧，当然要看图文并茂生动活泼的文章了。最符合上述选项的就是装修板块了，自己也梦想着是不是能画些手稿什么的（这个时候好像有人能教我画画），手残就手残，那就开始吧。我的漫漫设计之路从此开始了 问题真的很多起初我对装修只是觉得自己去选择喜欢的家具，然后把他们放在合适的地方，这样我的家就组装好啦。事实证明我太天真了，真是一入豪门深似海，我越想越要考虑的东西多。 你需要准备什么呢自从发现了家居体验店这种东西之后，就完全挡不住我要进去逛的心情，我对给我做引导的人说，这个我想要，那个我也想要，这个一平米多少钱。最后得倒最多的就是一个笑容和一句话，我们需要您家里的各种尺寸哦。 ============================ 分割线 ==================================== 下面进入正文作为一个资深吃货，出去旅游只想着吃的同学，想装修的第一个位置当然是厨房了。吃货除了吃，还喜欢动手去做饭。想想自己做了好吃的给喜欢的人吃，也是很开心的嘛，只喜欢吃不愿意动手的同学当我没说过这句话…好了，工欲善其事，必先利其器，几乎每本介绍厨房用具的书都有这句话。那我想做的厨房是什么样的呢？当然是开放式厨房了啊。鉴于大多数家庭的厨房都是一间屋子，然后妈妈在里面辛苦的炒菜还要被油烟熏，这也太可怜了吧。就不能我做着你看着么？ 我第一个想到在厨房里加的东西是岛台，我第一次见到这种东西是在外国电影了，当时就算我年纪还小，也觉得这个东西实在是太酷了。光有灶台那么点地方肯定是不够用的啊。没有岛台我都不好意思说自己弄了个开放式的厨房]]></content>
@@ -506,6 +495,17 @@
       </categories>
       <tags>
         <tag>装修</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[我不是不喜欢学习 我只是不喜欢学校]]></title>
+    <url>%2F2017%2F04%2F15%2F%E4%B8%80%E7%9B%B4%E7%BB%99%E8%87%AA%E5%B7%B1%E5%85%85%E7%94%B5%E5%90%A7%2F</url>
+    <content type="text"><![CDATA[一直给自己充电吧如果你遇到了问题学习的时候，不管你用什么方法，或者通过什么渠道（例如看视频去学习，下载电子书）。到你自己操作时的时候总会遇到一些问题。这些琐碎的小问题足以让你百度一会了（当然如果你能百度到的话），我在搭建这个博客的时候看了许多教程，他们取得名字我觉得很不负责任，例如什么白痴方法搭建博客啦，五分钟教你快速搭建一个博客。我搭建这个博客花了五个晚上的时间，大多都浪费得在百度各种琐碎的小问题上面了，你会问，为什么他操作是这样的，为什么我操作的时候它显示的这是什么玩意？不是说白痴方法搭建么，为什么我觉得一点也不简单。 我说了这么多，只是想说千万不要放弃。我在做信号与系统试验的时候，一个看起来比我大没多少的女老师说：“如果你们自己没把想要的图形调试出来，千万别怀疑自己的能力什么的，可能是仪器有问题，多试几次”，我在想这个老师还这么照顾学生心理么。但这种做法确实是对的。别怀疑自己，别放弃，再试试，你才有解决问题的轻松与喜悦。 差距总是有的也许你现在刚学的技术，人家在一年前已经学会了 也许你现在会用的技术，人家在一年前已经熟练了 差距就是这样的，python这门语言还是我在迷茫的时候我的舍友告诉我的，IT这么多的方向，单学习一个是不够的，你得学好几门语言，但是会好几门语言就厉害了么，你得精通一两门语言。有了差距才有前进的动力。很多东西都是一个念头产生的，比如说我今晚写不出爬取花瓣网短发小姐姐的爬虫我就不睡觉了，也许一晚上的时间你就会把你与别人一年的差距成倍的缩短，写博客也一样吧。都要坚持]]></content>
+      <categories>
+        <category>感想</category>
+      </categories>
+      <tags>
+        <tag>思考</tag>
       </tags>
   </entry>
   <entry>
