@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://Moshiwei.github.io/"/>
-  <updated>2018-03-06T15:01:57.034Z</updated>
+  <updated>2018-04-23T13:49:22.383Z</updated>
   <id>http://Moshiwei.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>选择排序-Selection Sort</title>
+    <link href="http://Moshiwei.github.io/2018/04/23/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/"/>
+    <id>http://Moshiwei.github.io/2018/04/23/选择排序/</id>
+    <published>2018-04-23T13:48:00.000Z</published>
+    <updated>2018-04-23T13:49:22.383Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="数据结构开篇"><a href="#数据结构开篇" class="headerlink" title="数据结构开篇"></a>数据结构开篇</h3><p>这是我第一篇数据结构的文章，就想到了一句话“对于代码的热爱更多的体现在行动力上”。半个月前决定开始接触数据结构，说实话我到现在都还不知道如何将数据结构应用于实际开发当中，但是不止一个人提到了它的重要性，以及在岗位要求上，无论前端后端，都会或多或少的要求到要了解数据结构。这也是我开始更新数据结构系列文章的原因与动力，另一方面就是督促自己学习。</p><h3 id="Selection-Sort"><a href="#Selection-Sort" class="headerlink" title="Selection Sort"></a>Selection Sort</h3><p>先上代码</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">void selectionSort(int arr[],int n)&#123;</div><div class="line">    for(int i=0;i&lt;n;i++)&#123;</div><div class="line">        //寻找[i,n)区间内的最小值</div><div class="line">        int minIndex = i;</div><div class="line">        for (int j=i+1;j&lt;n;j++)</div><div class="line">            if (arr[j]&lt;arr[minIndex])</div><div class="line">                minIndex = j;</div><div class="line">            swap(arr[minIndex],arr[i]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><p>swap函数是c++标准库中的函数，如果以c++11为标准，那么它就在std这个命名空间当中，如果使用的是老得标准，就要在开头添加</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#include &lt;algorithm&gt;</div></pre></td></tr></table></figure><p>除了i，j用于循环，minIndex作为第三个用于过度的变量用来抽象定位当前的最小值的位置。<br>不使用swap用于最小值的位置替换，可以使用如下方法</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">void selectionSort(int arr[],int n)&#123;</div><div class="line">    int tmp;</div><div class="line">    for(int i =0;i&lt;n;i++)&#123;</div><div class="line">        for(int j=i+1;j&lt;n,;j++)&#123;</div><div class="line">            if(arr[j]&lt;arr[i])&#123;</div><div class="line">                tmp = arr[i];</div><div class="line">                arr[i] = arr[j];</div><div class="line">                arr[j] = tmp;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><p>以上算法可知，无论是最坏的情况，还是最好情况和平均情况都需要找到最大值或者最小值，因此其比较次数为：(n-1)+(n-2)+(n-3)+…+3+2+1=n(n-1)/2次，时间复杂度为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">O(n^2)</div></pre></td></tr></table></figure></p><p>此外，由于选择排序是以最大或最小值直接与最前方未排序的键值交换，数据排列顺序很有可能被改变，故它不是稳定排序，比较适用于数据量小或有部分数据已经排序完成的情况。</p><h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><p>上述选择排序代码中使用的是int型序列排序，可使用模版函数，实现其他类型序列排序。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;数据结构开篇&quot;&gt;&lt;a href=&quot;#数据结构开篇&quot; class=&quot;headerlink&quot; title=&quot;数据结构开篇&quot;&gt;&lt;/a&gt;数据结构开篇&lt;/h3&gt;&lt;p&gt;这是我第一篇数据结构的文章，就想到了一句话“对于代码的热爱更多的体现在行动力上”。半个月前决定开始接触数据结
+      
+    
+    </summary>
+    
+      <category term="数据结构-排序" scheme="http://Moshiwei.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%8E%92%E5%BA%8F/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Django-xadmin</title>
@@ -31,28 +54,6 @@
       
         &lt;h2 id=&quot;安装xadmin&quot;&gt;&lt;a href=&quot;#安装xadmin&quot; class=&quot;headerlink&quot; title=&quot;安装xadmin&quot;&gt;&lt;/a&gt;安装xadmin&lt;/h2&gt;&lt;p&gt;初次使用Django的xadmin，直接使用pip安装，虽然能安装上，但是缺少一些东西影响使
       
-    
-    </summary>
-    
-      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Django" scheme="http://Moshiwei.github.io/tags/Django/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Django-基于类的视图部分翻译</title>
-    <link href="http://Moshiwei.github.io/2017/10/27/Django-%E5%9F%BA%E4%BA%8E%E7%B1%BB%E7%9A%84%E8%A7%86%E5%9B%BE%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91/"/>
-    <id>http://Moshiwei.github.io/2017/10/27/Django-基于类的视图部分翻译/</id>
-    <published>2017-10-27T14:52:00.000Z</published>
-    <updated>2017-10-27T14:53:36.417Z</updated>
-    
-    <content type="html"><![CDATA[<p>可调用的视图层需要接受一个请求并返回一个响应，他的功能不仅仅是一个方法这么简单，Django提供了一些列类可以被用与创建视图。它们可以使你规划你的视图结构，通过harnessing，inheritance，和mixins减少你的代码。接下来会看到一些普通的例子，但你可能更需要去设计适合你个人项目的视图结构，并且能重复使用它们。<a href="https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。" target="_blank" rel="external">https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。</a><br><a id="more"></a></p><h3 id="Basic-examples"><a href="#Basic-examples" class="headerlink" title="Basic examples"></a>Basic examples</h3><p>Django提供了基本视图类，适配了广泛的应用，所有的视图都继承自视图类。这些类处理了视图与URLs的关系，HTTP方法的发送，或其他。RedirectView为了用来做简单的HTTP重定向，TemplateView拓展自基类使他也能进行模版渲染</p><h2 id="Generic-display-veiws（通用显示视图）"><a href="#Generic-display-veiws（通用显示视图）" class="headerlink" title="Generic display veiws（通用显示视图）"></a>Generic display veiws（通用显示视图）</h2><p>下面有两个基于类的通用视图。在很多项目中，他们是典型的也是最常用的视图函数。</p><h3 id="DetailViews"><a href="#DetailViews" class="headerlink" title="DetailViews"></a>DetailViews</h3><p>该视图继承了下面这些类的属性和方法</p><ul><li>django.views.generic.detail.SingleObjectTemplateResponseMixin</li><li>django.views.generic.base.TemplateResponseMixin</li><li>django.views.generic.detail.BaseDetailView</li><li>django.views.generic.detail.SingleObjectMixin</li><li>django.views.generic.base.View</li></ul><p>可用的方法（MRO列表）</p><ol><li>dispatch()</li><li>http_method_not_allowed()</li><li>get_template_names()</li><li>get_slug_field()</li><li>get_queryset()</li><li>get_object()</li><li>get_context_object_name()</li><li>get_context_data()</li><li>get()<br>10 render_to_response()</li></ol><p><strong>一个例子</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">from django.views.generic.detail import DetailView</div><div class="line">from django.utils import timezone</div><div class="line"></div><div class="line">from articles.models import Article</div><div class="line"></div><div class="line">class ArticleDetailView(DetailView):</div><div class="line"></div><div class="line">    model = Article</div><div class="line"></div><div class="line">    def get_context_data(self, **kwargs):</div><div class="line">        context = super(ArticleDetailView, self).get_context_data(**kwargs)</div><div class="line">        context[&apos;now&apos;] = timezone.now()</div><div class="line">        return context</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;可调用的视图层需要接受一个请求并返回一个响应，他的功能不仅仅是一个方法这么简单，Django提供了一些列类可以被用与创建视图。它们可以使你规划你的视图结构，通过harnessing，inheritance，和mixins减少你的代码。接下来会看到一些普通的例子，但你可能更需要去设计适合你个人项目的视图结构，并且能重复使用它们。&lt;a href=&quot;https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。&quot;&gt;https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。&lt;/a&gt;&lt;br&gt;
     
     </summary>
     
@@ -82,6 +83,28 @@
     
     
       <category term="Flask" scheme="http://Moshiwei.github.io/tags/Flask/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Django-基于类的视图部分翻译</title>
+    <link href="http://Moshiwei.github.io/2017/10/27/Django-%E5%9F%BA%E4%BA%8E%E7%B1%BB%E7%9A%84%E8%A7%86%E5%9B%BE%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91/"/>
+    <id>http://Moshiwei.github.io/2017/10/27/Django-基于类的视图部分翻译/</id>
+    <published>2017-10-27T14:52:00.000Z</published>
+    <updated>2017-10-27T14:53:36.417Z</updated>
+    
+    <content type="html"><![CDATA[<p>可调用的视图层需要接受一个请求并返回一个响应，他的功能不仅仅是一个方法这么简单，Django提供了一些列类可以被用与创建视图。它们可以使你规划你的视图结构，通过harnessing，inheritance，和mixins减少你的代码。接下来会看到一些普通的例子，但你可能更需要去设计适合你个人项目的视图结构，并且能重复使用它们。<a href="https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。" target="_blank" rel="external">https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。</a><br><a id="more"></a></p><h3 id="Basic-examples"><a href="#Basic-examples" class="headerlink" title="Basic examples"></a>Basic examples</h3><p>Django提供了基本视图类，适配了广泛的应用，所有的视图都继承自视图类。这些类处理了视图与URLs的关系，HTTP方法的发送，或其他。RedirectView为了用来做简单的HTTP重定向，TemplateView拓展自基类使他也能进行模版渲染</p><h2 id="Generic-display-veiws（通用显示视图）"><a href="#Generic-display-veiws（通用显示视图）" class="headerlink" title="Generic display veiws（通用显示视图）"></a>Generic display veiws（通用显示视图）</h2><p>下面有两个基于类的通用视图。在很多项目中，他们是典型的也是最常用的视图函数。</p><h3 id="DetailViews"><a href="#DetailViews" class="headerlink" title="DetailViews"></a>DetailViews</h3><p>该视图继承了下面这些类的属性和方法</p><ul><li>django.views.generic.detail.SingleObjectTemplateResponseMixin</li><li>django.views.generic.base.TemplateResponseMixin</li><li>django.views.generic.detail.BaseDetailView</li><li>django.views.generic.detail.SingleObjectMixin</li><li>django.views.generic.base.View</li></ul><p>可用的方法（MRO列表）</p><ol><li>dispatch()</li><li>http_method_not_allowed()</li><li>get_template_names()</li><li>get_slug_field()</li><li>get_queryset()</li><li>get_object()</li><li>get_context_object_name()</li><li>get_context_data()</li><li>get()<br>10 render_to_response()</li></ol><p><strong>一个例子</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">from django.views.generic.detail import DetailView</div><div class="line">from django.utils import timezone</div><div class="line"></div><div class="line">from articles.models import Article</div><div class="line"></div><div class="line">class ArticleDetailView(DetailView):</div><div class="line"></div><div class="line">    model = Article</div><div class="line"></div><div class="line">    def get_context_data(self, **kwargs):</div><div class="line">        context = super(ArticleDetailView, self).get_context_data(**kwargs)</div><div class="line">        context[&apos;now&apos;] = timezone.now()</div><div class="line">        return context</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;可调用的视图层需要接受一个请求并返回一个响应，他的功能不仅仅是一个方法这么简单，Django提供了一些列类可以被用与创建视图。它们可以使你规划你的视图结构，通过harnessing，inheritance，和mixins减少你的代码。接下来会看到一些普通的例子，但你可能更需要去设计适合你个人项目的视图结构，并且能重复使用它们。&lt;a href=&quot;https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。&quot;&gt;https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。&lt;/a&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Django" scheme="http://Moshiwei.github.io/tags/Django/"/>
     
   </entry>
   
@@ -477,32 +500,6 @@
         &lt;h2 id=&quot;定义一个类方法&quot;&gt;&lt;a href=&quot;#定义一个类方法&quot; class=&quot;headerlink&quot; title=&quot;定义一个类方法&quot;&gt;&lt;/a&gt;定义一个类方法&lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;写一个类的时候，类名首字母要以大写开头&lt;/p&gt;
 &lt;p&gt;在类中定义的全部是实
-      
-    
-    </summary>
-    
-      <category term="python学习笔记" scheme="http://Moshiwei.github.io/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="python" scheme="http://Moshiwei.github.io/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>装饰器的理解</title>
-    <link href="http://Moshiwei.github.io/2017/08/17/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.17/"/>
-    <id>http://Moshiwei.github.io/2017/08/17/python学习笔记2017.08.17/</id>
-    <published>2017-08-17T13:50:00.000Z</published>
-    <updated>2017-08-19T14:52:46.886Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h1><blockquote><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>学了一周的python函数式编程了，觉得好玩的两个点就是匿名函数，和装饰器了。因为他们都能让我觉得写代码可以更加优雅。</p><p>如果你想给一个函数增加一些功能，但是你又不想在原函数中改，那么你就可以使用装饰器，这样的话，假如有很多函数都需要这个功能，装饰器就会显示出它作用，可以减少不少重复的代码。</p><p>按照我自己的理解，我们自己制作的装饰器就像一个提供给函数的小插件，想要谁拥有新功能我们给谁安插件就好了。</p><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def log(func):</div><div class="line">    def wrapper(*args, **kwargs):</div><div class="line">        logging.warn(&quot;%s is running&quot; %func.\_\_name\_\_)</div><div class="line">        return func(*args)</div><div class="line">    return wrapper</div><div class="line"></div><div class="line">def foo():</div><div class="line">    print(&quot;call foo()&quot;)</div><div class="line">    </div><div class="line">foo = log(foo)</div><div class="line">foo()</div></pre></td></tr></table></figure><blockquote><p>如果不理解函数式编程，请看前几节python学习笔记。</p><p>装饰器有一个语法糖,那就是使用@，@装饰器是不是很可爱</p><p>于是代码可以变成这样</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@log</div><div class="line">def foo():</div><div class="line">    print(&quot;call foo()&quot;)</div></pre></td></tr></table></figure><blockquote><p>@装饰器可以省略下面的代码，但是函数使用时，还需要自己调用。</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">foo = log(foo)</div></pre></td></tr></table></figure><blockquote><p>这样以来，如果我们有其他需要打印日志的函数，就可以直接调用装饰器来修饰函数，而不用重复修改函数，或者增加新的封装。这样我们就提高了程序的可重复利用性，并且增加了程序的可读性。</p></blockquote><h2 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h2><blockquote><p>刚开始还是比较绕的，但是遇到事情多想想是吧。首先我们把上面的log(func)函数叫做装饰器，然后它的内层函数返回了我们想装饰的函数，保证我们的原函数顺利执行，我们想装饰的内容也写在了内层函数里，这样应该就比较好理解了。</p><p>当我们阅读代码的时候，被装饰器装饰的函数还是会被顺利执行，我们只需查询装饰器做了什么修改。</p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;装饰器&quot;&gt;&lt;a href=&quot;#装饰器&quot; class=&quot;headerlink&quot; title=&quot;装饰器&quot;&gt;&lt;/a&gt;装饰器&lt;/h1&gt;&lt;blockquote&gt;
-&lt;h2 id=&quot;引入&quot;&gt;&lt;a href=&quot;#引入&quot; class=&quot;headerlink&quot; title=&quot;引入&quot;&gt;
       
     
     </summary>

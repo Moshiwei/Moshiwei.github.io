@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[选择排序-Selection Sort]]></title>
+    <url>%2F2018%2F04%2F23%2F%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[数据结构开篇这是我第一篇数据结构的文章，就想到了一句话“对于代码的热爱更多的体现在行动力上”。半个月前决定开始接触数据结构，说实话我到现在都还不知道如何将数据结构应用于实际开发当中，但是不止一个人提到了它的重要性，以及在岗位要求上，无论前端后端，都会或多或少的要求到要了解数据结构。这也是我开始更新数据结构系列文章的原因与动力，另一方面就是督促自己学习。 Selection Sort先上代码 12345678910void selectionSort(int arr[],int n)&#123; for(int i=0;i&lt;n;i++)&#123; //寻找[i,n)区间内的最小值 int minIndex = i; for (int j=i+1;j&lt;n;j++) if (arr[j]&lt;arr[minIndex]) minIndex = j; swap(arr[minIndex],arr[i]); &#125;&#125; 补充swap函数是c++标准库中的函数，如果以c++11为标准，那么它就在std这个命名空间当中，如果使用的是老得标准，就要在开头添加 1#include &lt;algorithm&gt; 除了i，j用于循环，minIndex作为第三个用于过度的变量用来抽象定位当前的最小值的位置。不使用swap用于最小值的位置替换，可以使用如下方法 123456789101112void selectionSort(int arr[],int n)&#123; int tmp; for(int i =0;i&lt;n;i++)&#123; for(int j=i+1;j&lt;n,;j++)&#123; if(arr[j]&lt;arr[i])&#123; tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp; &#125; &#125; &#125;&#125; 以上算法可知，无论是最坏的情况，还是最好情况和平均情况都需要找到最大值或者最小值，因此其比较次数为：(n-1)+(n-2)+(n-3)+…+3+2+1=n(n-1)/2次，时间复杂度为:1O(n^2) 此外，由于选择排序是以最大或最小值直接与最前方未排序的键值交换，数据排列顺序很有可能被改变，故它不是稳定排序，比较适用于数据量小或有部分数据已经排序完成的情况。 拓展上述选择排序代码中使用的是int型序列排序，可使用模版函数，实现其他类型序列排序。]]></content>
+      <categories>
+        <category>数据结构-排序</category>
+      </categories>
+  </entry>
+  <entry>
     <title><![CDATA[Django-xadmin]]></title>
     <url>%2F2018%2F03%2F06%2FDjango-xadmin%2F</url>
     <content type="text"><![CDATA[安装xadmin初次使用Django的xadmin，直接使用pip安装，虽然能安装上，但是缺少一些东西影响使用，推荐去github上面安装： 1pip install git+git://github.com/sshwsfc/xadmin.git 使用及设置以下是一些近期使用xadmin的配置方法和一些经常会用到的设置。 注册你的model 使用xadmin的时候首先需要向后台注册你的app的models。他需要写一个与models相对应的类，类的名字为models类后加Admin。例如 app/models.py123class UserProfile(models.Model): name = models.CharField(max_length=50) .... 那与之对应的，向xadmin注册的时候 adminx.py（需要在app中创建） 12class UserProfileAdmin(object): pass 可以添加几个参数，丰富后台的内容，或是添加搜索功能 1list_display = [] 该参数可以是一个元组，也可以是一个列表，一般推荐列表models下的字段可以以字符串的形式添加到里面，这样在后台就会显示该models所有的字段 1serach_fields = [] 该参数也是一个列表，添加的参数同上，但是不推荐添加时间类型的字段。添加后在后台会显示一个检索框 1list_filter = [] 同上，赋值方法也相同，在后台会多出一个过滤器，将时间字段添加后就能通过时间段来检索 优化显示内容xadmin更改后台管理名称以及底部信息xadmin在创建完成后，左上角显示的内容为Django-xadmin，底部显示的内容为我的公司，我们希望定制自己需要的内容,xadmin提供了一下的方法。 adminx.py 12345678910class GlobalSettings(object): site_title = &apos;后台名称&apos; site_footer = &apos;底部信息&apos; # 使左侧导航栏缩进 menu_style = &apos;accordion&apos; class BaseSetting(object): # 开启主题 enable_themes = True use_booswatch = True 最初注册进xadmin的model会显示在对应的app下，我们希望平时不用的时候，他是收回对应app的，当我们需要的时候再打开。 补充一个后台显示内容优化的内容在后台内，最初app的显示是英文的，如何更改为中文呢，我们在app对应目录下，有一个apps.py的文件，在其中添加一个verbose_name参数就可更改，同时要在同目录下的init.py文件下，添加一段话 123app/__init__.pydefault_app_config = &apos;users.apps.UsersConfig&apos;]]></content>
-      <categories>
-        <category>python框架</category>
-      </categories>
-      <tags>
-        <tag>Django</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Django-基于类的视图部分翻译]]></title>
-    <url>%2F2017%2F10%2F27%2FDjango-%E5%9F%BA%E4%BA%8E%E7%B1%BB%E7%9A%84%E8%A7%86%E5%9B%BE%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91%2F</url>
-    <content type="text"><![CDATA[可调用的视图层需要接受一个请求并返回一个响应，他的功能不仅仅是一个方法这么简单，Django提供了一些列类可以被用与创建视图。它们可以使你规划你的视图结构，通过harnessing，inheritance，和mixins减少你的代码。接下来会看到一些普通的例子，但你可能更需要去设计适合你个人项目的视图结构，并且能重复使用它们。https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。 Basic examplesDjango提供了基本视图类，适配了广泛的应用，所有的视图都继承自视图类。这些类处理了视图与URLs的关系，HTTP方法的发送，或其他。RedirectView为了用来做简单的HTTP重定向，TemplateView拓展自基类使他也能进行模版渲染 Generic display veiws（通用显示视图）下面有两个基于类的通用视图。在很多项目中，他们是典型的也是最常用的视图函数。 DetailViews该视图继承了下面这些类的属性和方法 django.views.generic.detail.SingleObjectTemplateResponseMixin django.views.generic.base.TemplateResponseMixin django.views.generic.detail.BaseDetailView django.views.generic.detail.SingleObjectMixin django.views.generic.base.View 可用的方法（MRO列表） dispatch() http_method_not_allowed() get_template_names() get_slug_field() get_queryset() get_object() get_context_object_name() get_context_data() get()10 render_to_response() 一个例子 12345678910111213from django.views.generic.detail import DetailViewfrom django.utils import timezonefrom articles.models import Articleclass ArticleDetailView(DetailView): model = Article def get_context_data(self, **kwargs): context = super(ArticleDetailView, self).get_context_data(**kwargs) context[&apos;now&apos;] = timezone.now() return context]]></content>
       <categories>
         <category>python框架</category>
       </categories>
@@ -31,6 +28,17 @@
       </categories>
       <tags>
         <tag>Flask</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Django-基于类的视图部分翻译]]></title>
+    <url>%2F2017%2F10%2F27%2FDjango-%E5%9F%BA%E4%BA%8E%E7%B1%BB%E7%9A%84%E8%A7%86%E5%9B%BE%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91%2F</url>
+    <content type="text"><![CDATA[可调用的视图层需要接受一个请求并返回一个响应，他的功能不仅仅是一个方法这么简单，Django提供了一些列类可以被用与创建视图。它们可以使你规划你的视图结构，通过harnessing，inheritance，和mixins减少你的代码。接下来会看到一些普通的例子，但你可能更需要去设计适合你个人项目的视图结构，并且能重复使用它们。https://docs.djangoproject.com/en/1.11/ref/class-based-views/查看该链接获取更多信息。 Basic examplesDjango提供了基本视图类，适配了广泛的应用，所有的视图都继承自视图类。这些类处理了视图与URLs的关系，HTTP方法的发送，或其他。RedirectView为了用来做简单的HTTP重定向，TemplateView拓展自基类使他也能进行模版渲染 Generic display veiws（通用显示视图）下面有两个基于类的通用视图。在很多项目中，他们是典型的也是最常用的视图函数。 DetailViews该视图继承了下面这些类的属性和方法 django.views.generic.detail.SingleObjectTemplateResponseMixin django.views.generic.base.TemplateResponseMixin django.views.generic.detail.BaseDetailView django.views.generic.detail.SingleObjectMixin django.views.generic.base.View 可用的方法（MRO列表） dispatch() http_method_not_allowed() get_template_names() get_slug_field() get_queryset() get_object() get_context_object_name() get_context_data() get()10 render_to_response() 一个例子 12345678910111213from django.views.generic.detail import DetailViewfrom django.utils import timezonefrom articles.models import Articleclass ArticleDetailView(DetailView): model = Article def get_context_data(self, **kwargs): context = super(ArticleDetailView, self).get_context_data(**kwargs) context[&apos;now&apos;] = timezone.now() return context]]></content>
+      <categories>
+        <category>python框架</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
       </tags>
   </entry>
   <entry>
