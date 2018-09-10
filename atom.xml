@@ -88,28 +88,6 @@
   </entry>
   
   <entry>
-    <title>Flask路由问题</title>
-    <link href="http://Moshiwei.github.io/2017/10/27/Flask%E8%B7%AF%E7%94%B1%E9%97%AE%E9%A2%98/"/>
-    <id>http://Moshiwei.github.io/2017/10/27/Flask路由问题/</id>
-    <published>2017-10-27T14:52:00.000Z</published>
-    <updated>2017-10-30T13:38:46.203Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><p>一个优秀的web应用有一套好的URL系统，不仅能帮助浏览者更容易记住你的连接，同时还增加了他们会再次来访问你的网站的几率。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/projects/&apos;&apos;) </div><div class="line">def projects():</div><div class="line">return  The project page </div><div class="line">@app.route(&apos;/about&apos;) </div><div class="line">def about():</div><div class="line">return  The about page</div></pre></td></tr></table></figure></p><a id="more"></a><blockquote><p>上面看似相同的例子，不同点在于它们在定义URL时候，是否使用了末尾的斜线。在第一个例子中，url是有下划线的，这意味着它更像一个文件夹的目录结构。不使用下划线去访问会使Flask去重定向到确切的有下划线的URL。</p><p>上句话很绕。一开始我也不明白，我回到项目里测试了一下会发现。比如在访问后台页面127.0.0.1：8000/admin的时候，访问的过程是不加斜线的，但页面加载时其实是访到了/admin/这个目录。</p><p>在第二个例子中，他的URL定义在末尾没有斜线。像一个UNIX-LIKE系统中一个文件的路径。（注意：第一个例子像一个目录路径）。如果访问该URL时你加入了下划线的话，就会导致404 NOT FOUND的错误。</p><p>这种行为可以是这种有关联的URL保持工作，即使你省略了末尾的下划线，与Apache的工作方式一致。同时，还能保持独一无二的URLs结构，避免搜索引擎检索一个页面两次。<br>（这段翻译完还不是很理解，也许翻译有误。日后问题解决再来更新）</p><p>如果可以匹配到URLs，那么Flask能生成它们么？当然可以，具体可以使用url_for()方法去创建一个URL，该方法接受方法名作为第一个参数，还接受一些关键字参数，匹配你制定的URL规则。未知的变量部分将会作为查询参数添加到URL中。</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from flask import Flask, url_for &gt;&gt;&gt; app = Flask(__name__)</div><div class="line">&gt;&gt;&gt; @app.route(&apos;/&apos;)</div><div class="line">... def index(): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; @app.route(&apos;/login&apos;)</div><div class="line">... def login(): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; @app.route(&apos;/user/&lt;username&gt;&apos;)</div><div class="line">... def profile(username): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; with app.test_request_context():</div><div class="line">... print url_for(&apos;index&apos;)</div><div class="line">... print url_for(&apos;login&apos;)</div><div class="line">... print url_for(&apos;login&apos;, next=&apos;/&apos;)</div><div class="line">... print url_for( &apos;profile , username= &apos;John Doe&apos; ) ...</div><div class="line">/</div><div class="line">/login</div><div class="line">/login?next=/</div><div class="line">/user/John%20Doe</div></pre></td></tr></table></figure><blockquote><p>上述例子还使用了test_request_context()方法，下面解释该方法。它告诉Flask去模拟处理一次请求，即使我们在和python shell交流。<br>（之后的内容我实在不知道怎么翻译，只能说大体我认为有用的内容）它讲了为什么要使用url_for()这个方法。</p><ol><li>之后如果需要修改url只需更改一次，而不用记住所有使用url的位置。</li><li>URL building 会造成一些特殊的字符或者Unicode数据，会造成一些麻烦，使用url_for()可以避免这些麻烦。</li><li>url_for会帮你正确的找出路径。</li></ol></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;路由&quot;&gt;&lt;a href=&quot;#路由&quot; class=&quot;headerlink&quot; title=&quot;路由&quot;&gt;&lt;/a&gt;路由&lt;/h2&gt;&lt;p&gt;一个优秀的web应用有一套好的URL系统，不仅能帮助浏览者更容易记住你的连接，同时还增加了他们会再次来访问你的网站的几率。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;@app.route(&amp;apos;/projects/&amp;apos;&amp;apos;) &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;def projects():&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;return  The project page &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;@app.route(&amp;apos;/about&amp;apos;) &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;def about():&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;return  The about page&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Flask" scheme="http://Moshiwei.github.io/tags/Flask/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Django-基于类的视图部分翻译</title>
     <link href="http://Moshiwei.github.io/2017/10/27/Django-%E5%9F%BA%E4%BA%8E%E7%B1%BB%E7%9A%84%E8%A7%86%E5%9B%BE%E9%83%A8%E5%88%86%E7%BF%BB%E8%AF%91/"/>
     <id>http://Moshiwei.github.io/2017/10/27/Django-基于类的视图部分翻译/</id>
@@ -128,6 +106,28 @@
     
     
       <category term="Django" scheme="http://Moshiwei.github.io/tags/Django/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Flask路由问题</title>
+    <link href="http://Moshiwei.github.io/2017/10/27/Flask%E8%B7%AF%E7%94%B1%E9%97%AE%E9%A2%98/"/>
+    <id>http://Moshiwei.github.io/2017/10/27/Flask路由问题/</id>
+    <published>2017-10-27T14:52:00.000Z</published>
+    <updated>2017-10-30T13:38:46.203Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><p>一个优秀的web应用有一套好的URL系统，不仅能帮助浏览者更容易记住你的连接，同时还增加了他们会再次来访问你的网站的几率。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/projects/&apos;&apos;) </div><div class="line">def projects():</div><div class="line">return  The project page </div><div class="line">@app.route(&apos;/about&apos;) </div><div class="line">def about():</div><div class="line">return  The about page</div></pre></td></tr></table></figure></p><a id="more"></a><blockquote><p>上面看似相同的例子，不同点在于它们在定义URL时候，是否使用了末尾的斜线。在第一个例子中，url是有下划线的，这意味着它更像一个文件夹的目录结构。不使用下划线去访问会使Flask去重定向到确切的有下划线的URL。</p><p>上句话很绕。一开始我也不明白，我回到项目里测试了一下会发现。比如在访问后台页面127.0.0.1：8000/admin的时候，访问的过程是不加斜线的，但页面加载时其实是访到了/admin/这个目录。</p><p>在第二个例子中，他的URL定义在末尾没有斜线。像一个UNIX-LIKE系统中一个文件的路径。（注意：第一个例子像一个目录路径）。如果访问该URL时你加入了下划线的话，就会导致404 NOT FOUND的错误。</p><p>这种行为可以是这种有关联的URL保持工作，即使你省略了末尾的下划线，与Apache的工作方式一致。同时，还能保持独一无二的URLs结构，避免搜索引擎检索一个页面两次。<br>（这段翻译完还不是很理解，也许翻译有误。日后问题解决再来更新）</p><p>如果可以匹配到URLs，那么Flask能生成它们么？当然可以，具体可以使用url_for()方法去创建一个URL，该方法接受方法名作为第一个参数，还接受一些关键字参数，匹配你制定的URL规则。未知的变量部分将会作为查询参数添加到URL中。</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from flask import Flask, url_for &gt;&gt;&gt; app = Flask(__name__)</div><div class="line">&gt;&gt;&gt; @app.route(&apos;/&apos;)</div><div class="line">... def index(): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; @app.route(&apos;/login&apos;)</div><div class="line">... def login(): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; @app.route(&apos;/user/&lt;username&gt;&apos;)</div><div class="line">... def profile(username): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; with app.test_request_context():</div><div class="line">... print url_for(&apos;index&apos;)</div><div class="line">... print url_for(&apos;login&apos;)</div><div class="line">... print url_for(&apos;login&apos;, next=&apos;/&apos;)</div><div class="line">... print url_for( &apos;profile , username= &apos;John Doe&apos; ) ...</div><div class="line">/</div><div class="line">/login</div><div class="line">/login?next=/</div><div class="line">/user/John%20Doe</div></pre></td></tr></table></figure><blockquote><p>上述例子还使用了test_request_context()方法，下面解释该方法。它告诉Flask去模拟处理一次请求，即使我们在和python shell交流。<br>（之后的内容我实在不知道怎么翻译，只能说大体我认为有用的内容）它讲了为什么要使用url_for()这个方法。</p><ol><li>之后如果需要修改url只需更改一次，而不用记住所有使用url的位置。</li><li>URL building 会造成一些特殊的字符或者Unicode数据，会造成一些麻烦，使用url_for()可以避免这些麻烦。</li><li>url_for会帮你正确的找出路径。</li></ol></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;路由&quot;&gt;&lt;a href=&quot;#路由&quot; class=&quot;headerlink&quot; title=&quot;路由&quot;&gt;&lt;/a&gt;路由&lt;/h2&gt;&lt;p&gt;一个优秀的web应用有一套好的URL系统，不仅能帮助浏览者更容易记住你的连接，同时还增加了他们会再次来访问你的网站的几率。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;@app.route(&amp;apos;/projects/&amp;apos;&amp;apos;) &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;def projects():&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;return  The project page &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;@app.route(&amp;apos;/about&amp;apos;) &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;def about():&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;return  The about page&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="python框架" scheme="http://Moshiwei.github.io/categories/python%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Flask" scheme="http://Moshiwei.github.io/tags/Flask/"/>
     
   </entry>
   
