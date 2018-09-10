@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://Moshiwei.github.io/"/>
-  <updated>2018-04-23T13:49:22.383Z</updated>
+  <updated>2018-09-10T03:10:48.890Z</updated>
   <id>http://Moshiwei.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>gunicorn+shell脚本+cron让项目自动发布</title>
+    <link href="http://Moshiwei.github.io/2018/09/10/gunicorn+shell%E8%84%9A%E6%9C%AC+cron%E8%AE%A9%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83%E4%B8%8A%E7%BA%BF/"/>
+    <id>http://Moshiwei.github.io/2018/09/10/gunicorn+shell脚本+cron让项目自动发布上线/</id>
+    <published>2018-09-10T03:08:00.000Z</published>
+    <updated>2018-09-10T03:10:48.890Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="通过shell脚本执行gunicorn命令"><a href="#通过shell脚本执行gunicorn命令" class="headerlink" title="通过shell脚本执行gunicorn命令"></a>通过shell脚本执行gunicorn命令</h2><blockquote><p>首先编写shell脚本</p><p>deploy.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">cd /home/mirror/mirrorgo.top/django-blog-tutorial</div><div class="line"></div><div class="line">ps aux|grep gunicorn |grep -v grep</div><div class="line">if [ $? -ne 0 ]</div><div class="line">then</div><div class="line">    echo &quot;blog stopped&quot;</div><div class="line">    /home/mirror/djangoenv/bin/gunicorn --bind unix:/tmp/mirrorgo.top.socket blogproject.wsgi:application</div><div class="line">else</div><div class="line">    echo &quot;blog start&quot;</div><div class="line">fi</div></pre></td></tr></table></figure></p><p>脚本内容</p><ol><li>指定了项目目录</li><li>查询gunicorn进程是否存在并返回值，也就是服务是否上线。</li><li>根据返回值来开启服务或者提示服务已经开启。<br>这里务必注意在shell脚本里，if后的括号，括号内的内容都要有一个空格隔开，不然会出现then的错误，then必须在if判断后的下一行，或者</li></ol></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">if [ &quot;A&quot; == &quot;B&quot; ]; then</div></pre></td></tr></table></figure><h2 id="Cron定时任务实现自动部署"><a href="#Cron定时任务实现自动部署" class="headerlink" title="Cron定时任务实现自动部署"></a>Cron定时任务实现自动部署</h2><p>使用crontab -e添加定时任务，并生成log<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* * * * * cd /home/mirror; sh deploy.sh  1&gt;&gt;log 2&gt;&amp;1</div></pre></td></tr></table></figure></p><p>每分钟检查一次我我的进程<br>这里注意使用 vi /etc/crontab是不可以设置定时任务的，会报错。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;通过shell脚本执行gunicorn命令&quot;&gt;&lt;a href=&quot;#通过shell脚本执行gunicorn命令&quot; class=&quot;headerlink&quot; title=&quot;通过shell脚本执行gunicorn命令&quot;&gt;&lt;/a&gt;通过shell脚本执行gunicorn命令&lt;/
+      
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://Moshiwei.github.io/categories/Linux/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>选择排序-Selection Sort</title>
@@ -478,33 +501,6 @@
     </summary>
     
       <category term="python实际问题" scheme="http://Moshiwei.github.io/categories/python%E5%AE%9E%E9%99%85%E9%97%AE%E9%A2%98/"/>
-    
-    
-      <category term="python" scheme="http://Moshiwei.github.io/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python面向对象</title>
-    <link href="http://Moshiwei.github.io/2017/08/19/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02017.08.19/"/>
-    <id>http://Moshiwei.github.io/2017/08/19/python学习笔记2017.08.19/</id>
-    <published>2017-08-19T14:52:00.000Z</published>
-    <updated>2017-08-19T14:52:56.447Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="定义一个类方法"><a href="#定义一个类方法" class="headerlink" title="定义一个类方法"></a>定义一个类方法</h2><blockquote><p>写一个类的时候，类名首字母要以大写开头</p><p>在类中定义的全部是实方法，实例方法第一个参数self是实例本身</p><p>通过标记一个@classmethod，该方法将绑定到类上，而非类的实例。类方法的第一个参数将传入类本身，通常将参数名命名为cls。</p><h2 id="创建实例属性"><a href="#创建实例属性" class="headerlink" title="创建实例属性"></a>创建实例属性</h2><p>python是一门动态语言，对于每一个实例，都可以直接给他们的属性赋值。</p><h2 id="初始化实例属性"><a href="#初始化实例属性" class="headerlink" title="初始化实例属性"></a>初始化实例属性</h2><p>一种类型的实例应该自带一些属性，比如人应该有名字，性别，生日，或者书籍应该有书名，作者，出版日期等，有一个特殊的<strong>init</strong>方法，当实例被创建时，该方法会被自动调用，将属性赋值给实例。</p><p><strong>init</strong>方法的第一个参数必须是self，后续的参数可以自由制定，和定义函数没有任何区别。</p><p>相应的，创建实例时，就必须要提供self以外的参数。</p><h2 id="访问限制"><a href="#访问限制" class="headerlink" title="访问限制"></a>访问限制</h2><p>python对属性权限的控制是通过属性名来实现的，如果一个属性由双下划线开头，该属性就无法被外部访问。</p><h2 id="类属性"><a href="#类属性" class="headerlink" title="类属性"></a>类属性</h2><p>我们知道实例的属性是互相不影响的，如果在类上绑定一个属性，则所有的实例都可以访问到这个属性，总结来讲，实例的属性都是各自拥有的，相互独立，但是类属性有且只有一份，类属性是可以动态添加和修改的。</p><p>有一个例子很好的解释了这一点</p><p>实现一个功能，创建一个实例，就计数一次</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">class Person():</div><div class="line">count = 0</div><div class="line">def __init__(self, name):</div><div class="line">self.name = name </div><div class="line">Person.count += 1</div><div class="line">p1 = Person(&apos;Bob&apos;)</div><div class="line">print Person.count,</div><div class="line"></div><div class="line">p2 = Person(&apos;Alice&apos;)</div><div class="line">print Person.count,</div><div class="line"></div><div class="line">p3 = Person(&apos;Tim&apos;)</div><div class="line">print Person.count</div></pre></td></tr></table></figure><h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><blockquote><p>先看例子</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">class Person(object):</div><div class="line">    address = &apos;Earth&apos;</div><div class="line">    def __init__(self, name):</div><div class="line">        self.name = name</div><div class="line">p1 = Person(&apos;Bob&apos;)</div><div class="line">p2 = Person(&apos;Alice&apos;)</div><div class="line">print &apos;Person.address = &apos; + Person.address</div><div class="line">p1.address = &apos;China&apos;</div><div class="line">print &apos;p1.address = &apos; + p1.address</div><div class="line">print &apos;Person.address = &apos; + Person.address</div><div class="line">print &apos;p2.address = &apos; + p2.address</div></pre></td></tr></table></figure><p>结果</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Person.address = Earth</div><div class="line">p1.address = China</div><div class="line">Person.address = Earth</div><div class="line">p2.address = Earth</div></pre></td></tr></table></figure><blockquote><p>可以看到，实例访问了类属性，并且做了更改。或者说这个实例访问的并不是类属性，而是它自身创建了一个实例属性和类属性同名了，因为可以看到我们输出了类属性后，发现类属性没有变化。那么下次我们输出实例的时候，访问address属性的时候是访问的哪一个属性呢。</p><p>这里就涉及到了优先级的问题。当类属性和实例属性重名的时候，实例会优先检查实例属性，如果没有再去访问类属性。换句话说，在实例上修改类属性，他实际并没有修改类属性，而是绑定了一个新的实例属性。</p><h2 id="定义实例方法"><a href="#定义实例方法" class="headerlink" title="定义实例方法"></a>定义实例方法</h2><p>一个实例的私有属性就是以__开头的属性，无法被外部访问，那这些属性定义有什么用？虽然私有属性无法从外部访问，但是从类的内部是可以访问的，除了可以定义实例的属性外，还可以定义实例的方法。</p><p>实例的方法就是在类中定义的函数，她的第一个参数永远是self，指向调用该方法的实例本身。</p><p>在实例方法的内部，可以访问所有实例属性，这样，如果外部需要访问私有属性，可以通过方法调用获得，这种数据封装的形式除了能保护内部数据一致性外，还可以简化外部调用的难度。</p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;定义一个类方法&quot;&gt;&lt;a href=&quot;#定义一个类方法&quot; class=&quot;headerlink&quot; title=&quot;定义一个类方法&quot;&gt;&lt;/a&gt;定义一个类方法&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;写一个类的时候，类名首字母要以大写开头&lt;/p&gt;
-&lt;p&gt;在类中定义的全部是实
-      
-    
-    </summary>
-    
-      <category term="python学习笔记" scheme="http://Moshiwei.github.io/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
       <category term="python" scheme="http://Moshiwei.github.io/tags/python/"/>

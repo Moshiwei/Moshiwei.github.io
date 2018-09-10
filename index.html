@@ -326,6 +326,161 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2018/09/10/gunicorn+shell脚本+cron让项目自动发布上线/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mirror">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25856599?v=4&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="纸镜">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/09/10/gunicorn+shell脚本+cron让项目自动发布上线/" itemprop="url">
+                  gunicorn+shell脚本+cron让项目自动发布
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T11:08:00+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="通过shell脚本执行gunicorn命令"><a href="#通过shell脚本执行gunicorn命令" class="headerlink" title="通过shell脚本执行gunicorn命令"></a>通过shell脚本执行gunicorn命令</h2><blockquote>
+<p>首先编写shell脚本</p>
+<p>deploy.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">cd /home/mirror/mirrorgo.top/django-blog-tutorial</div><div class="line"></div><div class="line">ps aux|grep gunicorn |grep -v grep</div><div class="line">if [ $? -ne 0 ]</div><div class="line">then</div><div class="line">    echo &quot;blog stopped&quot;</div><div class="line">    /home/mirror/djangoenv/bin/gunicorn --bind unix:/tmp/mirrorgo.top.socket blogproject.wsgi:application</div><div class="line">else</div><div class="line">    echo &quot;blog start&quot;</div><div class="line">fi</div></pre></td></tr></table></figure></p>
+<p>脚本内容</p>
+<ol>
+<li>指定了项目目录</li>
+<li>查询gunicorn进程是否存在并返回值，也就是服务是否上线。</li>
+<li>根据返回值来开启服务或者提示服务已经开启。<br>这里务必注意在shell脚本里，if后的括号，括号内的内容都要有一个空格隔开，不然会出现then的错误，then必须在if判断后的下一行，或者</li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">if [ &quot;A&quot; == &quot;B&quot; ]; then</div></pre></td></tr></table></figure>
+<h2 id="Cron定时任务实现自动部署"><a href="#Cron定时任务实现自动部署" class="headerlink" title="Cron定时任务实现自动部署"></a>Cron定时任务实现自动部署</h2><p>使用crontab -e添加定时任务，并生成log<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* * * * * cd /home/mirror; sh deploy.sh  1&gt;&gt;log 2&gt;&amp;1</div></pre></td></tr></table></figure></p>
+<p>每分钟检查一次我我的进程<br>这里注意使用 vi /etc/crontab是不可以设置定时任务的，会报错。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2018/04/23/选择排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1687,157 +1842,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://Moshiwei.github.io/2017/09/29/Django-Form/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mirror">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/25856599?v=4&s=460">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="纸镜">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/29/Django-Form/" itemprop="url">
-                  Django-Form
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-29T21:38:00+08:00">
-                2017-09-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python框架/" itemprop="url" rel="index">
-                    <span itemprop="name">python框架</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Django-Form"><a href="#Django-Form" class="headerlink" title="Django-Form"></a>Django-Form</h1><blockquote>
-<p>Django provides a rich framework to facilitate the creation of forms and the manipulation of form data.</p>
-</blockquote>
-<p>Django提供了强大的框架使得创建表格或是更改表格更加容易</p>
-<h2 id="Working-with-forms"><a href="#Working-with-forms" class="headerlink" title="Working with forms"></a>Working with forms</h2><p>如果你想构建一个功能强大的网站不仅仅是发布文章的话，你就需要理解如何使用forms，去接受用户的提交内容。<br>Django提供了一系列的工具和方法去帮助你构建forms。获取你用户的提交内容做出处理和应答。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/29/Django-Form/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1887,7 +1891,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">51</span>
+                <span class="site-state-item-count">52</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
